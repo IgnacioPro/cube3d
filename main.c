@@ -1,6 +1,6 @@
 #include "mlx.h"
 #include <stdio.h>
-
+#include <stdlib.h>
 #include <mlx.h>
 
 typedef struct s_vars
@@ -49,26 +49,42 @@ int paint_all_window(t_vars *vars)
 	return(0);
 }
 
-int render_next_frame(t_vars *vars)
+// int render_next_frame(t_vars *vars)
+// {
+// 	paint_all_window(vars);
+// 	vars->color += 10;
+// 	printf("%x\n", vars->color);
+
+// 	// mlx_clear_window(vars->mlx, vars->win);
+// 	return(0);
+// }
+
+
+
+// int print_while_clicked(int coord_x, int coord_y, t_vars *vars)
+// {
+// 	mlx_pixel_put(vars->mlx, vars->win, coord_x, coord_y, 0x00ff0000);
+// 	printf("Mouse: %d, %d\n", coord_x, coord_y);
+// 	mlx_clear_window(vars->mlx, vars->win);
+
+// 	return(0);
+// }
+
+int square (t_vars *vars)
 {
-	paint_all_window(vars);
-	vars->color += 100;
-	// printf("%x\n", vars->color);
+    int x = 0;
+	int y = 0;
+    
+	while (x++ <= 20)
+	{
+		y = 0;
+		while (y++ <= 20)
+			mlx_pixel_put(vars->mlx, vars->win, x, y, 0x00ff0000);
+	}
 
-	// mlx_clear_window(vars->mlx, vars->win);
-	return(0);
+    // mlx_pixel_put(vars->mlx, vars->win, 15, 15, 0x00ff0000);
+    return(0);
 }
-
-int print_while_clicked(int coord_x, int coord_y, t_vars *vars)
-{
-	mlx_pixel_put(vars->mlx, vars->win, coord_x, coord_y, 0x00ff0000);
-	printf("Mouse: %d, %d\n", coord_x, coord_y);
-	mlx_clear_window(vars->mlx, vars->win);
-
-	return(0);
-}
-
-
 
 // void            color_pixel(t_vars *vars, int x, int y, int color)
 // {
@@ -87,13 +103,15 @@ int main(void)
 	vars.color = 0x00ff0000;
 
     vars.mlx = mlx_init();
-	img.img = mlx_new_image(vars.mlx, 500, 500);
+	// img.img = mlx_new_image(vars.mlx, 500, 500);
     vars.win = mlx_new_window(vars.mlx, 500, 500, "Hello world!");
 	// mlx_mouse_hook(vars.win, print_pixel_clicked, &vars);
     mlx_hook(vars.win, 2, 1L<<0, close, &vars);
+    // mlx_hook(vars.win, 2, 1L<<0, square, &vars);
 	// mlx_hook(vars.win, 6, 1L<<8, print_while_clicked, &vars);
 	// paint_all_window(&vars);
-	mlx_loop_hook(vars.mlx,render_next_frame, &vars);
+	// mlx_loop_hook(vars.mlx,render_next_frame, &vars);
+	mlx_loop_hook(vars.mlx,square, &vars);
     mlx_loop(vars.mlx);
 }
 
