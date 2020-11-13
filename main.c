@@ -17,6 +17,7 @@ typedef struct s_vars
     int line_length;
 	int endian;
 	int color;
+	void *prueba;
 
 } t_vars;
 
@@ -34,32 +35,42 @@ int print_pixel_clicked(int keycode, int coord_x, int coord_y, t_vars *vars)
 	return(0);
 }
 
-
-int paint_all_window(t_vars *vars)
+int square (t_vars *vars)
 {
-	int x = 0;
-	int y = 0;
-	while (x++ <= vars->win_x)
+    // vars->coord_x = 0;
+	// vars->coord_y = 0;
+	int square_x = 0;
+	int square_y = 0;
+    
+	while (vars->coord_x + square_x++ <= vars->coord_x + 25)
 	{
-//		mlx_pixel_put(vars->mlx, vars->win, x, y, 0x00ff0000);
-		y = 0;
-		while (y++ <= vars->win_y)
-			mlx_pixel_put(vars->mlx, vars->win, x, y, vars->color);
+		square_y = 0;
+		while (vars->coord_y + square_y++ <= vars->coord_y + 25)
+			mlx_pixel_put(vars->mlx, vars->win, vars->coord_x + square_x, vars->coord_y + square_y, vars->color);
 	}
-	return(0);
+    return(0);
 }
 
-// int render_next_frame(t_vars *vars)
+// int dot (t_vars *vars)
 // {
-// 	paint_all_window(vars);
-// 	vars->color += 10;
-// 	printf("%x\n", vars->color);
-
-// 	// mlx_clear_window(vars->mlx, vars->win);
-// 	return(0);
+// 	mlx_pixel_put(vars->mlx, vars->win, vars->coord_x, vars->coord_y, vars->color);
 // }
 
-
+int move_square(int keycode, t_vars *vars)
+{
+	if(keycode == 123)
+		vars->coord_x--;
+	if(keycode == 124)
+		vars->coord_x++;
+	if(keycode == 125)
+		vars->coord_y++;
+	if(keycode == 126)
+		vars->coord_y--;
+	if (keycode == 53)
+    	mlx_destroy_window(vars->mlx, vars->win);
+	mlx_clear_window(vars->mlx, vars->win);
+	return(0);
+}
 
 // int print_while_clicked(int coord_x, int coord_y, t_vars *vars)
 // {
@@ -70,21 +81,7 @@ int paint_all_window(t_vars *vars)
 // 	return(0);
 // }
 
-int square (t_vars *vars)
-{
-    int x = 0;
-	int y = 0;
-    
-	while (x++ <= 20)
-	{
-		y = 0;
-		while (y++ <= 20)
-			mlx_pixel_put(vars->mlx, vars->win, x, y, 0x00ff0000);
-	}
 
-    // mlx_pixel_put(vars->mlx, vars->win, 15, 15, 0x00ff0000);
-    return(0);
-}
 
 // void            color_pixel(t_vars *vars, int x, int y, int color)
 // {
@@ -94,24 +91,47 @@ int square (t_vars *vars)
 //     *(unsigned int*)dst = color;
 // }
 
+int cursor(int x, int y, t_vars *vars)
+{
+	mlx_put_image_to_window(vars->mlx, vars->win, vars->prueba, x, y);
+}
+
+int texture_put (int x, int y, t_vars *vars)
+{
+	while (x++ < 2000)
+		mlx_put_image_to_window(vars->mlx, vars->win, vars->prueba, x, y);
+}
+
 int main(void)
 {
     t_vars vars;
 	t_vars img;
+	vars.coord_x = 0;
+	vars.coord_y = 0;
 	vars.win_x = 500;
 	vars.win_y = 500;
 	vars.color = 0x00ff0000;
+	int     img_width;
+    int     img_height;
+	char    *path = "./texture.xpm";
 
-    vars.mlx = mlx_init();
+	vars.mlx = mlx_init();
+	// prueba = mlx_xpm_file_to_image(vars.mlx, path, &img_width, &img_height);
+	vars.prueba = mlx_xpm_file_to_image(vars.mlx, path, &img_width, &img_height);
+  
 	// img.img = mlx_new_image(vars.mlx, 500, 500);
-    vars.win = mlx_new_window(vars.mlx, 500, 500, "Hello world!");
+    vars.win = mlx_new_window(vars.mlx, 2000, 2000, "Iñaki");
+	// mlx_put_image_to_window(vars.mlx, vars.win, prueba, 10, 10);
+	mlx_hook(vars.win, 2, 1L<<6, cursor, &vars );
+	mlx_loop_hook(vars.mlx, texture_put, &vars);
 	// mlx_mouse_hook(vars.win, print_pixel_clicked, &vars);
-    mlx_hook(vars.win, 2, 1L<<0, close, &vars);
+    // mlx_hook(vars.win, 2, 1L<<0, close, &vars);
     // mlx_hook(vars.win, 2, 1L<<0, square, &vars);
 	// mlx_hook(vars.win, 6, 1L<<8, print_while_clicked, &vars);
 	// paint_all_window(&vars);
-	// mlx_loop_hook(vars.mlx,render_next_frame, &vars);
+	// mlx_key_hook(vars.win, print_keycode, &vars);
+	mlx_hook(vars.win, 2, 1L<<0, move_square, &vars);
 	mlx_loop_hook(vars.mlx,square, &vars);
+	// mlx_key_hook(vars.win, print_keycode, &vars);
     mlx_loop(vars.mlx);
 }
-
