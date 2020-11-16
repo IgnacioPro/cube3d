@@ -51,6 +51,27 @@ int square (t_vars *vars)
     return(0);
 }
 
+int put_texture(t_vars *vars)
+{
+	// while (vars->coord_x++ <= 2000)
+	// {
+	// 	vars->coord_y = 0;
+	// 	while (vars->coord_y++ <= 2000)
+	// 		mlx_put_image_to_window(vars->mlx, vars->win, vars->prueba, vars->coord_x, vars->coord_y);
+	// }
+	while (vars->coord_x <= 2000)
+	{
+		vars->coord_y = 0;
+		while (vars->coord_y <= 2000)
+		{
+			mlx_put_image_to_window(vars->mlx, vars->win, vars->prueba, vars->coord_x, vars->coord_y);
+			vars->coord_y += 1024;
+		}
+		vars->coord_x += 1024;
+	}
+    return(0);
+}
+
 // int dot (t_vars *vars)
 // {
 // 	mlx_pixel_put(vars->mlx, vars->win, vars->coord_x, vars->coord_y, vars->color);
@@ -59,15 +80,18 @@ int square (t_vars *vars)
 int move_square(int keycode, t_vars *vars)
 {
 	if(keycode == 123)
-		vars->coord_x--;
+		vars->coord_x -= 10;
 	if(keycode == 124)
-		vars->coord_x++;
+		vars->coord_x += 10;
 	if(keycode == 125)
-		vars->coord_y++;
+		vars->coord_y += 10;
 	if(keycode == 126)
-		vars->coord_y--;
+		vars->coord_y -= 10;
 	if (keycode == 53)
+	{
     	mlx_destroy_window(vars->mlx, vars->win);
+		exit(0);
+	}
 	mlx_clear_window(vars->mlx, vars->win);
 	return(0);
 }
@@ -96,12 +120,6 @@ int cursor(int x, int y, t_vars *vars)
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->prueba, x, y);
 }
 
-int texture_put (int x, int y, t_vars *vars)
-{
-	while (x++ < 2000)
-		mlx_put_image_to_window(vars->mlx, vars->win, vars->prueba, x, y);
-}
-
 int main(void)
 {
     t_vars vars;
@@ -121,17 +139,14 @@ int main(void)
   
 	// img.img = mlx_new_image(vars.mlx, 500, 500);
     vars.win = mlx_new_window(vars.mlx, 2000, 2000, "Iñaki");
-	// mlx_put_image_to_window(vars.mlx, vars.win, prueba, 10, 10);
-	mlx_hook(vars.win, 2, 1L<<6, cursor, &vars );
-	mlx_loop_hook(vars.mlx, texture_put, &vars);
-	// mlx_mouse_hook(vars.win, print_pixel_clicked, &vars);
-    // mlx_hook(vars.win, 2, 1L<<0, close, &vars);
-    // mlx_hook(vars.win, 2, 1L<<0, square, &vars);
-	// mlx_hook(vars.win, 6, 1L<<8, print_while_clicked, &vars);
-	// paint_all_window(&vars);
-	// mlx_key_hook(vars.win, print_keycode, &vars);
+	// // mlx_put_image_to_window(vars.mlx, vars.win, vars.prueba, vars.coord_x, vars.coord_y);
+	// mlx_hook(vars.win, 2, 1L<<6, cursor, &vars );
+	mlx_loop_hook(vars.mlx, put_texture, &vars);
 	mlx_hook(vars.win, 2, 1L<<0, move_square, &vars);
-	mlx_loop_hook(vars.mlx,square, &vars);
-	// mlx_key_hook(vars.win, print_keycode, &vars);
+	// mlx_loop_hook(vars.mlx,square, &vars);
     mlx_loop(vars.mlx);
+		// mlx_mouse_hook(vars.win, print_pixel_clicked, &vars);
+    // mlx_hook(vars.win, 2, 1L<<0, close, &vars);
+	// mlx_key_hook(vars.win, print_keycode, &vars);
+	// mlx_key_hook(vars.win, print_keycode, &vars);
 }
