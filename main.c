@@ -51,6 +51,14 @@ int square (t_vars *vars)
     return(0);
 }
 
+int sync_to_image(t_vars *vars)
+{
+	mlx_sync(1,vars->prueba);
+	mlx_put_image_to_window(vars->mlx, vars->win, vars->prueba, vars->coord_x, vars->coord_y);	
+	mlx_do_sync(vars->mlx);
+	mlx_sync(2, vars->win);
+	return(0);
+}
 int put_texture(t_vars *vars)
 {
 	// while (vars->coord_x++ <= 2000)
@@ -79,20 +87,22 @@ int put_texture(t_vars *vars)
 
 int move_square(int keycode, t_vars *vars)
 {
+	printf("Has presionado la tecla: %d\n", keycode);
 	if(keycode == 123)
-		vars->coord_x -= 10;
+		vars->coord_x -= 30;
 	if(keycode == 124)
-		vars->coord_x += 10;
+		vars->coord_x += 30;
 	if(keycode == 125)
-		vars->coord_y += 10;
+		vars->coord_y += 30;
 	if(keycode == 126)
-		vars->coord_y -= 10;
+		vars->coord_y -= 30;
 	if (keycode == 53)
 	{
+		mlx_sync(2, vars->win);
     	mlx_destroy_window(vars->mlx, vars->win);
 		exit(0);
 	}
-	mlx_clear_window(vars->mlx, vars->win);
+	// mlx_clear_window(vars->mlx, vars->win);
 	return(0);
 }
 
@@ -105,8 +115,6 @@ int move_square(int keycode, t_vars *vars)
 // 	return(0);
 // }
 
-
-
 // void            color_pixel(t_vars *vars, int x, int y, int color)
 // {
 //     char    *dst;
@@ -115,10 +123,12 @@ int move_square(int keycode, t_vars *vars)
 //     *(unsigned int*)dst = color;
 // }
 
-int cursor(int x, int y, t_vars *vars)
-{
-	mlx_put_image_to_window(vars->mlx, vars->win, vars->prueba, x, y);
-}
+// int cursor(int x, int y, t_vars *vars)
+// {
+// 	mlx_put_image_to_window(vars->mlx, vars->win, vars->prueba, x, y);
+// 	return(0);
+// }
+
 
 int main(void)
 {
@@ -134,19 +144,20 @@ int main(void)
 	char    *path = "./texture.xpm";
 
 	vars.mlx = mlx_init();
-	// prueba = mlx_xpm_file_to_image(vars.mlx, path, &img_width, &img_height);
+	// mlx_sync(1, vars.prueba);
 	vars.prueba = mlx_xpm_file_to_image(vars.mlx, path, &img_width, &img_height);
-  
-	// img.img = mlx_new_image(vars.mlx, 500, 500);
-    vars.win = mlx_new_window(vars.mlx, 2000, 2000, "Iñaki");
+    vars.win = mlx_new_window(vars.mlx, 1000, 500, "Iñaki");
+	
+
 	// // mlx_put_image_to_window(vars.mlx, vars.win, vars.prueba, vars.coord_x, vars.coord_y);
 	// mlx_hook(vars.win, 2, 1L<<6, cursor, &vars );
-	mlx_loop_hook(vars.mlx, put_texture, &vars);
+	// mlx_loop_hook(vars.mlx, put_texture, &vars);
 	mlx_hook(vars.win, 2, 1L<<0, move_square, &vars);
+	// sync_to_image(&vars);
 	// mlx_loop_hook(vars.mlx,square, &vars);
-    mlx_loop(vars.mlx);
-		// mlx_mouse_hook(vars.win, print_pixel_clicked, &vars);
-    // mlx_hook(vars.win, 2, 1L<<0, close, &vars);
-	// mlx_key_hook(vars.win, print_keycode, &vars);
-	// mlx_key_hook(vars.win, print_keycode, &vars);
+	mlx_loop_hook(vars.mlx,sync_to_image, &vars);
+	// mlx_put_image_to_window(vars.mlx, vars.win, vars.prueba, vars.coord_x, vars.coord_y);
+
+	// mlx_mouse_hook(vars.win, print_pixel_clicked, &vars);
+	mlx_loop(vars.mlx);
 }
