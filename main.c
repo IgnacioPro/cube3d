@@ -55,8 +55,7 @@ int sync_to_image(t_vars *vars)
 {
 	mlx_sync(1,vars->prueba);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->prueba, vars->coord_x, vars->coord_y);	
-	mlx_do_sync(vars->mlx);
-	mlx_sync(2, vars->win);
+	mlx_sync(3, vars->win);
 	return(0);
 }
 int put_texture(t_vars *vars)
@@ -98,10 +97,11 @@ int move_square(int keycode, t_vars *vars)
 		vars->coord_y -= 30;
 	if (keycode == 53)
 	{
-		mlx_sync(2, vars->win);
     	mlx_destroy_window(vars->mlx, vars->win);
 		exit(0);
 	}
+
+	// mlx_sync(3, vars->win);
 	// mlx_clear_window(vars->mlx, vars->win);
 	return(0);
 }
@@ -130,34 +130,50 @@ int move_square(int keycode, t_vars *vars)
 // }
 
 
+// int main(void)
+// {
+//     t_vars vars;
+// 	t_vars img;
+// 	vars.coord_x = 0;
+// 	vars.coord_y = 0;
+// 	vars.win_x = 500;
+// 	vars.win_y = 500;
+// 	vars.color = 0x00ff0000;
+// 	int     img_width;
+//     int     img_height;
+// 	char    *path = "./texture.xpm";
+
+// 	vars.mlx = mlx_init();
+// 	// mlx_sync(1, vars.prueba);
+// 	vars.prueba = mlx_xpm_file_to_image(vars.mlx, path, &img_width, &img_height);
+// 	// mlx_sync(1, vars.prueba);
+
+//     vars.win = mlx_new_window(vars.mlx, 1000, 500, "Iñaki");
+
+// 	// // mlx_put_image_to_window(vars.mlx, vars.win, vars.prueba, vars.coord_x, vars.coord_y);
+// 	// mlx_hook(vars.win, 2, 1L<<6, cursor, &vars );
+// 	// mlx_loop_hook(vars.mlx, put_texture, &vars);
+// 	mlx_hook(vars.win, 2, 1L<<0, move_square, &vars);
+// 	// sync_to_image(&vars);
+// 	// mlx_loop_hook(vars.mlx,square, &vars);
+// 	mlx_loop_hook(vars.mlx,sync_to_image, &vars);
+// 	// mlx_put_image_to_window(vars.mlx, vars.win, vars.prueba, vars.coord_x, vars.coord_y);
+
+// 	// mlx_mouse_hook(vars.win, print_pixel_clicked, &vars);
+// 	mlx_loop(vars.mlx);
+// }
+
 int main(void)
 {
-    t_vars vars;
-	t_vars img;
-	vars.coord_x = 0;
-	vars.coord_y = 0;
-	vars.win_x = 500;
-	vars.win_y = 500;
-	vars.color = 0x00ff0000;
-	int     img_width;
-    int     img_height;
-	char    *path = "./texture.xpm";
+	t_vars vars;
+	int img_width;
+	int img_height;
+	char *path = "./texture.xpm";
 
 	vars.mlx = mlx_init();
-	// mlx_sync(1, vars.prueba);
+	vars.win = mlx_new_window(vars.mlx, 1000, 500, "Iñaki");
 	vars.prueba = mlx_xpm_file_to_image(vars.mlx, path, &img_width, &img_height);
-    vars.win = mlx_new_window(vars.mlx, 1000, 500, "Iñaki");
-	
-
-	// // mlx_put_image_to_window(vars.mlx, vars.win, vars.prueba, vars.coord_x, vars.coord_y);
-	// mlx_hook(vars.win, 2, 1L<<6, cursor, &vars );
-	// mlx_loop_hook(vars.mlx, put_texture, &vars);
 	mlx_hook(vars.win, 2, 1L<<0, move_square, &vars);
-	// sync_to_image(&vars);
-	// mlx_loop_hook(vars.mlx,square, &vars);
 	mlx_loop_hook(vars.mlx,sync_to_image, &vars);
-	// mlx_put_image_to_window(vars.mlx, vars.win, vars.prueba, vars.coord_x, vars.coord_y);
-
-	// mlx_mouse_hook(vars.win, print_pixel_clicked, &vars);
 	mlx_loop(vars.mlx);
 }
