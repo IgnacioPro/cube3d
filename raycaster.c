@@ -7,12 +7,21 @@
 
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
+
 typedef struct s_vars
 {
-	void *mlx;
-	void *win;
-	double moveSpeed;
-	int key;
+	void	*mlx;
+	void	*win;
+	double	moveSpeed;
+	int		key;
+	double	rotSpeed;
+	double	posX;
+	double	posY;
+	double	dirX;
+	double	dirY;
+	double	planeX;
+	double	planeY;
 
 } t_vars;
 
@@ -50,51 +59,79 @@ void draw_line(int x, int drawStart, int drawEnd, int color, t_vars *vars)
 		mlx_pixel_put(vars->mlx, vars->win, x, drawStart, color);
 		drawStart++;
 	}
-
 }
 
-void move_player(int keycode, t_vars *vars) //
+int move_player(int keycode, t_vars *vars) //
 {
-	double moveSpeed = 0.6;
-	keycode = vars->key;
+	vars->key = keycode;
+	if (keycode == 126) //up
+	{
+		printf("Arriba\n");
+		if (worldMap[(int)(vars->posX + vars->dirX * vars->moveSpeed)][(int)vars->posY] == 0)
+			vars->posX += vars->dirX * vars->moveSpeed;
+		if (worldMap[(int)vars->posX][(int)(vars->posY + vars->dirY * vars->moveSpeed)] == 0)
+			vars->posY += vars->dirY * vars->moveSpeed;
+	}
+	if (keycode == 125) //down
+	{
+		printf("Abajo\n");
+		if (worldMap[(int)(vars->posX - vars->dirX * vars->moveSpeed)][(int)vars->posY] == 0)
+			vars->posX -= vars->dirX * vars->moveSpeed;
+		if (worldMap[(int)vars->posX][(int)(vars->posY - vars->dirY * vars->moveSpeed)] == 0)
+			vars->posY -= vars->dirY * vars->moveSpeed;
+	}
+	if (keycode == 124) //right
+	{
+		printf("Derecha\n");
+		double oldDirX = vars->dirX;
+		vars->dirX = vars->dirX * cos(-vars->rotSpeed) - vars->dirY * sin(-vars->rotSpeed);
+		vars->dirY = oldDirX * sin(-vars->rotSpeed) + vars->dirY * cos(-vars->rotSpeed);
+		double oldPlaneX = vars->planeX;
+		vars->planeX = vars->planeX * cos(-vars->rotSpeed) - vars->planeY * sin(-vars->rotSpeed);
+		vars->planeY = oldPlaneX * sin(-vars->rotSpeed) + vars->planeY * cos(-vars->rotSpeed);
+	}
+	if (keycode == 123) //left
+	{
+		printf("Izquierda\n");
+		double oldDirX = vars->dirX;
+		vars->dirX = vars->dirX * cos(vars->rotSpeed) - vars->dirY * sin(vars->rotSpeed);
+		vars->dirY = oldDirX * sin(vars->rotSpeed) + vars->dirY * cos(vars->rotSpeed);
+		double oldPlaneX = vars->planeX;
+		vars->planeX = vars->planeX * cos(vars->rotSpeed) - vars->planeY * sin(vars->rotSpeed);
+		vars->planeY = oldPlaneX * sin(vars->rotSpeed) + vars->planeY * cos(vars->rotSpeed);
+	}
+	if (keycode == 53)
+	{
+    	mlx_destroy_window(vars->mlx, vars->win);
+		exit(0);
+	}
+	return (0);
 }
-
-
 
 double ft_abs(double n)
 {
 	if (n < 0)
-		return(-n);
-	return(n);
+		return (-n);
+	return (n);
 }
 
 int main()
 {
 	t_vars vars;
 	vars.mlx = mlx_init();
-	double posX = 22, posY = 12;	  //x and y start position
-	double dirX = -1, dirY = 0;		  //initial direction vector
-	double planeX = 0, planeY = 0.66; //the 2d raycaster version of camera plane
-
-	double time = 0;	//time of current frame
-	double oldTime = 0; //time of previous frame
-
 	vars.win = mlx_new_window(vars.mlx, screenWidth, screenHeight, "Cube");
-	double moveSpeed = 0.6;
-	double rotSpeed = 0.6;
-	int trex = 0;
+	int trex = 1;
 	int x = 0;
 
-	while (trex++ < 1000)
+	while (++trex < 1000000)
 	{
-		
 		while (x < screenWidth)
 		{
 			double cameraX = 2 * x / (double)screenWidth - 1;
-			double rayDirX = dirX + planeX * cameraX;
-			double rayDirY = dirY + planeY * cameraX;
-			int mapX = posX;
-			int mapY = posY;
+			double rayDirX = vars.dirX + vars.planeX * cameraX;
+			double rayDirY = vars.dirY + vars.planeY * cameraX;
+			int mapX = vars.posX;
+			int mapY = vars.posY;
 			double sideDistX;
 			double sideDistY;
 			double deltaDistX = ft_abs(1 / rayDirX);
@@ -106,28 +143,34 @@ int main()
 			int hit = 0;
 			int side;
 
-			double rotSpeed = 0.6;
-			double moveSpeed = 0.6;
+			vars.moveSpeed = 0.6;
+			vars.rotSpeed = 0.6;
+			vars.posX = 22;
+			vars.posY = 12;
+			vars.dirX = -1;
+			vars.dirY = 0;
+			vars.planeX = 0;
+			vars.planeY = 0.66;
 
 			if (rayDirX < 0)
 			{
 				stepX = -1;
-				sideDistX = (posX - mapX) * deltaDistX;
+				sideDistX = (vars.posX - mapX) * deltaDistX;
 			}
 			else
 			{
 				stepX = 1;
-				sideDistX = (mapX + 1.0 - posX) * deltaDistX;
+				sideDistX = (mapX + 1.0 - vars.posX) * deltaDistX;
 			}
 			if (rayDirY < 0)
 			{
 				stepY = -1;
-				sideDistY = (posY - mapY) * deltaDistY;
+				sideDistY = (vars.posY - mapY) * deltaDistY;
 			}
 			else
 			{
 				stepY = 1;
-				sideDistY = (mapY + 1.0 - posY) * deltaDistY;
+				sideDistY = (mapY + 1.0 - vars.posY) * deltaDistY;
 			}
 			while (hit == 0)
 			{
@@ -147,9 +190,9 @@ int main()
 					hit = 1;
 			}
 			if (side == 0)
-				perpWallDist = (mapX - posX + (1 - stepX) / 2) / rayDirX;
+				perpWallDist = (mapX - vars.posX + (1 - stepX) / 2) / rayDirX;
 			else
-				perpWallDist = (mapY - posY + (1 - stepY) / 2) / rayDirY;
+				perpWallDist = (mapY - vars.posY + (1 - stepY) / 2) / rayDirY;
 
 			int lineHeight = (int)(screenHeight / perpWallDist);
 			int drawStart = -lineHeight / 2 + screenHeight / 2;
@@ -165,7 +208,7 @@ int main()
 				color = 0x30D61C;
 			else if (worldMap[mapX][mapY] == 3)
 				color = 0x16E8E5;
-			else if (worldMap[mapX][mapY] == 3)
+			else if (worldMap[mapX][mapY] == 4)
 				color = 0xF958E1;
 			else
 				color = 0x050405;
@@ -175,40 +218,9 @@ int main()
 			draw_line(x, drawStart, drawEnd, color, &vars);
 			x++;
 		}
-
-		if (vars.key == 126) //up
-		{
-			printf("%d\n", vars.key);
-			if (worldMap[(int)(posX + dirX * moveSpeed)][(int)posY] == 0)
-				posX += dirX * moveSpeed;
-			if (worldMap[(int)posX][(int)(posY + dirY * moveSpeed)] == 0)
-				posY += dirY * moveSpeed;
-		}
-		if (vars.key == 125) //down
-		{
-			if (worldMap[(int)(posX - dirX * moveSpeed)][(int)posY] == 0)
-				posX -= dirX * moveSpeed;
-			if (worldMap[(int)posX][(int)(posY - dirY * moveSpeed)] == 0)
-				posY -= dirY * moveSpeed;
-		}
-		if (vars.key == 124) //right
-		{
-			double oldDirX = dirX;
-			dirX = dirX * cos(-rotSpeed) - dirY * sin(-rotSpeed);
-			dirY = oldDirX * sin(-rotSpeed) + dirY * cos(-rotSpeed);
-			double oldPlaneX = planeX;
-			planeX = planeX * cos(-rotSpeed) - planeY * sin(-rotSpeed);
-			planeY = oldPlaneX * sin(-rotSpeed) + planeY * cos(-rotSpeed);
-		}
-		if (vars.key == 123) //left
-		{
-			double oldDirX = dirX;
-			dirX = dirX * cos(rotSpeed) - dirY * sin(rotSpeed);
-			dirY = oldDirX * sin(rotSpeed) + dirY * cos(rotSpeed);
-			double oldPlaneX = planeX;
-			planeX = planeX * cos(rotSpeed) - planeY * sin(rotSpeed);
-			planeY = oldPlaneX * sin(rotSpeed) + planeY * cos(rotSpeed);
-		}
 	}
+
+	mlx_hook(vars.win, 2, 1L << 0, move_player, &vars);
+
 	mlx_loop(vars.mlx);
 }
