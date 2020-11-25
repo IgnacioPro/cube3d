@@ -4,6 +4,8 @@
 #define screenHeight 480
 #define mapWidth 24
 #define mapHeight 24
+#define texWidth 64
+#define texHeight 64
 
 #include <math.h>
 #include <stdio.h>
@@ -22,6 +24,20 @@ typedef struct s_vars
 	double dirY;
 	double planeX;
 	double planeY;
+	int texY;
+	int texPos;
+	int texX;
+
+	void **img;
+	int         bits_per_pixel;
+    int         line_length;
+    int         endian;
+	int *textureBuffer;
+
+	int text_width;
+	int text_height;
+	int step;
+
 
 } t_vars;
 
@@ -52,11 +68,13 @@ int worldMap[mapWidth][mapHeight] =
 		{1, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
 
-void draw_line(int x, int drawStart, int drawEnd, int color, t_vars *vars)
+void draw_line(int x, int drawStart, int drawEnd, unsigned int color, t_vars *vars)
 {
 	while (drawStart <= drawEnd)
 	{
-		mlx_pixel_put(vars->mlx, vars->win, x, drawStart, color);
+		mlx_pixel_put(vars->mlx, vars->win, x, drawStart, vars->textureBuffer[vars->text_width * vars->texY + vars->texX]);
+		vars->texY = (int)vars->texPos & (vars->text_height - 1);
+		vars->texPos += vars->step;
 		drawStart++;
 	}
 }
@@ -72,7 +90,6 @@ int move_player(int keycode, t_vars *vars) //
 			vars->posX += vars->dirX * vars->moveSpeed;
 		if (worldMap[(int)vars->posX][(int)(vars->posY + vars->dirY * vars->moveSpeed)] == 0)
 			vars->posY += vars->dirY * vars->moveSpeed;
-		
 	}
 
 	if (keycode == 125) //down
@@ -122,6 +139,7 @@ double ft_abs(double n)
 int render_frame(t_vars *vars)
 {
 	int x = 0;
+	double wallX;
 	while (x < screenWidth)
 	{
 		double cameraX = 2 * x / (double)screenWidth - 1;
@@ -134,11 +152,15 @@ int render_frame(t_vars *vars)
 		double deltaDistX = ft_abs(1 / rayDirX);
 		double deltaDistY = ft_abs(1 / rayDirY);
 		double perpWallDist;
+		int j;
 
 		int stepX;
 		int stepY;
 		int hit = 0;
 		int side;
+
+		double texPos;
+		int texX;
 
 		if (rayDirX < 0)
 		{
@@ -189,21 +211,41 @@ int render_frame(t_vars *vars)
 		int drawEnd = lineHeight / 2 + screenHeight / 2;
 		if (drawEnd >= screenHeight)
 			drawEnd = screenHeight - 1;
-		int color = 0x000000;
+		
+		// int color = vars->img[vars->text_height * vars->texY + vars->texX];
 		if (worldMap[mapX][mapY] == 1)
-			color = 0xD63E1E;
+		{
+			vars->textureBuffer = (int *)mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian );
+		}
 		else if (worldMap[mapX][mapY] == 2)
-			color = 0x30D61C;
+			vars->textureBuffer = (int *)mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian );
 		else if (worldMap[mapX][mapY] == 3)
-			color = 0x16E8E5;
+			vars->textureBuffer = (int *)mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian );
 		else if (worldMap[mapX][mapY] == 4)
-			color = 0xF958E1;
+			vars->textureBuffer = (int *)mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian );
 		else
-			color = 0x050405;
-		if (side == 1)
-			color /= 2;
-
-		draw_line(x, drawStart, drawEnd, color, vars);
+			vars->textureBuffer = (int *)mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian );
+		// if (side == 1)
+		// 	vars->textureBuffer /= 2; 
+		if (side == 0)
+			wallX = vars->posY + perpWallDist * rayDirY;
+		else
+			wallX = vars->posX + perpWallDist * rayDirX;
+		
+		wallX -= floor(wallX);
+		texX = (int)(wallX * (double)vars->text_width);
+		if (side == 0 && rayDirX > 0)
+			vars->texX = vars->text_width - vars->texX - 1;
+		vars->step = 1.0 * (vars->text_height / lineHeight);
+		texPos = (drawStart - screenHeight / 2 + lineHeight / 2 ) * vars->step;
+		// j = drawStart;
+		// while(j < drawEnd)
+		// {
+		// 	vars->texY = (int)vars->texPos & (vars->text_height - 1);
+		// 	vars->texPos += step;
+		// 	j++;
+		// }
+		draw_line(x, drawStart, drawEnd, *vars->textureBuffer, vars);
 		++x;
 		mlx_clear_window(vars->mlx, vars->win);
 	}
@@ -214,15 +256,33 @@ int main()
 	t_vars vars;
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, screenWidth, screenHeight, "Cube");
-	// int x = 0;
-	vars.moveSpeed = 0.3;
-	vars.rotSpeed = 0.2;
+	vars.moveSpeed = 0.5;
+	vars.rotSpeed = 0.05;
 	vars.posX = 22;
 	vars.posY = 12;
 	vars.dirX = -1;
 	vars.dirY = 0;
 	vars.planeX = 0;
 	vars.planeY = 0.66;
+	int width;
+	int height;
+
+
+
+	vars.img = mlx_xpm_file_to_image(vars.mlx, "./mossy.xpm", &vars.text_width, &vars.text_height);
+	// vars.img[1] = mlx_xpm_file_to_image(vars.mlx, "./redbrick.xpm", &width, &height);
+	// vars.img[2] = mlx_xpm_file_to_image(vars.mlx, "./wood.xpm", &width, &height);
+	// vars.img[3] = mlx_xpm_file_to_image(vars.mlx, "./greystone.xpm", &width, &height);
+
+
+
+	// mlx_put_image_to_window(vars.mlx, vars.win, img[0], 0, 0);
+	// mlx_put_image_to_window(vars.mlx, vars.win, img[1], 0, 64);
+	// mlx_put_image_to_window(vars.mlx, vars.win, img[2], 0, 128);
+	// mlx_put_image_to_window(vars.mlx, vars.win, img[3], 0, 192);
+
+	
+
 	mlx_loop_hook(vars.mlx, render_frame, &vars);
 	mlx_hook(vars.win, 2, 1L << 0, move_player, &vars);
 	mlx_loop(vars.mlx);
