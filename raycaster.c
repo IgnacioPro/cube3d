@@ -1,9 +1,7 @@
 #include "mlx.h"
 
-#define screenWidth 300
-// #define screenWidth 640
-#define screenHeight 180
-// #define screenHeight 480
+#define screenWidth 640
+#define screenHeight 480
 #define mapWidth 24
 #define mapHeight 24
 #define texWidth 64
@@ -74,7 +72,7 @@ int worldMap[mapWidth][mapHeight] =
 int            my_mlx_pixel_put(t_vars *vars, int x, int y, int color)
 {
     char    *dst;
-
+	int offset = (y * vars->line_length + x *(vars->bits_per_pixel / 8));
     dst = vars->addr + (y * vars->line_length + x * (vars->bits_per_pixel / 8));
     *(unsigned int*)dst = color;
 	return(0);
@@ -82,10 +80,12 @@ int            my_mlx_pixel_put(t_vars *vars, int x, int y, int color)
 
 void draw_line(int x, int drawStart, int drawEnd, unsigned int color, t_vars *vars)
 {
+	// vars->img = mlx_new_image(vars->mlx, screenWidth, screenHeight);
 	while (drawStart <= drawEnd)
 	{
-		mlx_pixel_put(vars->mlx, vars->win, x, drawStart, color);
-		// my_mlx_pixel_put(vars, x, drawStart, color);
+		vars->addr = mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian);
+		my_mlx_pixel_put(vars, x, drawStart, color);
+		// mlx_pixel_put(vars->mlx, vars->win, x, drawStart, color);
 
 		// vars->texY = (int)vars->texPos & (vars->text_height - 1);
 		// vars->texPos += vars->step;
@@ -138,6 +138,7 @@ int move_player(int keycode, t_vars *vars) //
 		mlx_destroy_window(vars->mlx, vars->win);
 		exit(0);
 	}
+	
 
 	printf("Pos X: %f\n", vars->posX);
 	printf("Pos Y: %f\n", vars->posY);
@@ -154,6 +155,7 @@ double ft_abs(double n)
 
 int render_frame(t_vars *vars)
 {
+	vars->img = mlx_new_image(vars->mlx, screenWidth, screenHeight);
 	int x = 0;
 	double wallX;
 	while (x < screenWidth)
@@ -230,7 +232,9 @@ int render_frame(t_vars *vars)
 		
 		int color = 0x00000000;
 		if (worldMap[mapX][mapY] == 1)
-			color = 0x00FF00000;
+			color = 0xC015E3;
+			// color = mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0 );
+			// color = (int *)mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian );
 			// vars->textureBuffer = (int *)mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian )
 		else if (worldMap[mapX][mapY] == 2)
 			color = 0x36CE27;
@@ -263,8 +267,12 @@ int render_frame(t_vars *vars)
 		// }
 		draw_line(x, drawStart, drawEnd, color, vars);
 		++x;
-		mlx_clear_window(vars->mlx, vars->win);
+		// mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0);
+
+		// mlx_clear_window(vars->mlx, vars->win);
 	}
+	mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0);
+	mlx_destroy_image(vars->mlx, vars->img);
 	return (0);
 }
 int main()
@@ -287,8 +295,8 @@ int main()
 
 
 
-	vars.img = mlx_xpm_file_to_image(vars.mlx, "./mossy.xpm", &vars.text_width, &vars.text_height);
-	// vars.img = mlx_new_image(vars.mlx, 100, 100);
+	// vars.img = mlx_xpm_file_to_image(vars.mlx, "./mossy.xpm", &vars.text_width, &vars.text_height);
+	// vars.img = mlx_new_image(vars.mlx, screenWidth, screenHeight);
 	// vars.addr = mlx_get_data_addr(vars.img, &vars.bits_per_pixel, &vars.line_length, &vars.endian);
 	// my_mlx_pixel_put(&vars, 5, 5, 0x00FF0000);
 	// mlx_put_image_to_window(vars.mlx, vars.win, vars.img, 0, 0);
