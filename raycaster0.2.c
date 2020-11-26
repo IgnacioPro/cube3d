@@ -11,20 +11,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct s_img
-{
-	void *img;
-	void *addr;
-	int         bits_per_pixel;
-    int         line_length;
-    int         endian;
-	int *textureBuffer;
-} t_img;
-
 typedef struct s_vars
 {
-	t_img img;
-	t_img texture;
 	void *mlx;
 	void *win;
 	double moveSpeed;
@@ -40,21 +28,16 @@ typedef struct s_vars
 	int texPos;
 	int texX;
 
-	int *addr;
-
-	// void *img;
-	// void *addr;
-	// int         bits_per_pixel;
-    // int         line_length;
-    // int         endian;
-	// int *textureBuffer;
+	void *img;
+	void *addr;
+	int         bits_per_pixel;
+    int         line_length;
+    int         endian;
+	int *textureBuffer;
 
 	int text_width;
 	int text_height;
 	int step;
-
-	void *textura;
-
 
 
 } t_vars;
@@ -86,7 +69,7 @@ int worldMap[mapWidth][mapHeight] =
 		{1, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
 
-int            my_mlx_pixel_put(t_img *vars, int x, int y, int color)
+int            my_mlx_pixel_put(t_vars *vars, int x, int y, int color)
 {
     char    *dst;
 	int offset = (y * vars->line_length + x *(vars->bits_per_pixel / 8));
@@ -95,7 +78,7 @@ int            my_mlx_pixel_put(t_img *vars, int x, int y, int color)
 	return(0);
 }
 
-void draw_line(int x, int drawStart, int drawEnd, unsigned int color, t_img *vars)
+void draw_line(int x, int drawStart, int drawEnd, unsigned int color, t_vars *vars)
 {
 	// vars->img = mlx_new_image(vars->mlx, screenWidth, screenHeight);
 	while (drawStart <= drawEnd)
@@ -114,6 +97,8 @@ void draw_line(int x, int drawStart, int drawEnd, unsigned int color, t_img *var
 
 int move_player(int keycode, t_vars *vars) //
 {
+	// vars->key = keycode;
+	// mlx_clear_window(vars->mlx, vars->win);
 	printf("Casilla: %d\n", worldMap[(int)(vars->posX + vars->dirX * vars->moveSpeed)][(int)vars->posY]);
 	if (keycode == 126) //up
 	{
@@ -170,7 +155,7 @@ double ft_abs(double n)
 
 int render_frame(t_vars *vars)
 {
-	vars->img.img = mlx_new_image(vars->mlx, screenWidth, screenHeight);
+	vars->img = mlx_new_image(vars->mlx, screenWidth, screenHeight);
 	int x = 0;
 	double wallX;
 	while (x < screenWidth)
@@ -245,9 +230,9 @@ int render_frame(t_vars *vars)
 		if (drawEnd >= screenHeight)
 			drawEnd = screenHeight - 1;
 		
-		int color = 0;
+		int color = 0x00000000;
 		if (worldMap[mapX][mapY] == 1)
-			color = vars->addr[vars->text_width * vars->texY + vars->texX];
+			color = 0xC015E3;
 			// color = mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0 );
 			// color = (int *)mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian );
 			// vars->textureBuffer = (int *)mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian )
@@ -273,21 +258,21 @@ int render_frame(t_vars *vars)
 			vars->texX = vars->text_width - vars->texX - 1;
 		vars->step = 1.0 * (vars->text_height / lineHeight);
 		texPos = (drawStart - screenHeight / 2 + lineHeight / 2 ) * vars->step;
-		j = drawStart;
+		// j = drawStart;
 		// while(j < drawEnd)
 		// {
 		// 	vars->texY = (int)vars->texPos & (vars->text_height - 1);
-		// 	vars->texPos += vars->step;
+		// 	vars->texPos += step;
 		// 	j++;
 		// }
-		draw_line(x, drawStart, drawEnd, color, &vars->img);
+		draw_line(x, drawStart, drawEnd, color, vars);
 		++x;
+		// mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0);
+
 		// mlx_clear_window(vars->mlx, vars->win);
 	}
-	// mlx_sync(1, vars->img.img);
-	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
-	// mlx_sync(3, vars->win);
-	// mlx_destroy_image(vars->mlx, vars->img.img);
+	mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0);
+	mlx_destroy_image(vars->mlx, vars->img);
 	return (0);
 }
 int main()
@@ -296,7 +281,7 @@ int main()
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, screenWidth, screenHeight, "Cube");
 	vars.moveSpeed = 0.5;
-	vars.rotSpeed = 0.1;
+	vars.rotSpeed = 0.05;
 	vars.posX = 22;
 	vars.posY = 12;
 	vars.dirX = -1;
@@ -307,18 +292,14 @@ int main()
 	int height;
 
 	
-	
-	int x = 0;
 
 
-	vars.texture.img = mlx_xpm_file_to_image(vars.mlx, "./mossy.xpm", &vars.text_width, &vars.text_height);
-	vars.texture.addr = mlx_get_data_addr(vars.texture.img, &vars.texture.bits_per_pixel, &vars.texture.line_length, &vars.texture.endian); 
-	vars.addr = (int*)vars.texture.addr;
-	// vars.img.img = mlx_new_image(vars.mlx, screenWidth, screenHeight);
-	// vars.img.addr = mlx_get_data_addr(vars.img.img, &vars.img.bits_per_pixel, &vars.img.line_length, &vars.img.endian);
 
-	
-	// mlx_put_image_to_window(vars.mlx, vars.win, vars.img.img, 0, 0);
+	// vars.img = mlx_xpm_file_to_image(vars.mlx, "./mossy.xpm", &vars.text_width, &vars.text_height);
+	// vars.img = mlx_new_image(vars.mlx, screenWidth, screenHeight);
+	// vars.addr = mlx_get_data_addr(vars.img, &vars.bits_per_pixel, &vars.line_length, &vars.endian);
+	// my_mlx_pixel_put(&vars, 5, 5, 0x00FF0000);
+	// mlx_put_image_to_window(vars.mlx, vars.win, vars.img, 0, 0);
 	// vars.img[1] = mlx_xpm_file_to_image(vars.mlx, "./redbrick.xpm", &width, &height);
 	// vars.img[2] = mlx_xpm_file_to_image(vars.mlx, "./wood.xpm", &width, &height);
 	// vars.img[3] = mlx_xpm_file_to_image(vars.mlx, "./greystone.xpm", &width, &height);
