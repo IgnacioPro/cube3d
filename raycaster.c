@@ -96,13 +96,13 @@ int            my_mlx_pixel_put(t_img *vars, int x, int y, int color)
 }
 
 
-void draw_walls(int x, int drawStart, int drawEnd, unsigned int color, t_img *vars)
+void draw_walls(int x, int drawStart, int drawEnd, unsigned int color, t_img *img)
 {
 	// vars->img = mlx_new_image(vars->mlx, screenWidth, screenHeight);
 	while (drawStart <= drawEnd)
 	{
-		vars->addr = mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian);
-		my_mlx_pixel_put(vars, x, drawStart, color);
+		img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel, &img->line_length, &img->endian);
+		my_mlx_pixel_put(img, x, drawStart, color);
 		// mlx_pixel_put(vars->mlx, vars->win, x, drawStart, color);
 
 		// vars->texY = (int)vars->texPos & (vars->text_height - 1);
@@ -111,26 +111,26 @@ void draw_walls(int x, int drawStart, int drawEnd, unsigned int color, t_img *va
 	}
 }
 
-void draw_sky(int x, int drawStart, int drawEnd, unsigned int color, t_img *vars)
+void draw_sky(int x, int drawStart, int drawEnd, unsigned int color, t_img *img)
 {
 	int i = 0; 
 	color = 0x19D9F0;
 	// vars->img = mlx_new_image(vars->mlx, screenWidth, screenHeight);
 	while (i < drawStart)
 	{
-		vars->addr = mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian);
-		my_mlx_pixel_put(vars, x, i, color);
+		img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel, &img->line_length, &img->endian);
+		my_mlx_pixel_put(img, x, i, color);
 		i++;
 	}
 }
-void draw_floor(int x, int drawStart, int drawEnd, unsigned int color, t_img *vars)
+void draw_floor(int x, int drawStart, int drawEnd, unsigned int color, t_img *img)
 {
 	color = 0xED1010;
 	// vars->img = mlx_new_image(vars->mlx, screenWidth, screenHeight);
 	while (drawEnd < screenHeight)
 	{
-		vars->addr = mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian);
-		my_mlx_pixel_put(vars, x, drawEnd, color);
+		img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel, &img->line_length, &img->endian);
+		my_mlx_pixel_put(img, x, drawEnd, color);
 		drawEnd++;
 	}
 }
@@ -308,7 +308,6 @@ int render_frame(t_vars *vars)
 		draw_walls(x, drawStart, drawEnd, color, &vars->img);
 		draw_sky(x, drawStart, drawEnd, color, &vars->img);
 		draw_floor(x, drawStart, drawEnd, color, &vars->img);
-		
 		++x;
 		// mlx_clear_window(vars->mlx, vars->win);
 	}
