@@ -332,9 +332,6 @@ int main()
 	vars.planeY = 0.66;
 	int width;
 	int height;
-
-	
-	
 	int x = 0;
 
 

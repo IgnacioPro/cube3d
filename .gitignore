@@ -1,3 +1,6 @@
-
+*.o
+*.dylib
+*.swiftdoc
+*.swiftmodule
 *.swp
 a.out
