@@ -1,7 +1,7 @@
 #include "mlx.h"
 
-#define screenWidth 200//640
-#define screenHeight 150//480
+#define screenWidth 640
+#define screenHeight 480
 #define mapWidth 24
 #define mapHeight 24
 #define texWidth 64
@@ -18,22 +18,10 @@ typedef struct s_textura
 	int 	endian;
 	void 	*textura_norte;
 }t_textura;
-typedef struct s_img
-{
-	t_vars vars;
-	void *img;
-	void *addr;
-	int         bits_per_pixel;
-    int         line_length;
-    int         endian;
-	int *textureBuffer;
-
-} t_img;
 
 typedef struct s_vars
 {
-	t_img img;
-	// t_img texture;
+
 	t_textura textura;
 	void *mlx;
 	void *win;
@@ -57,8 +45,12 @@ typedef struct s_vars
 
 	int buffer;
 
-
-
+	void *img;
+	void *addr_img;
+	int         bits_per_pixel;
+    int         line_length;
+    int         endian;
+	int *textureBuffer;
 } t_vars;
 
 int worldMap[mapWidth][mapHeight] =
@@ -88,52 +80,51 @@ int worldMap[mapWidth][mapHeight] =
 		{1, 4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
 
-int            my_mlx_pixel_put(t_img *vars, int x, int y, int color)
+int            my_mlx_pixel_put(t_vars *vars, int x, int y, int color)
 {
     char    *dst;
 	int offset = (y * vars->line_length + x *(vars->bits_per_pixel / 8));
-    dst = vars->addr + (y * vars->line_length + x * (vars->bits_per_pixel / 8));
+    dst = vars->addr_img + (y * vars->line_length + x * (vars->bits_per_pixel / 8));
     *(unsigned int*)dst = color;
 	return(0);
 }
 
 
-void draw_walls(int x, int drawStart, int drawEnd, unsigned int color, t_img *img)
+void draw_walls(int x, int drawStart, int drawEnd, unsigned int color, t_vars *vars)
 {
 	// vars->img = mlx_new_image(vars->mlx, screenWidth, screenHeight);
 	while (drawStart <= drawEnd)
 	{
-		img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel, &img->line_length, &img->endian);
-		my_mlx_pixel_put(img, x, drawStart, color);
+		vars->addr_img = mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian);
+		my_mlx_pixel_put(vars, x, drawStart, color);
 		// mlx_pixel_put(vars->mlx, vars->win, x, drawStart, color);
 
-		img->vars.texX = (int)img->vars.texPos & (img->vars.text_height - 1);
-		img->vars.texPos += img->vars.step;
+		vars->texX = (int)vars->texPos & (vars->text_height - 1);
+		vars->texPos += vars->step;
 		drawStart++;
 	}
-	
 }
 
-void draw_sky(int x, int drawStart, int drawEnd, unsigned int color, t_img *img)
+void draw_sky(int x, int drawStart, int drawEnd, unsigned int color, t_vars *vars)
 {
 	int i = 0; 
 	color = 0x19D9F0;
 	// vars->img = mlx_new_image(vars->mlx, screenWidth, screenHeight);
 	while (i < drawStart)
 	{
-		img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel, &img->line_length, &img->endian);
-		my_mlx_pixel_put(img, x, i, color);
+		vars->addr_img = mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian);
+		my_mlx_pixel_put(vars, x, i, color);
 		i++;
 	}
 }
-void draw_floor(int x, int drawStart, int drawEnd, unsigned int color, t_img *img)
+void draw_floor(int x, int drawStart, int drawEnd, unsigned int color, t_vars *vars)
 {
 	color = 0xED1010;
 	// vars->img = mlx_new_image(vars->mlx, screenWidth, screenHeight);
 	while (drawEnd < screenHeight)
 	{
-		img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel, &img->line_length, &img->endian);
-		my_mlx_pixel_put(img, x, drawEnd, color);
+		vars->addr_img = mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian);
+		my_mlx_pixel_put(vars, x, drawEnd, color);
 		drawEnd++;
 	}
 }
@@ -198,7 +189,7 @@ double ft_abs(double n)
 
 int render_frame(t_vars *vars)
 {
-	vars->img.img = mlx_new_image(vars->mlx, screenWidth, screenHeight);
+	vars->img = mlx_new_image(vars->mlx, screenWidth, screenHeight);
 	int x = 0;
 	double wallX;
 	while (x < screenWidth)
@@ -312,16 +303,16 @@ int render_frame(t_vars *vars)
 		// 	vars->texPos += vars->step;
 		// 	j++;
 		// }
-		draw_walls(x, drawStart, drawEnd, color, &vars->img);
-		draw_sky(x, drawStart, drawEnd, color, &vars->img);
-		draw_floor(x, drawStart, drawEnd, color, &vars->img);
+		draw_walls(x, drawStart, drawEnd, color, vars);
+		draw_sky(x, drawStart, drawEnd, color, vars);
+		draw_floor(x, drawStart, drawEnd, color, vars);
 		++x;
 		// mlx_clear_window(vars->mlx, vars->win);
 	}
 	// mlx_sync(1, vars->img.img);
-	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
+	mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0);
 	// mlx_sync(3, vars->win);
-	mlx_destroy_image(vars->mlx, vars->img.img);
+	mlx_destroy_image(vars->mlx, vars->img);
 	return (0);
 }
 int main()
