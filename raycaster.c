@@ -35,15 +35,15 @@ typedef struct s_vars
 	double planeX;
 	double planeY;
 	int texY;
-	int texPos;
+	double texPos;
 	int texX;
 
 	int *addr;
 	int text_width;
 	int text_height;
-	int step;
+	double step;
 
-	int buffer;
+	int *buffer;
 
 	void *img;
 	void *addr_img;
@@ -51,6 +51,8 @@ typedef struct s_vars
     int         line_length;
     int         endian;
 	int *textureBuffer;
+
+	int lineHeight;
 } t_vars;
 
 int worldMap[mapWidth][mapHeight] =
@@ -92,15 +94,29 @@ int            my_mlx_pixel_put(t_vars *vars, int x, int y, int color)
 
 void draw_walls(int x, int drawStart, int drawEnd, unsigned int color, t_vars *vars)
 {
-	// vars->img = mlx_new_image(vars->mlx, screenWidth, screenHeight);
+	vars->step = 1.0 * (texHeight / vars->lineHeight);
+		vars->texPos = (drawStart - screenHeight / 2 + vars->lineHeight / 2 ) * vars->step;
+	// vars->texX = (int)vars->texPos & (texHeight - 1);
+	// printf("%d\n", vars->texY);
+	
+	
+	
 	while (drawStart <= drawEnd)
 	{
 		vars->addr_img = mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian);
-		my_mlx_pixel_put(vars, x, drawStart, color);
-		// mlx_pixel_put(vars->mlx, vars->win, x, drawStart, color);
-
-		vars->texX = (int)vars->texPos & (vars->text_height - 1);
+		vars->texY = (int)vars->texPos;
 		vars->texPos += vars->step;
+		color = (unsigned int)vars->buffer[texHeight * vars->texY + vars->texX];
+		my_mlx_pixel_put(vars, x, drawStart, color);
+		// printf("%x\n", color);
+		// printf("step: %d\n", vars->step);
+		// printf("texPos: %d\n", vars->texPos);
+		// printf("texy: %d\n", vars->texY);
+		// printf("drawstart: %d\n", drawStart);
+		// printf("texX: %d\n", vars->texX);
+
+
+
 		drawStart++;
 	}
 }
@@ -256,32 +272,31 @@ int render_frame(t_vars *vars)
 		else
 			perpWallDist = (mapY - vars->posY + (1 - stepY) / 2) / rayDirY;
 
-		int lineHeight = (int)(screenHeight / perpWallDist);
-		int drawStart = -lineHeight / 2 + screenHeight / 2;
+		vars->lineHeight = (int)(screenHeight / perpWallDist);
+		int drawStart = -vars->lineHeight / 2 + screenHeight / 2;
 		if (drawStart < 0)
 			drawStart = 0;
-		int drawEnd = lineHeight / 2 + screenHeight / 2;
+		int drawEnd = vars->lineHeight / 2 + screenHeight / 2;
 		if (drawEnd >= screenHeight)
 			drawEnd = screenHeight - 1;
 		
-		int color = 0;
-		if (worldMap[mapX][mapY] == 1)
-		{
-			vars->buffer = (int)mlx_get_data_addr(vars->textura.textura_norte, &vars->textura.bits_per_pixel, &vars->textura.line_length, &vars->textura.endian);
-			color = vars->buffer;
-
-		}
+		int color = 0x00FF0000;
+		// if (worldMap[mapX][mapY] == 1)
+		// {
+			vars->buffer = (int*)mlx_get_data_addr(vars->textura.textura_norte, &vars->textura.bits_per_pixel, &vars->textura.line_length, &vars->textura.endian);
+		// 	color = vars->buffer;
+		// }
 			// color = mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0 );
 			// color = (int *)mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian );
 			// vars->textureBuffer = (int *)mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian )
-		else if (worldMap[mapX][mapY] == 2)
-			color = 0x36CE27;
-		else if (worldMap[mapX][mapY] == 3)
-			color = 0x59F2F0;
-		else if (worldMap[mapX][mapY] == 4)
-			color = 0xC015E3;
-		else
-			color = 0x00FF1200;
+		// else if (worldMap[mapX][mapY] == 2)
+		// 	color = 0x36CE27;
+		// else if (worldMap[mapX][mapY] == 3)
+		// 	color = 0x59F2F0;
+		// else if (worldMap[mapX][mapY] == 4)
+		// 	color = 0xC015E3;
+		// else
+		// 	color = 0x00FF1200;
 
 		// if (side == 1)
 		// 	vars->textureBuffer /= 2; 
@@ -289,23 +304,27 @@ int render_frame(t_vars *vars)
 			wallX = vars->posY + perpWallDist * rayDirY;
 		else
 			wallX = vars->posX + perpWallDist * rayDirX;
-		
 		wallX -= floor(wallX);
-		texX = (int)(wallX * (double)vars->text_width);
+	
+		vars->texX = (int)(wallX * ((double)texWidth));
 		if (side == 0 && rayDirX > 0)
-			vars->texX = vars->text_width - vars->texX - 1;
-		vars->step = 1.0 * (vars->text_height / lineHeight);
-		texPos = (drawStart - screenHeight / 2 + lineHeight / 2 ) * vars->step;
+			vars->texX = texWidth - vars->texX - 1;
+		if(side == 1 && rayDirY < 0)
+			vars->texX = texWidth - vars->texX - 1;
+		
+		// vars->texX = (int)vars->texPos & (texHeight - 1);
+		// vars->step = 1.0 * (vars->text_height / lineHeight);
+		// vars->texPos = (drawStart - screenHeight / 2 + lineHeight / 2 ) * vars->step;
 		// j = drawStart;
 		// while(j < drawEnd)
 		// {
 		// 	vars->texY = (int)vars->texPos & (vars->text_height - 1);
 		// 	vars->texPos += vars->step;
 		// 	j++;
-		// }
+		// // }
 		draw_walls(x, drawStart, drawEnd, color, vars);
-		draw_sky(x, drawStart, drawEnd, color, vars);
-		draw_floor(x, drawStart, drawEnd, color, vars);
+		// draw_sky(x, drawStart, drawEnd, color, vars);
+		// draw_floor(x, drawStart, drawEnd, color, vars);
 		++x;
 		// mlx_clear_window(vars->mlx, vars->win);
 	}
