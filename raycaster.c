@@ -43,7 +43,7 @@ typedef struct s_vars
 	int text_height;
 	double step;
 
-	int *buffer;
+	unsigned *buffer;
 
 	void *img;
 	void *addr_img;
@@ -85,7 +85,7 @@ int worldMap[mapWidth][mapHeight] =
 int            my_mlx_pixel_put(t_vars *vars, int x, int y, int color)
 {
     char    *dst;
-	int offset = (y * vars->line_length + x *(vars->bits_per_pixel / 8));
+	// int offset = (y * vars->line_length + x *(vars->bits_per_pixel / 8));
     dst = vars->addr_img + (y * vars->line_length + x * (vars->bits_per_pixel / 8));
     *(unsigned int*)dst = color;
 	return(0);
@@ -94,12 +94,9 @@ int            my_mlx_pixel_put(t_vars *vars, int x, int y, int color)
 
 void draw_walls(int x, int drawStart, int drawEnd, unsigned int color, t_vars *vars)
 {
-	vars->step = 1.0 * (texHeight / vars->lineHeight);
-		vars->texPos = (drawStart - screenHeight / 2 + vars->lineHeight / 2 ) * vars->step;
+	vars->step = (double)(texHeight) / vars->lineHeight;
+	vars->texPos = (drawStart - screenHeight / 2 + vars->lineHeight / 2 ) * vars->step;
 	// vars->texX = (int)vars->texPos & (texHeight - 1);
-	// printf("%d\n", vars->texY);
-	
-	
 	
 	while (drawStart <= drawEnd)
 	{
@@ -108,14 +105,6 @@ void draw_walls(int x, int drawStart, int drawEnd, unsigned int color, t_vars *v
 		vars->texPos += vars->step;
 		color = (unsigned int)vars->buffer[texHeight * vars->texY + vars->texX];
 		my_mlx_pixel_put(vars, x, drawStart, color);
-		// printf("%x\n", color);
-		// printf("step: %d\n", vars->step);
-		// printf("texPos: %d\n", vars->texPos);
-		// printf("texy: %d\n", vars->texY);
-		// printf("drawstart: %d\n", drawStart);
-		// printf("texX: %d\n", vars->texX);
-
-
 
 		drawStart++;
 	}
@@ -190,8 +179,8 @@ int move_player(int keycode, t_vars *vars) //
 	}
 	
 
-	printf("Pos X: %f\n", vars->posX);
-	printf("Pos Y: %f\n", vars->posY);
+	// printf("Pos X: %f\n", vars->posX);
+	// printf("Pos Y: %f\n", vars->posY);
 
 	return (0);
 }
@@ -220,7 +209,6 @@ int render_frame(t_vars *vars)
 		double deltaDistX = ft_abs(1 / rayDirX);
 		double deltaDistY = ft_abs(1 / rayDirY);
 		double perpWallDist;
-		int j;
 
 		int stepX;
 		int stepY;
@@ -280,10 +268,10 @@ int render_frame(t_vars *vars)
 		if (drawEnd >= screenHeight)
 			drawEnd = screenHeight - 1;
 		
-		int color = 0x00FF0000;
+		// int color = 0;
 		// if (worldMap[mapX][mapY] == 1)
 		// {
-			vars->buffer = (int*)mlx_get_data_addr(vars->textura.textura_norte, &vars->textura.bits_per_pixel, &vars->textura.line_length, &vars->textura.endian);
+		vars->buffer = (unsigned int*)mlx_get_data_addr(vars->textura.textura_norte, &vars->textura.bits_per_pixel, &vars->textura.line_length, &vars->textura.endian);
 		// 	color = vars->buffer;
 		// }
 			// color = mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0 );
@@ -312,6 +300,7 @@ int render_frame(t_vars *vars)
 		if(side == 1 && rayDirY < 0)
 			vars->texX = texWidth - vars->texX - 1;
 		
+		
 		// vars->texX = (int)vars->texPos & (texHeight - 1);
 		// vars->step = 1.0 * (vars->text_height / lineHeight);
 		// vars->texPos = (drawStart - screenHeight / 2 + lineHeight / 2 ) * vars->step;
@@ -322,16 +311,16 @@ int render_frame(t_vars *vars)
 		// 	vars->texPos += vars->step;
 		// 	j++;
 		// // }
-		draw_walls(x, drawStart, drawEnd, color, vars);
+		draw_walls(x, drawStart, drawEnd, 0, vars);
 		// draw_sky(x, drawStart, drawEnd, color, vars);
 		// draw_floor(x, drawStart, drawEnd, color, vars);
 		++x;
 		// mlx_clear_window(vars->mlx, vars->win);
 	}
-	// mlx_sync(1, vars->img.img);
+	// mlx_sync(1, vars->img);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0);
 	// mlx_sync(3, vars->win);
-	mlx_destroy_image(vars->mlx, vars->img);
+	// mlx_destroy_image(vars->mlx, vars->img);
 	return (0);
 }
 int main()
