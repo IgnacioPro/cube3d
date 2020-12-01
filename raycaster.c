@@ -17,6 +17,8 @@ typedef struct s_textura
 	int 	line_length;
 	int 	endian;
 	void 	*textura;
+	int		tex_height;
+	int		tex_width;
 }t_textura;
 
 typedef struct s_vars
@@ -26,6 +28,8 @@ typedef struct s_vars
 	t_textura textura_sur;
 	t_textura textura_este;
 	t_textura textura_oeste;
+
+
 	void *mlx;
 	void *win;
 	double moveSpeed;
@@ -271,17 +275,19 @@ int render_frame(t_vars *vars)
 		if (drawEnd >= screenHeight)
 			drawEnd = screenHeight - 1;
 		
-		if (worldMap[mapX][mapY] == 1)
+
+		//meter variables en estructura
+		if (side == 0 && stepX == -1)
 		{
 		vars->buffer = (unsigned int*)mlx_get_data_addr(vars->textura_norte.textura, &vars->textura_norte.bits_per_pixel, &vars->textura_norte.line_length, &vars->textura_norte.endian);
 		}
-		else if (worldMap[mapX][mapY] == 2)
+		else if (side == 0 && stepX == 1)
 			vars->buffer = (unsigned int*)mlx_get_data_addr(vars->textura_sur.textura, &vars->textura_sur.bits_per_pixel, &vars->textura_sur.line_length, &vars->textura_sur.endian);
 
-		else if (worldMap[mapX][mapY] == 3)
+		else if (side == 1 && stepY == 1)
 			vars->buffer = (unsigned int*)mlx_get_data_addr(vars->textura_este.textura, &vars->textura_este.bits_per_pixel, &vars->textura_este.line_length, &vars->textura_este.endian);
 
-		else if (worldMap[mapX][mapY] == 4)
+		else if (side == 1 && stepY == -1)
 			vars->buffer = (unsigned int*)mlx_get_data_addr(vars->textura_oeste.textura, &vars->textura_oeste.bits_per_pixel, &vars->textura_oeste.line_length, &vars->textura_oeste.endian);
 
 		// else
@@ -340,37 +346,14 @@ int main()
 	vars.dirY = 0;
 	vars.planeX = 0;
 	vars.planeY = 0.66;
-	int width;
-	int height;
 	int x = 0;
 
 	//cambiar variables de texturas en la estructura
 
-	vars.textura_norte.textura = mlx_xpm_file_to_image(vars.mlx, "./mossy.xpm", &vars.texX, &vars.texY);
-	vars.textura_sur.textura = mlx_xpm_file_to_image(vars.mlx, "./redbrick.xpm", &vars.texX, &vars.texY);
-	vars.textura_este.textura = mlx_xpm_file_to_image(vars.mlx, "./wood.xpm", &vars.texX, &vars.texY);
-	vars.textura_oeste.textura = mlx_xpm_file_to_image(vars.mlx, "./greystone.xpm", &vars.texX, &vars.texY);
-	// vars.texture.img = mlx_xpm_file_to_image(vars.mlx, "./mossy.xpm", &vars.text_width, &vars.text_height);
-	// vars.texture.addr = mlx_get_data_addr(vars.texture.img, &vars.texture.bits_per_pixel, &vars.texture.line_length, &vars.texture.endian); 
-	// vars.addr = (int*)vars.texture.addr;
-	// vars.img.img = mlx_new_image(vars.mlx, screenWidth, screenHeight);
-	// vars.img.addr = mlx_get_data_addr(vars.img.img, &vars.img.bits_per_pixel, &vars.img.line_length, &vars.img.endian);
-
-	
-	// mlx_put_image_to_window(vars.mlx, vars.win, vars.img.img, 0, 0);
-	// vars.img[1] = mlx_xpm_file_to_image(vars.mlx, "./redbrick.xpm", &width, &height);
-	// vars.img[2] = mlx_xpm_file_to_image(vars.mlx, "./wood.xpm", &width, &height);
-	// vars.img[3] = mlx_xpm_file_to_image(vars.mlx, "./greystone.xpm", &width, &height);
-
-
-
-	// mlx_put_image_to_window(vars.mlx, vars.win, img[0], 0, 0);
-	// mlx_put_image_to_window(vars.mlx, vars.win, img[1], 0, 64);
-	// mlx_put_image_to_window(vars.mlx, vars.win, img[2], 0, 128);
-	// mlx_put_image_to_window(vars.mlx, vars.win, img[3], 0, 192);
-
-	
-
+	vars.textura_norte.textura = mlx_xpm_file_to_image(vars.mlx, "./mossy.xpm", &vars.textura_norte.tex_height, &vars.textura_norte.tex_width);
+	vars.textura_sur.textura = mlx_xpm_file_to_image(vars.mlx, "./redbrick.xpm", &vars.textura_sur.tex_height, &vars.textura_sur.tex_width);
+	vars.textura_este.textura = mlx_xpm_file_to_image(vars.mlx, "./wood.xpm", &vars.textura_este.tex_height, &vars.textura_este.tex_width);
+	vars.textura_oeste.textura = mlx_xpm_file_to_image(vars.mlx, "./greystone.xpm", &vars.textura_oeste.tex_height, &vars.textura_oeste.tex_width);
 	mlx_loop_hook(vars.mlx, render_frame, &vars);
 	mlx_hook(vars.win, 2, 1L << 0, move_player, &vars);
 	mlx_loop(vars.mlx);
