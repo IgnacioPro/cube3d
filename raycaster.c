@@ -1,7 +1,7 @@
 #include "mlx.h"
 
-#define screenWidth 640
-#define screenHeight 480
+#define screenWidth 200//640
+#define screenHeight 150//480
 #define mapWidth 24
 #define mapHeight 24
 #define texWidth 64
@@ -11,6 +11,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+typedef struct s_sprite
+{
+  double x;
+  double y;
+  int texture;
+  double sprite_distance;
+}				t_sprite;
 typedef struct s_textura
 {
 	int 	bits_per_pixel;
@@ -28,6 +35,9 @@ typedef struct s_vars
 	t_textura textura_sur;
 	t_textura textura_este;
 	t_textura textura_oeste;
+	t_textura textura_suelo;
+	t_textura textura_columna;
+	t_sprite sprite;
 
 
 	void *mlx;
@@ -60,6 +70,23 @@ typedef struct s_vars
 	int *textureBuffer;
 
 	int lineHeight;
+	double ZBuffer[640];
+	double invDet;
+	double transformX;
+	double transformY;
+
+	int spriteScreenX;
+	int spriteHeight;
+	int drawStartY;
+	int drawEndY;
+
+	int spriteScreenY;
+	int spriteWidth;
+	int drawStartX;
+	int drawEndX;
+
+
+
 } t_vars;
 
 int worldMap[mapWidth][mapHeight] =
@@ -141,11 +168,38 @@ void draw_floor(int x, int drawStart, int drawEnd, unsigned int color, t_vars *v
 	}
 }
 
+void draw_sprite(int color, t_vars *vars )
+{
+	int sprite;
+	sprite = vars->drawStartX;
+	while (sprite < vars->drawEndX)
+	{
+		vars->texX = (int)(256 * (sprite - (-vars->spriteWidth / 2 + vars->spriteScreenX)) * texWidth / vars->spriteWidth) / 256;
+		if (vars->transformY > 0 && sprite > 0 && sprite < screenWidth && vars->transformY < vars->ZBuffer[sprite])
+			{
+				int i;
+				i = vars->drawStartY;
+
+				while( i < vars->drawEndY)
+				{
+					int d;
+
+					vars->addr_img = mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian);
+					d = (i) * 256 - screenHeight * 128 + vars->spriteHeight * 128;
+					vars->texY = ((d * 64) / vars->spriteHeight) / 256;
+					color = (unsigned int)vars->buffer[64 * vars->texY + vars->texX];
+					my_mlx_pixel_put(vars, sprite, i, color);
+					i++;
+					
+				}
+			}
+		sprite++;
+	}
+}
 
 
 int move_player(int keycode, t_vars *vars) //
 {
-	printf("Casilla: %d\n", worldMap[(int)(vars->posX + vars->dirX * vars->moveSpeed)][(int)vars->posY]);
 	if (keycode == 126) //up
 	{
 		if (worldMap[(int)(vars->posX + vars->dirX * vars->moveSpeed)][(int)vars->posY] == 0)
@@ -191,6 +245,7 @@ int move_player(int keycode, t_vars *vars) //
 
 	return (0);
 }
+
 
 double ft_abs(double n)
 {
@@ -278,9 +333,8 @@ int render_frame(t_vars *vars)
 
 		//meter variables en estructura
 		if (side == 0 && stepX == -1)
-		{
-		vars->buffer = (unsigned int*)mlx_get_data_addr(vars->textura_norte.textura, &vars->textura_norte.bits_per_pixel, &vars->textura_norte.line_length, &vars->textura_norte.endian);
-		}
+			vars->buffer = (unsigned int*)mlx_get_data_addr(vars->textura_norte.textura, &vars->textura_norte.bits_per_pixel, &vars->textura_norte.line_length, &vars->textura_norte.endian);
+		
 		else if (side == 0 && stepX == 1)
 			vars->buffer = (unsigned int*)mlx_get_data_addr(vars->textura_sur.textura, &vars->textura_sur.bits_per_pixel, &vars->textura_sur.line_length, &vars->textura_sur.endian);
 
@@ -289,13 +343,10 @@ int render_frame(t_vars *vars)
 
 		else if (side == 1 && stepY == -1)
 			vars->buffer = (unsigned int*)mlx_get_data_addr(vars->textura_oeste.textura, &vars->textura_oeste.bits_per_pixel, &vars->textura_oeste.line_length, &vars->textura_oeste.endian);
-
+		
 		// else
 		// 	vars->buffer = (unsigned int*)mlx_get_data_addr(vars->textura_este.textura, &vars->textura_este.bits_per_pixel, &vars->textura_este.line_length, &vars->textura_este.endian);
 
-
-		// if (side == 1)
-		// 	vars->textureBuffer /= 2; 
 		if (side == 0)
 			wallX = vars->posY + perpWallDist * rayDirY;
 		else
@@ -320,11 +371,50 @@ int render_frame(t_vars *vars)
 		// 	j++;
 		// // }
 		draw_walls(x, drawStart, drawEnd, 0, vars);
-		// draw_sky(x, drawStart, drawEnd, color, vars);
-		// draw_floor(x, drawStart, drawEnd, color, vars);
+		draw_sky(x, drawStart, drawEnd, 0, vars);
+		draw_floor(x, drawStart, drawEnd, 0, vars);
+		vars->ZBuffer[x] = perpWallDist;
+		vars->buffer = (unsigned int *)mlx_get_data_addr(vars->textura_columna.textura, &vars->textura_columna.bits_per_pixel, &vars->textura_columna.line_length, &vars->textura_columna.endian);
+
+		// printf("%f\n", vars->ZBuffer[100]);
 		++x;
 		// mlx_clear_window(vars->mlx, vars->win);
 	}
+	int i = 0;
+	while ( i < 1 )
+	{
+			
+		vars->sprite.x = 20 - vars->posX;
+		vars->sprite.y = 10 - vars->posY;
+		vars->invDet = 1.0 / (vars->planeX * vars->dirY - vars->dirX * vars->planeY);
+		vars->transformX = vars->invDet * (vars->dirY * vars->sprite.x - vars->dirX * vars->sprite.y);
+		vars->transformY = vars->invDet * (-vars->planeY * vars->sprite.x + vars->planeX * vars->sprite.y);
+		vars->spriteScreenX = (int)((screenWidth / 2) * (1 + vars->transformX / vars->transformY));
+
+		//calcular altura sprites en pantalla
+		vars->spriteHeight = ft_abs((int)(screenHeight / (vars->transformY)));
+		//calcular lineas
+		vars->drawStartY = -vars->spriteHeight / 2 + screenHeight / 2;
+		if (vars->drawStartY < 0)
+			vars->drawStartY = 0;
+		vars->drawEndY = vars->spriteHeight / 2 + screenHeight / 2;
+		if (vars->drawEndY >= screenHeight)
+			vars->drawEndY = screenHeight -1;
+		//calcular anchura sprite
+		vars->spriteWidth = ft_abs((int)(screenHeight / (vars->transformY)));
+		vars->drawStartX = -vars->spriteWidth / 2 + vars->spriteScreenX;
+		if (vars->drawStartX < 0)
+			vars->drawStartX = 0;
+		vars->drawEndX = vars->spriteWidth / 2 + vars->spriteScreenX;
+		if (vars->drawEndX >= screenWidth)
+			vars->drawEndX = screenWidth -1;
+		
+		draw_sprite(0, vars);
+		i++;
+		
+
+	}
+	
 	// mlx_sync(1, vars->img);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0);
 	// mlx_sync(3, vars->win);
@@ -354,6 +444,9 @@ int main()
 	vars.textura_sur.textura = mlx_xpm_file_to_image(vars.mlx, "./redbrick.xpm", &vars.textura_sur.tex_height, &vars.textura_sur.tex_width);
 	vars.textura_este.textura = mlx_xpm_file_to_image(vars.mlx, "./wood.xpm", &vars.textura_este.tex_height, &vars.textura_este.tex_width);
 	vars.textura_oeste.textura = mlx_xpm_file_to_image(vars.mlx, "./greystone.xpm", &vars.textura_oeste.tex_height, &vars.textura_oeste.tex_width);
+	vars.textura_suelo.textura = mlx_xpm_file_to_image(vars.mlx, "./colorstone.xpm", &vars.textura_suelo.tex_height, &vars.textura_suelo.tex_width);
+	vars.textura_columna.textura = mlx_xpm_file_to_image(vars.mlx, "./pillar.xpm", &vars.textura_columna.tex_height, &vars.textura_columna.tex_width);
+	
 	mlx_loop_hook(vars.mlx, render_frame, &vars);
 	mlx_hook(vars.win, 2, 1L << 0, move_player, &vars);
 	mlx_loop(vars.mlx);
