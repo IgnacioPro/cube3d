@@ -4,3 +4,7 @@
 *.swiftmodule
 *.swp
 a.out
+.DS_Store
+.vscode
+a.out.DSYM
+
