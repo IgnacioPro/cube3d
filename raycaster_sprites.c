@@ -496,12 +496,12 @@ int main()
 	
 	//cambiar variables de texturas en la estructura
 
-	vars.textura_norte.textura = mlx_xpm_file_to_image(vars.mlx, "./mossy.xpm", &vars.textura_norte.tex_height, &vars.textura_norte.tex_width);
-	vars.textura_sur.textura = mlx_xpm_file_to_image(vars.mlx, "./redbrick.xpm", &vars.textura_sur.tex_height, &vars.textura_sur.tex_width);
-	vars.textura_este.textura = mlx_xpm_file_to_image(vars.mlx, "./wood.xpm", &vars.textura_este.tex_height, &vars.textura_este.tex_width);
-	vars.textura_oeste.textura = mlx_xpm_file_to_image(vars.mlx, "./greystone.xpm", &vars.textura_oeste.tex_height, &vars.textura_oeste.tex_width);
-	vars.textura_suelo.textura = mlx_xpm_file_to_image(vars.mlx, "./colorstone.xpm", &vars.textura_suelo.tex_height, &vars.textura_suelo.tex_width);
-	vars.textura_columna.textura = mlx_xpm_file_to_image(vars.mlx, "./pillar.xpm", &vars.textura_columna.tex_height, &vars.textura_columna.tex_width);
+	vars.textura_norte.textura = mlx_xpm_file_to_image(vars.mlx, "./srcs/textures/mossy.xpm", &vars.textura_norte.tex_height, &vars.textura_norte.tex_width);
+	vars.textura_sur.textura = mlx_xpm_file_to_image(vars.mlx, "./srcs/textures/redbrick.xpm", &vars.textura_sur.tex_height, &vars.textura_sur.tex_width);
+	vars.textura_este.textura = mlx_xpm_file_to_image(vars.mlx, "./srcs/textures/wood.xpm", &vars.textura_este.tex_height, &vars.textura_este.tex_width);
+	vars.textura_oeste.textura = mlx_xpm_file_to_image(vars.mlx, "./srcs/textures/greystone.xpm", &vars.textura_oeste.tex_height, &vars.textura_oeste.tex_width);
+	vars.textura_suelo.textura = mlx_xpm_file_to_image(vars.mlx, "./srcs/textures/colorstone.xpm", &vars.textura_suelo.tex_height, &vars.textura_suelo.tex_width);
+	vars.textura_columna.textura = mlx_xpm_file_to_image(vars.mlx, "./srcs/textures/pillar.xpm", &vars.textura_columna.tex_height, &vars.textura_columna.tex_width);
 	
 	mlx_loop_hook(vars.mlx, render_frame, &vars);
 	mlx_hook(vars.win, 2, 1L << 0, move_player, &vars);
