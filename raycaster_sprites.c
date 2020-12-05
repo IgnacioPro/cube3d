@@ -1,6 +1,6 @@
 #include "mlx.h"
 
-#define screenWidth 200//640
+#define screenWidth 250//640
 #define screenHeight 150//480
 #define mapWidth 24
 #define mapHeight 24
@@ -54,6 +54,8 @@ typedef struct s_vars
 	int texY;
 	double texPos;
 	int texX;
+
+	int side;
 
 	int *addr;
 	int text_width;
@@ -212,9 +214,9 @@ int move_player(int keycode, t_vars *vars) //
 {
 	if (keycode == 126) //up
 	{
-		if (worldMap[(int)(vars->posX + vars->dirX * vars->moveSpeed)][(int)vars->posY] == 0)
+		// if (worldMap[(int)(vars->posX + vars->dirX * vars->moveSpeed)][(int)vars->posY] == 0)
 			vars->posX += vars->dirX * vars->moveSpeed;
-		if (worldMap[(int)vars->posX][(int)(vars->posY + vars->dirY * vars->moveSpeed)] == 0)
+		// if (worldMap[(int)vars->posX][(int)(vars->posY + vars->dirY * vars->moveSpeed)] == 0)
 			vars->posY += vars->dirY * vars->moveSpeed;
 	}
 
@@ -246,7 +248,10 @@ int move_player(int keycode, t_vars *vars) //
 
 	if (keycode == 0) // // A
 	{
-
+		if (worldMap[(int)(vars->posX + vars->dirX * vars->moveSpeed)][(int)vars->posY] == 0)
+			vars->posX += vars->dirY * vars->moveSpeed;
+		if (worldMap[(int)vars->posX][(int)(vars->posY + vars->dirY * vars->moveSpeed)] == 0)
+			vars->posY += vars->dirY * vars->moveSpeed;
 	}
 	// if (keycode == 2) // // D
 	// if (keycode == 13) // // W
@@ -302,6 +307,21 @@ void sort_sprites_distance(int *order, double *dist, t_vars *vars)
 	}
 }
 
+void textures_to_struc(t_vars *vars)
+{
+		if (vars->side == 0 && vars->stepX == -1)
+			vars->buffer = (unsigned int*)mlx_get_data_addr(vars->textura_norte.textura, &vars->textura_norte.bits_per_pixel, &vars->textura_norte.line_length, &vars->textura_norte.endian);
+		
+		else if (vars->side == 0 && vars->stepX == 1)
+			vars->buffer = (unsigned int*)mlx_get_data_addr(vars->textura_sur.textura, &vars->textura_sur.bits_per_pixel, &vars->textura_sur.line_length, &vars->textura_sur.endian);
+
+		else if (vars->side == 1 && vars->stepY == 1)
+			vars->buffer = (unsigned int*)mlx_get_data_addr(vars->textura_este.textura, &vars->textura_este.bits_per_pixel, &vars->textura_este.line_length, &vars->textura_este.endian);
+
+		else if (vars->side == 1 && vars->stepY == -1)
+			vars->buffer = (unsigned int*)mlx_get_data_addr(vars->textura_oeste.textura, &vars->textura_oeste.bits_per_pixel, &vars->textura_oeste.line_length, &vars->textura_oeste.endian);
+}
+
 int render_frame(t_vars *vars)
 {
 	vars->img = mlx_new_image(vars->mlx, screenWidth, screenHeight);
@@ -321,7 +341,7 @@ int render_frame(t_vars *vars)
 		double perpWallDist;
 
 		int hit = 0;
-		int side;
+		// int side;
 
 		double texPos;
 		int texX;
@@ -352,18 +372,18 @@ int render_frame(t_vars *vars)
 			{
 				sideDistX += deltaDistX;
 				vars->mapX += vars->stepX;
-				side = 0;
+				vars->side = 0;
 			}
 			else
 			{
 				sideDistY += deltaDistY;
 				vars->mapY += vars->stepY;
-				side = 1;
+				vars->side = 1;
 			}
 			if (worldMap[vars->mapX][vars->mapY] == 1)
 				hit = 1;
 		}
-		if (side == 0)
+		if (vars->side == 0)
 			perpWallDist = (vars->mapX - vars->posX + (1 - vars->stepX) / 2) / rayDirX;
 		else
 			perpWallDist = (vars->mapY - vars->posY + (1 - vars->stepY) / 2) / rayDirY;
@@ -378,31 +398,18 @@ int render_frame(t_vars *vars)
 		
 
 		//meter variables en estructura
-		if (side == 0 && vars->stepX == -1)
-			vars->buffer = (unsigned int*)mlx_get_data_addr(vars->textura_norte.textura, &vars->textura_norte.bits_per_pixel, &vars->textura_norte.line_length, &vars->textura_norte.endian);
+		textures_to_struc(vars);
 		
-		else if (side == 0 && vars->stepX == 1)
-			vars->buffer = (unsigned int*)mlx_get_data_addr(vars->textura_sur.textura, &vars->textura_sur.bits_per_pixel, &vars->textura_sur.line_length, &vars->textura_sur.endian);
-
-		else if (side == 1 && vars->stepY == 1)
-			vars->buffer = (unsigned int*)mlx_get_data_addr(vars->textura_este.textura, &vars->textura_este.bits_per_pixel, &vars->textura_este.line_length, &vars->textura_este.endian);
-
-		else if (side == 1 && vars->stepY == -1)
-			vars->buffer = (unsigned int*)mlx_get_data_addr(vars->textura_oeste.textura, &vars->textura_oeste.bits_per_pixel, &vars->textura_oeste.line_length, &vars->textura_oeste.endian);
-		
-		// else
-		// 	vars->buffer = (unsigned int*)mlx_get_data_addr(vars->textura_este.textura, &vars->textura_este.bits_per_pixel, &vars->textura_este.line_length, &vars->textura_este.endian);
-
-		if (side == 0)
+		if (vars->side == 0)
 			wallX = vars->posY + perpWallDist * rayDirY;
 		else
 			wallX = vars->posX + perpWallDist * rayDirX;
 		wallX -= floor(wallX);
 	
 		vars->texX = (int)(wallX * ((double)texWidth));
-		if (side == 0 && rayDirX > 0)
+		if (vars->side == 0 && rayDirX > 0)
 			vars->texX = texWidth - vars->texX - 1;
-		if(side == 1 && rayDirY < 0)
+		if(vars->side == 1 && rayDirY < 0)
 			vars->texX = texWidth - vars->texX - 1;
 		
 		
@@ -486,6 +493,7 @@ int main()
 	int x = 0;
 	
 	calculate_sprites(&vars);
+	
 	//cambiar variables de texturas en la estructura
 
 	vars.textura_norte.textura = mlx_xpm_file_to_image(vars.mlx, "./mossy.xpm", &vars.textura_norte.tex_height, &vars.textura_norte.tex_width);
