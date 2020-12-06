@@ -1,99 +1,4 @@
-#include "mlx.h"
-
-#define screenWidth 640
-#define screenHeight 480
-#define mapWidth 24
-#define mapHeight 24
-#define texWidth 64
-#define texHeight 64
-
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-typedef struct s_sprite
-{
-  double x;
-  double y;
-  int texture;
-  double sprite_distance;
-}				t_sprite;
-typedef struct s_textura
-{
-	int 	bits_per_pixel;
-	int 	line_length;
-	int 	endian;
-	void 	*textura;
-	int		tex_height;
-	int		tex_width;
-}t_textura;
-
-typedef struct s_vars
-{
-
-	t_textura textura_norte;
-	t_textura textura_sur;
-	t_textura textura_este;
-	t_textura textura_oeste;
-	t_textura textura_suelo;
-	t_textura textura_columna;
-	t_sprite sprite;
-
-
-	void *mlx;
-	void *win;
-	double moveSpeed;
-	int key;
-	double rotSpeed;
-	double posX;
-	double posY;
-	double dirX;
-	double dirY;
-	double planeX;
-	double planeY;
-	int texY;
-	double texPos;
-	int texX;
-
-	int side;
-
-	int *addr;
-	int text_width;
-	int text_height;
-	double step;
-
-	unsigned *buffer;
-
-	void *img;
-	void *addr_img;
-	int         bits_per_pixel;
-    int         line_length;
-    int         endian;
-	int *textureBuffer;
-
-	int lineHeight;
-	double ZBuffer[640];
-	double invDet;
-	double transformX;
-	double transformY;
-
-	int spriteScreenX;
-	int spriteHeight;
-	int drawStartY;
-	int drawEndY;
-
-	int spriteScreenY;
-	int spriteWidth;
-	int drawStartX;
-	int drawEndX;
-
-	int mapX;
-	int mapY;
-	int stepX;
-	int stepY;
-
-  	int num_sprites;
-} t_vars;
+#include "cubelib.h"
 
 int worldMap[mapWidth][mapHeight] =
 	{
@@ -122,13 +27,13 @@ int worldMap[mapWidth][mapHeight] =
 		{1, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
 
-int            my_mlx_pixel_put(t_vars *vars, int x, int y, int color)
+void my_mlx_pixel_put(t_vars *vars, int x, int y, int color)
 {
     char    *dst;
 	// int offset = (y * vars->line_length + x *(vars->bits_per_pixel / 8));
     dst = vars->addr_img + (y * vars->line_length + x * (vars->bits_per_pixel / 8));
     *(unsigned int*)dst = color;
-	return(0);
+	// return(0);
 }
 
 
@@ -215,7 +120,7 @@ void draw_sprite(int color, t_vars *vars )
 }
 
 
-int move_player(int keycode, t_vars *vars) //
+int move_player(int keycode, t_vars *vars)
 {
 	if (keycode == 126) //up
 	{
@@ -481,7 +386,6 @@ int main()
 	int x = 0;
 	
 	calculate_sprites(&vars);
-	
 	//cambiar variables de texturas en la estructura
 	load_textures(&vars);
 	mlx_loop_hook(vars.mlx, render_frame, &vars);
