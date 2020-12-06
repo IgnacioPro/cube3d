@@ -1,7 +1,7 @@
 #include "mlx.h"
 
-#define screenWidth 250//640
-#define screenHeight 150//480
+#define screenWidth 640
+#define screenHeight 480
 #define mapWidth 24
 #define mapHeight 24
 #define texWidth 64
@@ -93,10 +93,6 @@ typedef struct s_vars
 	int stepY;
 
   	int num_sprites;
-
-
-
-
 } t_vars;
 
 int worldMap[mapWidth][mapHeight] =
@@ -152,6 +148,15 @@ void draw_walls(int x, int drawStart, int drawEnd, unsigned int color, t_vars *v
 
 		drawStart++;
 	}
+}
+void load_textures(t_vars *vars)
+{
+	vars->textura_norte.textura = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/mossy.xpm", &vars->textura_norte.tex_height, &vars->textura_norte.tex_width);
+	vars->textura_sur.textura = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/redbrick.xpm", &vars->textura_sur.tex_height, &vars->textura_sur.tex_width);
+	vars->textura_este.textura = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/wood.xpm", &vars->textura_este.tex_height, &vars->textura_este.tex_width);
+	vars->textura_oeste.textura = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/greystone.xpm", &vars->textura_oeste.tex_height, &vars->textura_oeste.tex_width);
+	vars->textura_suelo.textura = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/colorstone.xpm", &vars->textura_suelo.tex_height, &vars->textura_suelo.tex_width);
+	vars->textura_columna.textura = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/pillar.xpm", &vars->textura_columna.tex_height, &vars->textura_columna.tex_width);
 }
 
 void draw_sky(int x, int drawStart, int drawEnd, unsigned int color, t_vars *vars)
@@ -214,9 +219,9 @@ int move_player(int keycode, t_vars *vars) //
 {
 	if (keycode == 126) //up
 	{
-		// if (worldMap[(int)(vars->posX + vars->dirX * vars->moveSpeed)][(int)vars->posY] == 0)
+		if (worldMap[(int)(vars->posX + vars->dirX * vars->moveSpeed)][(int)vars->posY] == 0)
 			vars->posX += vars->dirX * vars->moveSpeed;
-		// if (worldMap[(int)vars->posX][(int)(vars->posY + vars->dirY * vars->moveSpeed)] == 0)
+		if (worldMap[(int)vars->posX][(int)(vars->posY + vars->dirY * vars->moveSpeed)] == 0)
 			vars->posY += vars->dirY * vars->moveSpeed;
 	}
 
@@ -261,11 +266,6 @@ int move_player(int keycode, t_vars *vars) //
 		mlx_destroy_window(vars->mlx, vars->win);
 		exit(0);
 	}
-	// printf("%d\n", keycode);
-
-	// printf("Pos X: %f\n", vars->posX);
-	// printf("Pos Y: %f\n", vars->posY);
-
 	return (0);
 }
 
@@ -419,12 +419,8 @@ int render_frame(t_vars *vars)
 
 		vars->ZBuffer[x] = perpWallDist;
 		vars->buffer = (unsigned int *)mlx_get_data_addr(vars->textura_columna.textura, &vars->textura_columna.bits_per_pixel, &vars->textura_columna.line_length, &vars->textura_columna.endian);
-
-		// printf("%f\n", vars->ZBuffer[100]);
 		++x;
-		// mlx_clear_window(vars->mlx, vars->win);
 	}
-
 		vars->mapX = 0;
 		while (vars->mapX < mapWidth)
 		{
@@ -460,19 +456,11 @@ int render_frame(t_vars *vars)
 						
 						draw_sprite(0, vars);
 					}
-					vars->mapY ++;
+				vars->mapY ++;
 			}
 			vars->mapX ++;
 		}
-
-			
-		
-	
-	
-	// mlx_sync(1, vars->img);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0);
-	// mlx_sync(3, vars->win);
-	// mlx_destroy_image(vars->mlx, vars->img);
 	return (0);
 }
 int main()
@@ -495,14 +483,7 @@ int main()
 	calculate_sprites(&vars);
 	
 	//cambiar variables de texturas en la estructura
-
-	vars.textura_norte.textura = mlx_xpm_file_to_image(vars.mlx, "./srcs/textures/mossy.xpm", &vars.textura_norte.tex_height, &vars.textura_norte.tex_width);
-	vars.textura_sur.textura = mlx_xpm_file_to_image(vars.mlx, "./srcs/textures/redbrick.xpm", &vars.textura_sur.tex_height, &vars.textura_sur.tex_width);
-	vars.textura_este.textura = mlx_xpm_file_to_image(vars.mlx, "./srcs/textures/wood.xpm", &vars.textura_este.tex_height, &vars.textura_este.tex_width);
-	vars.textura_oeste.textura = mlx_xpm_file_to_image(vars.mlx, "./srcs/textures/greystone.xpm", &vars.textura_oeste.tex_height, &vars.textura_oeste.tex_width);
-	vars.textura_suelo.textura = mlx_xpm_file_to_image(vars.mlx, "./srcs/textures/colorstone.xpm", &vars.textura_suelo.tex_height, &vars.textura_suelo.tex_width);
-	vars.textura_columna.textura = mlx_xpm_file_to_image(vars.mlx, "./srcs/textures/pillar.xpm", &vars.textura_columna.tex_height, &vars.textura_columna.tex_width);
-	
+	load_textures(&vars);
 	mlx_loop_hook(vars.mlx, render_frame, &vars);
 	mlx_hook(vars.win, 2, 1L << 0, move_player, &vars);
 	mlx_loop(vars.mlx);
