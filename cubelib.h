@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cubelib.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ihorcada <ihorcada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:20:27 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2020/12/07 11:11:28 by ihorcada         ###   ########.fr       */
+/*   Updated: 2020/12/07 19:28:42 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int move_player(int keycode, t_vars *vars);
 void my_mlx_pixel_put(t_vars *vars, int x, int y, int color);
 void draw_walls(int x, int drawStart, int drawEnd, unsigned int color, t_vars *vars);
 void load_textures(t_vars *vars);
-void draw_sky(int x, int drawStart, int drawEnd, unsigned int color, t_vars *vars);
+void draw_sky(int x, int drawStart, t_vars *vars);
 void draw_floor(int x, int drawStart, int drawEnd, unsigned int color, t_vars *vars);
 void draw_sprite(int color, t_vars *vars );
 double ft_abs(double n);
@@ -125,7 +125,12 @@ void sort_sprites_distance(int *order, double *dist, t_vars *vars);
 void textures_to_struc(t_vars *vars);
 int render_frame(t_vars *vars);
 int main();
-
+void move_up(int keycode, t_vars *vars);
+void move_down(int keycode, t_vars *vars);
+int on_keypress(int keycode, t_vars *vars);
+void move_left(int keycode, t_vars *vars);
+void move_right(int keycode, t_vars *vars);
+void move_camera(int keycode, t_vars *vars);
 
 
 #endif
