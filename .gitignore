@@ -7,4 +7,5 @@ a.out
 .DS_Store
 .vscode
 a.out.DSYM
-
+cub3D
+libmlx.a
