@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cubelib.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
+/*   By: ihorcada <ihorcada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:20:27 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2020/12/06 18:41:02 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2020/12/07 11:11:28 by ihorcada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 #include "mlx.h"
 
-#define screenWidth 220//640
-#define screenHeight 120//480
+#define screenWidth 640
+#define screenHeight 480
 #define mapWidth 24
 #define mapHeight 24
 #define texWidth 64
@@ -38,7 +38,7 @@ typedef struct s_textura
 	int 	bits_per_pixel;
 	int 	line_length;
 	int 	endian;
-	void 	*textura;
+	void  	*textura;
 	int		tex_height;
 	int		tex_width;
 }t_textura;

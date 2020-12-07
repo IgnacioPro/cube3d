@@ -15,10 +15,10 @@ int worldMap[mapWidth][mapHeight] =
 		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 		{1, 2, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 		{1, 2, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 		{1, 2, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -33,25 +33,21 @@ void my_mlx_pixel_put(t_vars *vars, int x, int y, int color)
 	// int offset = (y * vars->line_length + x *(vars->bits_per_pixel / 8));
     dst = vars->addr_img + (y * vars->line_length + x * (vars->bits_per_pixel / 8));
     *(unsigned int*)dst = color;
-	// return(0);
 }
 
 
 void draw_walls(int x, int drawStart, int drawEnd, unsigned int color, t_vars *vars)
 {
-	vars->step = (double)(texHeight) / vars->lineHeight;
+	vars->step = 1 *(double)(texHeight) / vars->lineHeight;
 	vars->texPos = (drawStart - screenHeight / 2 + vars->lineHeight / 2 ) * vars->step;
-	// vars->texX = (int)vars->texPos & (texHeight - 1);
-	
 	while (drawStart <= drawEnd)
 	{
-		vars->addr_img = mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian);
 		vars->texY = (int)vars->texPos;
 		vars->texPos += vars->step;
 		color = (unsigned int)vars->buffer[texHeight * vars->texY + vars->texX];
 		my_mlx_pixel_put(vars, x, drawStart, color);
 
-		drawStart++;
+		++drawStart;
 	}
 }
 void load_textures(t_vars *vars)
@@ -68,10 +64,10 @@ void draw_sky(int x, int drawStart, int drawEnd, unsigned int color, t_vars *var
 {
 	int i = 0;
 	color = 0x19D9F0;
-	// vars->img = mlx_new_image(vars->mlx, screenWidth, screenHeight);
+
+
 	while (i < drawStart)
 	{
-		vars->addr_img = mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian);
 		my_mlx_pixel_put(vars, x, i, color);
 		i++;
 	}
@@ -79,10 +75,9 @@ void draw_sky(int x, int drawStart, int drawEnd, unsigned int color, t_vars *var
 void draw_floor(int x, int drawStart, int drawEnd, unsigned int color, t_vars *vars)
 {
 	color = 0xED1010;
-	// vars->img = mlx_new_image(vars->mlx, screenWidth, screenHeight);
+
 	while (drawEnd < screenHeight)
 	{
-		vars->addr_img = mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian);
 		my_mlx_pixel_put(vars, x, drawEnd, color);
 		drawEnd++;
 	}
@@ -105,12 +100,11 @@ void draw_sprite(int color, t_vars *vars )
 				{
 					int d;
 
-					vars->addr_img = mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian);
+					// vars->addr_img = mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian);
 					d = (i) * 256 - screenHeight * 128 + vars->spriteHeight * 128;
 					vars->texY = ((d * 64) / vars->spriteHeight) / 256;
 					color = (unsigned int)vars->buffer[64 * vars->texY + vars->texX];
 					if((color & 0x00FFFFFF) != 0)
-						// color = (unsigned int*)vars->addr_img[sprite][i];
 						my_mlx_pixel_put(vars, sprite, i, color);
 					i++;
 				}
@@ -122,22 +116,22 @@ void draw_sprite(int color, t_vars *vars )
 
 int move_player(int keycode, t_vars *vars)
 {
-	if (keycode == 126) //up
-	{
-		if (worldMap[(int)(vars->posX + vars->dirX * vars->moveSpeed)][(int)vars->posY] == 0)
-			vars->posX += vars->dirX * vars->moveSpeed;
-		if (worldMap[(int)vars->posX][(int)(vars->posY + vars->dirY * vars->moveSpeed)] == 0)
-			vars->posY += vars->dirY * vars->moveSpeed;
-	}
+	// if (keycode == 126) //up
+	// {
+	// 	if (worldMap[(int)(vars->posX + vars->dirX * vars->moveSpeed)][(int)vars->posY] == 0)
+	// 		vars->posX += vars->dirX * vars->moveSpeed;
+	// 	if (worldMap[(int)vars->posX][(int)(vars->posY + vars->dirY * vars->moveSpeed)] == 0)
+	// 		vars->posY += vars->dirY * vars->moveSpeed;
+	// }
 
-	if (keycode == 125) //down
-	{
-		if (worldMap[(int)(vars->posX - vars->dirX * vars->moveSpeed)][(int)vars->posY] == 0)
-			vars->posX -= vars->dirX * vars->moveSpeed;
-		if (worldMap[(int)vars->posX][(int)(vars->posY - vars->dirY * vars->moveSpeed)] == 0)
-			vars->posY -= vars->dirY * vars->moveSpeed;
-	}
-	if (keycode == 124) //right
+	// if (keycode == 125) //down
+	// {
+	// 	if (worldMap[(int)(vars->posX - vars->dirX * vars->moveSpeed)][(int)vars->posY] == 0)
+	// 		vars->posX -= vars->dirX * vars->moveSpeed;
+	// 	if (worldMap[(int)vars->posX][(int)(vars->posY - vars->dirY * vars->moveSpeed)] == 0)
+	// 		vars->posY -= vars->dirY * vars->moveSpeed;
+	// }
+	if (keycode == 124) // look right
 	{
 		double oldDirX = vars->dirX;
 		vars->dirX = vars->dirX * cos(-vars->rotSpeed) - vars->dirY * sin(-vars->rotSpeed);
@@ -146,7 +140,7 @@ int move_player(int keycode, t_vars *vars)
 		vars->planeX = vars->planeX * cos(-vars->rotSpeed) - vars->planeY * sin(-vars->rotSpeed);
 		vars->planeY = oldPlaneX * sin(-vars->rotSpeed) + vars->planeY * cos(-vars->rotSpeed);
 	}
-	if (keycode == 123) //left
+	if (keycode == 123) // look left
 	{
 		double oldDirX = vars->dirX;
 		vars->dirX = vars->dirX * cos(vars->rotSpeed) - vars->dirY * sin(vars->rotSpeed);
@@ -156,16 +150,35 @@ int move_player(int keycode, t_vars *vars)
 		vars->planeY = oldPlaneX * sin(vars->rotSpeed) + vars->planeY * cos(vars->rotSpeed);
 	}
 
-	if (keycode == 0) // // A
+	if (keycode == 0) // A
+	{
+		if (worldMap[(int)(vars->posX + vars->dirY * vars->moveSpeed)][(int)vars->posY] == 0)
+			vars->posX -= vars->dirY * vars->moveSpeed;
+		if (worldMap[(int)vars->posX][(int)(vars->posY - vars->dirX * vars->moveSpeed)] == 0)
+			vars->posY += vars->dirX * vars->moveSpeed;
+	}
+	if (keycode == 2) // D
+	{
+		if (worldMap[(int)(vars->posX + vars->dirY * vars->moveSpeed)][(int)vars->posY] == 0)
+			vars->posX += vars->dirY * vars->moveSpeed;
+		if (worldMap[(int)vars->posX][(int)(vars->posY - vars->dirX * vars->moveSpeed)] == 0)
+			vars->posY -= vars->dirX * vars->moveSpeed;
+	}
+	if (keycode == 13) // W
 	{
 		if (worldMap[(int)(vars->posX + vars->dirX * vars->moveSpeed)][(int)vars->posY] == 0)
-			vars->posX += vars->dirY * vars->moveSpeed;
+			vars->posX += vars->dirX * vars->moveSpeed;
 		if (worldMap[(int)vars->posX][(int)(vars->posY + vars->dirY * vars->moveSpeed)] == 0)
 			vars->posY += vars->dirY * vars->moveSpeed;
 	}
-	// if (keycode == 2) // // D
-	// if (keycode == 13) // // W
-	// if (keycode == 1) // // S
+	
+	if (keycode == 1) // S
+	{
+		if (worldMap[(int)(vars->posX - vars->dirX * vars->moveSpeed)][(int)vars->posY] == 0)
+			vars->posX -= vars->dirX * vars->moveSpeed;
+		if (worldMap[(int)vars->posX][(int)(vars->posY - vars->dirY * vars->moveSpeed)] == 0)
+			vars->posY -= vars->dirY * vars->moveSpeed;
+	}
 	if (keycode == 53)
 	{
 		mlx_destroy_window(vars->mlx, vars->win);
@@ -232,6 +245,8 @@ int render_frame(t_vars *vars)
 	vars->img = mlx_new_image(vars->mlx, screenWidth, screenHeight);
 	int x = 0;
 	double wallX;
+	vars->addr_img = mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian);
+
 	while (x < screenWidth)
 	{
 		double cameraX = 2 * x / (double)screenWidth - 1;
@@ -244,10 +259,7 @@ int render_frame(t_vars *vars)
 		double deltaDistX = ft_abs(1 / rayDirX);
 		double deltaDistY = ft_abs(1 / rayDirY);
 		double perpWallDist;
-
 		int hit = 0;
-		// int side;
-
 		double texPos;
 		int texX;
 
@@ -317,7 +329,6 @@ int render_frame(t_vars *vars)
 		if(vars->side == 1 && rayDirY < 0)
 			vars->texX = texWidth - vars->texX - 1;
 		
-		
 		draw_walls(x, drawStart, drawEnd, 0, vars);
 		draw_sky(x, drawStart, drawEnd, 0, vars);
 		draw_floor(x, drawStart, drawEnd, 0, vars);
@@ -361,11 +372,12 @@ int render_frame(t_vars *vars)
 						
 						draw_sprite(0, vars);
 					}
-				vars->mapY ++;
+				vars->mapY++;
 			}
-			vars->mapX ++;
+			vars->mapX++;
 		}
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0);
+	mlx_destroy_image(vars->mlx, vars->img);
 	return (0);
 }
 int main()
@@ -375,8 +387,8 @@ int main()
 	t_vars textura_norte;
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, screenWidth, screenHeight, "Cube");
-	vars.moveSpeed = 0.5;
-	vars.rotSpeed = 0.1;
+	vars.moveSpeed = 0.25;
+	vars.rotSpeed = 0.3;
 	vars.posX = 22;
 	vars.posY = 12;
 	vars.dirX = -1;
@@ -384,7 +396,9 @@ int main()
 	vars.planeX = 0;
 	vars.planeY = 0.66;
 	int x = 0;
-	
+
+
+	// textures_to_struc(&vars);
 	calculate_sprites(&vars);
 	//cambiar variables de texturas en la estructura
 	load_textures(&vars);
