@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:20:27 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2020/12/07 19:28:42 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2020/12/08 18:44:04 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,11 @@ typedef struct s_sprite
 {
   double x;
   double y;
+  int coordX;
+  int coordY;
   int texture;
-  double sprite_distance;
+  double distance;
+  int tmp;
 }				t_sprite;
 typedef struct s_textura
 {
@@ -52,7 +55,7 @@ typedef struct s_vars
 	t_textura textura_oeste;
 	t_textura textura_suelo;
 	t_textura textura_columna;
-	t_sprite sprite;
+	t_sprite *sprite;
 
 
 	void *mlx;
@@ -77,7 +80,7 @@ typedef struct s_vars
 	int text_height;
 	double step;
 
-	unsigned *buffer;
+	unsigned int *buffer;
 
 	void *img;
 	void *addr_img;
@@ -101,14 +104,33 @@ typedef struct s_vars
 	int spriteWidth;
 	int drawStartX;
 	int drawEndX;
+	double cameraX;
+	double rayDirX;
+	double rayDirY;
+
+	double sideDistX;
+	double sideDistY;
+	double deltaDistX;
+	double deltaDistY;
 
 	int mapX;
 	int mapY;
 	int stepX;
 	int stepY;
 
+	double wallX;
+
   	int num_sprites;
     int keycode;
+	double perpWallDist;
+	double oldDirX;
+	double oldPlaneX;
+
+	int hit;
+	int drawStart;
+	int drawEnd;
+
+	int i;
 } t_vars;
 
 int worldMap[mapWidth][mapHeight];
@@ -120,8 +142,7 @@ void draw_sky(int x, int drawStart, t_vars *vars);
 void draw_floor(int x, int drawStart, int drawEnd, unsigned int color, t_vars *vars);
 void draw_sprite(int color, t_vars *vars );
 double ft_abs(double n);
-int calculate_sprites(t_vars *vars);
-void sort_sprites_distance(int *order, double *dist, t_vars *vars);
+void calculate_sprites(t_vars *vars);
 void textures_to_struc(t_vars *vars);
 int render_frame(t_vars *vars);
 int main();
@@ -131,6 +152,9 @@ int on_keypress(int keycode, t_vars *vars);
 void move_left(int keycode, t_vars *vars);
 void move_right(int keycode, t_vars *vars);
 void move_camera(int keycode, t_vars *vars);
+void calculate_sprite_dist(t_vars *vars);
+void sort_sprites(t_vars *vars);
+void calculate_sprites(t_vars *vars);
 
 
 #endif
