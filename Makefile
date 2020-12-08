@@ -1,4 +1,4 @@
-SRCS		= raycaster_sprites.c move_camera.c move_player.c
+SRCS		= raycaster_sprites.c move_camera.c move_player.c painters.c
 OBJS		= ${SRCS:.c=.o}
 NAME		= cub3D
 CC			= cc

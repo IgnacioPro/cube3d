@@ -35,20 +35,7 @@ void my_mlx_pixel_put(t_vars *vars, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-void draw_walls(int x, int drawStart, int drawEnd, unsigned int color, t_vars *vars)
-{
-	vars->step = 1 * (double)(texHeight) / vars->lineHeight;
-	vars->texPos = (drawStart - screenHeight / 2 + vars->lineHeight / 2) * vars->step;
-	while (drawStart <= drawEnd)
-	{
-		vars->texY = (int)vars->texPos;
-		vars->texPos += vars->step;
-		color = (unsigned int)vars->buffer[texHeight * vars->texY + vars->texX];
-		my_mlx_pixel_put(vars, x, drawStart, color);
 
-		++drawStart;
-	}
-}
 void load_textures(t_vars *vars)
 {
 	vars->textura_norte.textura = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/mossy.xpm", &vars->textura_norte.tex_height, &vars->textura_norte.tex_width);
@@ -57,57 +44,6 @@ void load_textures(t_vars *vars)
 	vars->textura_oeste.textura = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/greystone.xpm", &vars->textura_oeste.tex_height, &vars->textura_oeste.tex_width);
 	vars->textura_suelo.textura = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/colorstone.xpm", &vars->textura_suelo.tex_height, &vars->textura_suelo.tex_width);
 	vars->textura_columna.textura = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/pillar.xpm", &vars->textura_columna.tex_height, &vars->textura_columna.tex_width);
-}
-
-void draw_sky(int x, int drawStart, t_vars *vars)
-{
-	int j;
-
-	j = 0;
-
-	while (j < drawStart)
-	{
-		my_mlx_pixel_put(vars, x, j, 0x19D9F0);
-		j++;
-	}
-}
-void draw_floor(int x, int drawStart, int drawEnd, unsigned int color, t_vars *vars)
-{
-	
-	while (drawEnd < screenHeight)
-	{
-		my_mlx_pixel_put(vars, x, drawEnd, 0xED1010);
-		drawEnd++;
-	}
-}
-
-void draw_sprite(int color, t_vars *vars)
-{
-	int sprite;
-
-	int i;
-	int d;
-
-	sprite = vars->drawStartX;
-	while (sprite < vars->drawEndX)
-	{
-		vars->texX = (int)(256 * (sprite - (-vars->spriteWidth / 2 + vars->spriteScreenX)) * texWidth / vars->spriteWidth) / 256;
-		if (vars->transformY > 0 && sprite > 0 && sprite < screenWidth && vars->transformY < vars->ZBuffer[sprite])
-		{
-			i = vars->drawStartY;
-
-			while (i < vars->drawEndY)
-			{
-				d = (i)*256 - screenHeight * 128 + vars->spriteHeight * 128;
-				vars->texY = ((d * 64) / vars->spriteHeight) / 256;
-				color = (unsigned int)vars->buffer[64 * vars->texY + vars->texX];
-				if ((color & 0x00FFFFFF) != 0)
-					my_mlx_pixel_put(vars, sprite, i, color);
-				i++;
-			}
-		}
-		sprite++;
-	}
 }
 
 int move_player(int keycode, t_vars *vars)
@@ -232,6 +168,7 @@ int render_frame(t_vars *vars)
 	vars->img = mlx_new_image(vars->mlx, screenWidth, screenHeight);
 	vars->i = 0;
 	vars->addr_img = mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian);
+	mlx_hook(vars->win, 2, 1L << 0, move_player, vars);
 
 	while (vars->i < screenWidth)
 	{
@@ -297,7 +234,6 @@ int render_frame(t_vars *vars)
 		if (drawEnd >= screenHeight)
 			drawEnd = screenHeight - 1;
 
-		//meter variables en estructura
 		textures_to_struc(vars);
 
 		if (vars->side == 0)
@@ -351,7 +287,6 @@ int render_frame(t_vars *vars)
 			vars->drawEndX = screenWidth - 1;
 		draw_sprite(0, vars);
 	}
-	mlx_hook(vars->win, 2, 1L << 0, move_player, vars);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0);
 	mlx_destroy_image(vars->mlx, vars->img);
 	return (0);
@@ -363,7 +298,7 @@ int main()
 	// t_vars textura_norte;
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, screenWidth, screenHeight, "Cube");
-	vars.moveSpeed = 0.25;
+	vars.moveSpeed = 0.3;
 	vars.rotSpeed = 0.05;
 	vars.posX = 22;
 	vars.posY = 12;
@@ -373,7 +308,6 @@ int main()
 	vars.planeY = 0.66;
 	int x = 0;
 
-	// textures_to_struc(&vars);
 	//cambiar variables de texturas en la estructura
 	load_textures(&vars);
 	calculate_sprites(&vars);
