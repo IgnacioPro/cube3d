@@ -6,7 +6,7 @@
 /*   By: ihorcada <ihorcada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:20:27 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2020/12/09 10:44:36 by ihorcada         ###   ########.fr       */
+/*   Updated: 2020/12/09 12:15:00 by ihorcada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,12 +130,18 @@ typedef struct s_vars
 	int drawStart;
 	int drawEnd;
 	int counter;
-
 	int i;
+
+	int a;
+	int d;
+	int w;
+	int s;
+	int left;
+	int right;
 } t_vars;
 
 int worldMap[mapWidth][mapHeight];
-int move_player(int keycode, t_vars *vars);
+// int move_player(int keycode, t_vars *vars);
 void my_mlx_pixel_put(t_vars *vars, int x, int y, int color);
 void draw_walls(int x, int drawStart, int drawEnd, unsigned int color, t_vars *vars);
 void load_textures(t_vars *vars);
@@ -147,15 +153,19 @@ void calculate_sprites(t_vars *vars);
 void textures_to_struc(t_vars *vars);
 int render_frame(t_vars *vars);
 int main();
-void move_up(int keycode, t_vars *vars);
-void move_down(int keycode, t_vars *vars);
-int on_keypress(int keycode, t_vars *vars);
-void move_left(int keycode, t_vars *vars);
-void move_right(int keycode, t_vars *vars);
-void move_camera(int keycode, t_vars *vars);
+void move_up(t_vars *vars);
+void move_down(t_vars *vars);
+// int on_keypress(t_vars *vars);
+void move_left(t_vars *vars);
+void move_right(t_vars *vars);
+void move_camera(t_vars *vars);
 void calculate_sprite_dist(t_vars *vars);
 void sort_sprites(t_vars *vars);
 void calculate_sprites(t_vars *vars);
+int move_player_press(int keycode, t_vars *vars);
+int move_player_release(int keycode, t_vars *vars);
+
+
 
 
 #endif

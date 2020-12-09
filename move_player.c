@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   move_player.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
+/*   By: ihorcada <ihorcada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:17:37 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2020/12/08 18:44:06 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2020/12/09 12:17:24 by ihorcada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubelib.h"
 
-void move_up(int keycode, t_vars *vars)
+void move_up(t_vars *vars)
 {
-   if (keycode == 13) // W
+	if (vars->w == 1)
 	{
 		if (worldMap[(int)(vars->posX + vars->dirX * vars->moveSpeed)][(int)vars->posY] == 0)
 			vars->posX += vars->dirX * vars->moveSpeed;
@@ -23,9 +23,9 @@ void move_up(int keycode, t_vars *vars)
 	}
 }
 
-void move_down(int keycode, t_vars *vars)
+void move_down(t_vars *vars)
 {
-    if (keycode == 1) // S
+    if (vars->s == 1) // S
 	{
 		if (worldMap[(int)(vars->posX - vars->dirX * vars->moveSpeed)][(int)vars->posY] == 0)
 			vars->posX -= vars->dirX * vars->moveSpeed;
@@ -34,9 +34,9 @@ void move_down(int keycode, t_vars *vars)
 	}
 }
 
-void move_left(int keycode, t_vars *vars)
+void move_left(t_vars *vars)
 {
-    if (keycode == 0) // A
+    if (vars->a == 1) // A
 	{
 		if (worldMap[(int)(vars->posX + vars->dirY * vars->moveSpeed)][(int)vars->posY] == 0)
 			vars->posX -= vars->dirY * vars->moveSpeed;
@@ -45,9 +45,9 @@ void move_left(int keycode, t_vars *vars)
 	}
 }
 
-void move_right(int keycode, t_vars *vars)
+void move_right(t_vars *vars)
 {
-    if (keycode == 2) // D
+    if (vars->d == 1) // D
 	{
 		if (worldMap[(int)(vars->posX + vars->dirY * vars->moveSpeed)][(int)vars->posY] == 0)
 			vars->posX += vars->dirY * vars->moveSpeed;

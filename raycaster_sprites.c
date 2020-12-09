@@ -77,14 +77,50 @@ void load_textures(t_vars *vars)
 	vars->textura_columna.textura = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/pillar.xpm", &vars->textura_columna.tex_height, &vars->textura_columna.tex_width);
 }
 
-int move_player(int keycode, t_vars *vars)
+int move_player_press(int keycode, t_vars *vars)
 {
+	if (keycode == 13)// W
+		vars->w = 1;	
+   	if (keycode == 1) // S
+		vars->s = 1;
+   	if (keycode == 0) // a
+		vars->a = 1;
+   	if (keycode == 2)
+   		vars->d = 1; // D
+	if (keycode == 124)
+		vars->right = 1;
+	if (keycode == 123)
+		vars->left = 1;	
+	printf("%d\n", vars->w);
 
-	move_up(keycode, vars);
-	move_down(keycode, vars);
-	move_left(keycode, vars);
-	move_right(keycode, vars);
-	move_camera(keycode, vars);
+	if (keycode == 53)
+	{
+		mlx_destroy_window(vars->mlx, vars->win);
+		exit(0);
+	}
+	return (0);
+}
+
+int move_player_release(int keycode, t_vars *vars)
+{
+	if (keycode == 13)// W
+		vars->w = 0;	
+   	if (keycode == 1) // S
+		vars->s = 0;
+   	if (keycode == 0) // a
+		vars->a = 0;
+   	if (keycode == 2)
+   		vars->d = 0; // D
+	if (keycode == 124)
+		vars->right = 0;
+	if (keycode == 123)
+		vars->left = 0;	
+	printf("%d\n", vars->w);
+	// move_up(keycode, vars);
+	// move_down(keycode, vars);
+	// move_left(keycode, vars);
+	// move_right(keycode, vars);
+	// move_camera(keycode, vars);
 
 	if (keycode == 53)
 	{
@@ -199,7 +235,8 @@ int render_frame(t_vars *vars)
 	vars->img = mlx_new_image(vars->mlx, screenWidth, screenHeight);
 	vars->i = 0;
 	vars->addr_img = mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian);
-	mlx_hook(vars->win, 2, 1L << 0, move_player, vars);
+	
+
 
 	while (vars->i < screenWidth)
 	{
@@ -291,6 +328,12 @@ int render_frame(t_vars *vars)
 	sort_sprites(vars);
 	vars->counter = vars->num_sprites;
 	sprite_dimensions(vars);
+	move_up(vars);
+	move_down(vars);
+	move_left(vars);
+	move_right(vars);
+	move_camera(vars);
+	
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0);
 	mlx_destroy_image(vars->mlx, vars->img);
 	return (0);
@@ -302,7 +345,7 @@ int main()
 	// t_vars textura_norte;
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, screenWidth, screenHeight, "Cube");
-	vars.moveSpeed = 0.3;
+	vars.moveSpeed = 0.1;
 	vars.rotSpeed = 0.05;
 	vars.posX = 22;
 	vars.posY = 12;
@@ -310,12 +353,20 @@ int main()
 	vars.dirY = 0;
 	vars.planeX = 0;
 	vars.planeY = 0.66;
+	vars.a = 0;
+	vars.d = 0;
+	vars.w = 0;
+	vars.s = 0;
+	vars.left = 0;
+	vars.right = 0;
 	int x = 0;
 
 	//cambiar variables de texturas en la estructura
 	load_textures(&vars);
 	calculate_sprites(&vars);
 	mlx_loop_hook(vars.mlx, render_frame, &vars);
-	// mlx_hook(vars.win, 2, 1L << 0, move_player, &vars);
+	mlx_hook(vars.win, 2, 1L << 0, move_player_press, &vars);
+	mlx_hook(vars.win, 3, 1L << 1, move_player_release, &vars);
+
 	mlx_loop(vars.mlx);
 }
