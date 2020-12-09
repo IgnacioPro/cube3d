@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cubelib.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
+/*   By: ihorcada <ihorcada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:20:27 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2020/12/08 18:56:01 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2020/12/09 10:44:36 by ihorcada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ typedef struct s_vars
 	int hit;
 	int drawStart;
 	int drawEnd;
+	int counter;
 
 	int i;
 } t_vars;

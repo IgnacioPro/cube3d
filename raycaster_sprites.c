@@ -35,6 +35,37 @@ void my_mlx_pixel_put(t_vars *vars, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
+void sprite_dimensions(t_vars *vars)
+{
+	while (vars->counter-- > 0)
+	{
+		vars->sprite[vars->counter].x = vars->sprite[vars->counter].coordX - vars->posX;
+		vars->sprite[vars->counter].y = vars->sprite[vars->counter].coordY - vars->posY;
+		vars->invDet = 1.0 / (vars->planeX * vars->dirY - vars->dirX * vars->planeY);
+		vars->transformX = vars->invDet * (vars->dirY * vars->sprite[vars->counter].x - vars->dirX * vars->sprite[vars->counter].y);
+		vars->transformY = vars->invDet * (-vars->planeY * vars->sprite[vars->counter].x + vars->planeX * vars->sprite[vars->counter].y);
+		vars->spriteScreenX = (int)((screenWidth / 2) * (1 + vars->transformX / vars->transformY));
+
+		//calcular altura sprites en pantalla
+		vars->spriteHeight = ft_abs((int)(screenHeight / (vars->transformY)));
+		//calcular lineas
+		vars->drawStartY = -vars->spriteHeight / 2 + screenHeight / 2;
+		if (vars->drawStartY < 0)
+			vars->drawStartY = 0;
+		vars->drawEndY = vars->spriteHeight / 2 + screenHeight / 2;
+		if (vars->drawEndY >= screenHeight)
+			vars->drawEndY = screenHeight - 1;
+		//calcular anchura sprite
+		vars->spriteWidth = ft_abs((int)(screenHeight / (vars->transformY)));
+		vars->drawStartX = -vars->spriteWidth / 2 + vars->spriteScreenX;
+		if (vars->drawStartX < 0)
+			vars->drawStartX = 0;
+		vars->drawEndX = vars->spriteWidth / 2 + vars->spriteScreenX;
+		if (vars->drawEndX >= screenWidth)
+			vars->drawEndX = screenWidth - 1;
+		draw_sprite(0, vars);
+	}
+}
 
 void load_textures(t_vars *vars)
 {
@@ -258,35 +289,8 @@ int render_frame(t_vars *vars)
 	vars->buffer = (unsigned int *)mlx_get_data_addr(vars->textura_columna.textura, &vars->textura_columna.bits_per_pixel, &vars->textura_columna.line_length, &vars->textura_columna.endian);
 	calculate_sprite_dist(vars);
 	sort_sprites(vars);
-	counter = vars->num_sprites;
-	while (counter-- > 0)
-	{
-		vars->sprite[counter].x = vars->sprite[counter].coordX - vars->posX;
-		vars->sprite[counter].y = vars->sprite[counter].coordY - vars->posY;
-		vars->invDet = 1.0 / (vars->planeX * vars->dirY - vars->dirX * vars->planeY);
-		vars->transformX = vars->invDet * (vars->dirY * vars->sprite[counter].x - vars->dirX * vars->sprite[counter].y);
-		vars->transformY = vars->invDet * (-vars->planeY * vars->sprite[counter].x + vars->planeX * vars->sprite[counter].y);
-		vars->spriteScreenX = (int)((screenWidth / 2) * (1 + vars->transformX / vars->transformY));
-
-		//calcular altura sprites en pantalla
-		vars->spriteHeight = ft_abs((int)(screenHeight / (vars->transformY)));
-		//calcular lineas
-		vars->drawStartY = -vars->spriteHeight / 2 + screenHeight / 2;
-		if (vars->drawStartY < 0)
-			vars->drawStartY = 0;
-		vars->drawEndY = vars->spriteHeight / 2 + screenHeight / 2;
-		if (vars->drawEndY >= screenHeight)
-			vars->drawEndY = screenHeight - 1;
-		//calcular anchura sprite
-		vars->spriteWidth = ft_abs((int)(screenHeight / (vars->transformY)));
-		vars->drawStartX = -vars->spriteWidth / 2 + vars->spriteScreenX;
-		if (vars->drawStartX < 0)
-			vars->drawStartX = 0;
-		vars->drawEndX = vars->spriteWidth / 2 + vars->spriteScreenX;
-		if (vars->drawEndX >= screenWidth)
-			vars->drawEndX = screenWidth - 1;
-		draw_sprite(0, vars);
-	}
+	vars->counter = vars->num_sprites;
+	sprite_dimensions(vars);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0);
 	mlx_destroy_image(vars->mlx, vars->img);
 	return (0);
