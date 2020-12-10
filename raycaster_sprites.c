@@ -44,25 +44,25 @@ void sprite_dimensions(t_vars *vars)
 		vars->invDet = 1.0 / (vars->planeX * vars->dirY - vars->dirX * vars->planeY);
 		vars->transformX = vars->invDet * (vars->dirY * vars->sprite[vars->counter].x - vars->dirX * vars->sprite[vars->counter].y);
 		vars->transformY = vars->invDet * (-vars->planeY * vars->sprite[vars->counter].x + vars->planeX * vars->sprite[vars->counter].y);
-		vars->spriteScreenX = (int)((screenWidth / 2) * (1 + vars->transformX / vars->transformY));
+		vars->spriteScreenX = (int)((vars->screenwidth / 2) * (1 + vars->transformX / vars->transformY));
 
 		//calcular altura sprites en pantalla
-		vars->spriteHeight = ft_abs((int)(screenHeight / (vars->transformY)));
+		vars->spriteHeight = ft_abs((int)(vars->screenheight / (vars->transformY)));
 		//calcular lineas
-		vars->drawStartY = -vars->spriteHeight / 2 + screenHeight / 2;
+		vars->drawStartY = -vars->spriteHeight / 2 + vars->screenheight / 2;
 		if (vars->drawStartY < 0)
 			vars->drawStartY = 0;
-		vars->drawEndY = vars->spriteHeight / 2 + screenHeight / 2;
-		if (vars->drawEndY >= screenHeight)
-			vars->drawEndY = screenHeight - 1;
+		vars->drawEndY = vars->spriteHeight / 2 + vars->screenheight / 2;
+		if (vars->drawEndY >= vars->screenheight)
+			vars->drawEndY = vars->screenheight - 1;
 		//calcular anchura sprite
-		vars->spriteWidth = ft_abs((int)(screenHeight / (vars->transformY)));
+		vars->spriteWidth = ft_abs((int)(vars->screenheight / (vars->transformY)));
 		vars->drawStartX = -vars->spriteWidth / 2 + vars->spriteScreenX;
 		if (vars->drawStartX < 0)
 			vars->drawStartX = 0;
 		vars->drawEndX = vars->spriteWidth / 2 + vars->spriteScreenX;
-		if (vars->drawEndX >= screenWidth)
-			vars->drawEndX = screenWidth - 1;
+		if (vars->drawEndX >= vars->screenwidth)
+			vars->drawEndX = vars->screenwidth - 1;
 		draw_sprite(0, vars);
 	}
 }
@@ -91,7 +91,7 @@ int move_player_press(int keycode, t_vars *vars)
 		vars->right = 1;
 	if (keycode == 123)
 		vars->left = 1;	
-	printf("%d\n", vars->w);
+	// printf("%d\n", vars->w);
 
 	if (keycode == 53)
 	{
@@ -103,28 +103,22 @@ int move_player_press(int keycode, t_vars *vars)
 
 int move_player_release(int keycode, t_vars *vars)
 {
-	if (keycode == 13)// W
+	if (keycode == 13)
 		vars->w = 0;	
-   	if (keycode == 1) // S
+   	if (keycode == 1) 
 		vars->s = 0;
-   	if (keycode == 0) // a
+   	if (keycode == 0) 
 		vars->a = 0;
    	if (keycode == 2)
-   		vars->d = 0; // D
+   		vars->d = 0; 
 	if (keycode == 124)
 		vars->right = 0;
 	if (keycode == 123)
 		vars->left = 0;	
-	printf("%d\n", vars->w);
-	// move_up(keycode, vars);
-	// move_down(keycode, vars);
-	// move_left(keycode, vars);
-	// move_right(keycode, vars);
-	// move_camera(keycode, vars);
-
 	if (keycode == 53)
 	{
 		mlx_destroy_window(vars->mlx, vars->win);
+		free(vars->sprite);
 		exit(0);
 	}
 	return (0);
@@ -232,15 +226,15 @@ void textures_to_struc(t_vars *vars)
 int render_frame(t_vars *vars)
 {
 	int counter;
-	vars->img = mlx_new_image(vars->mlx, screenWidth, screenHeight);
+	vars->img = mlx_new_image(vars->mlx, vars->screenwidth, vars->screenheight);
 	vars->i = 0;
 	vars->addr_img = mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian);
 	
 
 
-	while (vars->i < screenWidth)
+	while (vars->i < vars->screenwidth)
 	{
-		vars->cameraX = 2 * vars->i / (double)screenWidth - 1;
+		vars->cameraX = 2 * vars->i / (double)vars->screenwidth - 1;
 		vars->rayDirX = vars->dirX + vars->planeX * vars->cameraX;
 		vars->rayDirY = vars->dirY + vars->planeY * vars->cameraX;
 		vars->mapX = (int)vars->posX; // casteado a int
@@ -294,13 +288,13 @@ int render_frame(t_vars *vars)
 		else
 			vars->perpWallDist = (vars->mapY - vars->posY + (1 - vars->stepY) / 2) / vars->rayDirY;
 
-		vars->lineHeight = (int)(screenHeight / vars->perpWallDist);
-		vars->drawStart = -vars->lineHeight / 2 + screenHeight / 2;
+		vars->lineHeight = (int)(vars->screenheight / vars->perpWallDist);
+		vars->drawStart = -vars->lineHeight / 2 + vars->screenheight / 2;
 		if (vars->drawStart < 0)
 			vars->drawStart = 0;
-		int drawEnd = vars->lineHeight / 2 + screenHeight / 2;
-		if (drawEnd >= screenHeight)
-			drawEnd = screenHeight - 1;
+		int drawEnd = vars->lineHeight / 2 + vars->screenheight / 2;
+		if (drawEnd >= vars->screenheight)
+			drawEnd = vars->screenheight - 1;
 
 		textures_to_struc(vars);
 
@@ -317,8 +311,7 @@ int render_frame(t_vars *vars)
 			vars->texX = texWidth - vars->texX - 1;
 
 		draw_walls(vars->i, vars->drawStart, drawEnd, 0, vars);
-		draw_sky(vars->i, vars->drawStart, vars);
-		draw_floor(vars->i, vars->drawStart, drawEnd, 0, vars);
+		draw_sky_floor(vars->i, vars->drawStart, drawEnd,vars);
 
 		vars->ZBuffer[vars->i] = vars->perpWallDist;
 		vars->i++;
@@ -343,8 +336,10 @@ int main()
 	// t_textura textura;
 	t_vars vars;
 	// t_vars textura_norte;
+	vars.screenheight = 480;
+	vars.screenwidth = 640;
 	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, screenWidth, screenHeight, "Cube");
+	vars.win = mlx_new_window(vars.mlx, vars.screenwidth, vars.screenheight, "Cube");
 	vars.moveSpeed = 0.1;
 	vars.rotSpeed = 0.05;
 	vars.posX = 22;
@@ -369,4 +364,5 @@ int main()
 	mlx_hook(vars.win, 3, 1L << 1, move_player_release, &vars);
 
 	mlx_loop(vars.mlx);
+	free(vars.sprite);
 }

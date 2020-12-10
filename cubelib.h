@@ -6,7 +6,7 @@
 /*   By: ihorcada <ihorcada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:20:27 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2020/12/09 12:15:00 by ihorcada         ###   ########.fr       */
+/*   Updated: 2020/12/10 10:56:42 by ihorcada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 #include "mlx.h"
 
-#define screenWidth 640
-#define screenHeight 480
+// #define screenWidth 640
+// #define screenHeight 480
 #define mapWidth 24
 #define mapHeight 24
 #define texWidth 64
@@ -138,6 +138,9 @@ typedef struct s_vars
 	int s;
 	int left;
 	int right;
+
+	int screenheight;
+	int screenwidth;
 } t_vars;
 
 int worldMap[mapWidth][mapHeight];
@@ -145,8 +148,8 @@ int worldMap[mapWidth][mapHeight];
 void my_mlx_pixel_put(t_vars *vars, int x, int y, int color);
 void draw_walls(int x, int drawStart, int drawEnd, unsigned int color, t_vars *vars);
 void load_textures(t_vars *vars);
-void draw_sky(int x, int drawStart, t_vars *vars);
-void draw_floor(int x, int drawStart, int drawEnd, unsigned int color, t_vars *vars);
+void draw_sky_floor(int x, int drawStart, int drawEnd, t_vars *vars);
+// void draw_floor(int x, int drawStart, int drawEnd, t_vars *vars);
 void draw_sprite(int color, t_vars *vars );
 double ft_abs(double n);
 void calculate_sprites(t_vars *vars);
