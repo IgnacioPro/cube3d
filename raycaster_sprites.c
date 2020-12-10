@@ -15,10 +15,10 @@ int worldMap[mapWidth][mapHeight] =
 		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1},
+		{1, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1},
 		{1, 2, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 		{1, 2, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 		{1, 2, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -27,12 +27,12 @@ int worldMap[mapWidth][mapHeight] =
 		{1, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
 
-void my_mlx_pixel_put(t_vars *vars, int x, int y, int color)
+void my_mlx_pixel_put(t_img *imagen, int x, int y, int color)
 {
 	char *dst;
-	// int offset = (y * vars->line_length + x *(vars->bits_per_pixel / 8));
-	dst = vars->addr_img + (y * vars->line_length + x * (vars->bits_per_pixel / 8));
-	*(unsigned int *)dst = color;
+	// int offset = (y * imagen->line_length + x *(imagen->bits_per_pixel / 8));
+	dst = imagen->addr + (y * imagen->line_length + x * (imagen->bits_per_pixel / 8));
+	*(unsigned int*)dst = color;
 }
 
 void sprite_dimensions(t_vars *vars)
@@ -69,12 +69,12 @@ void sprite_dimensions(t_vars *vars)
 
 void load_textures(t_vars *vars)
 {
-	vars->textura_norte.textura = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/mossy.xpm", &vars->textura_norte.tex_height, &vars->textura_norte.tex_width);
-	vars->textura_sur.textura = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/redbrick.xpm", &vars->textura_sur.tex_height, &vars->textura_sur.tex_width);
-	vars->textura_este.textura = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/wood.xpm", &vars->textura_este.tex_height, &vars->textura_este.tex_width);
-	vars->textura_oeste.textura = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/greystone.xpm", &vars->textura_oeste.tex_height, &vars->textura_oeste.tex_width);
-	vars->textura_suelo.textura = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/colorstone.xpm", &vars->textura_suelo.tex_height, &vars->textura_suelo.tex_width);
-	vars->textura_columna.textura = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/pillar.xpm", &vars->textura_columna.tex_height, &vars->textura_columna.tex_width);
+	vars->norte.img = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/mossy.xpm", &vars->norte.height, &vars->norte.width);
+	vars->sur.img = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/redbrick.xpm", &vars->sur.height, &vars->sur.width);
+	vars->este.img = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/wood.xpm", &vars->este.height, &vars->este.width);
+	vars->oeste.img = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/greystone.xpm", &vars->oeste.height, &vars->oeste.width);
+	vars->suelo.img = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/colorstone.xpm", &vars->suelo.height, &vars->suelo.width);
+	vars->columna.img = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/pillar.xpm", &vars->columna.height, &vars->columna.width);
 }
 
 int move_player_press(int keycode, t_vars *vars)
@@ -211,25 +211,23 @@ void calculate_sprites(t_vars *vars)
 void textures_to_struc(t_vars *vars)
 {
 	if (vars->side == 0 && vars->stepX == -1)
-		vars->buffer = (unsigned int *)mlx_get_data_addr(vars->textura_norte.textura, &vars->textura_norte.bits_per_pixel, &vars->textura_norte.line_length, &vars->textura_norte.endian);
+		vars->buffer = (int *)mlx_get_data_addr(vars->norte.img, &vars->norte.bits_per_pixel, &vars->norte.line_length, &vars->norte.endian);
 
 	else if (vars->side == 0 && vars->stepX == 1)
-		vars->buffer = (unsigned int *)mlx_get_data_addr(vars->textura_sur.textura, &vars->textura_sur.bits_per_pixel, &vars->textura_sur.line_length, &vars->textura_sur.endian);
+		vars->buffer = (int *)mlx_get_data_addr(vars->sur.img, &vars->sur.bits_per_pixel, &vars->sur.line_length, &vars->sur.endian);
 
 	else if (vars->side == 1 && vars->stepY == 1)
-		vars->buffer = (unsigned int *)mlx_get_data_addr(vars->textura_este.textura, &vars->textura_este.bits_per_pixel, &vars->textura_este.line_length, &vars->textura_este.endian);
+		vars->buffer = (int *)mlx_get_data_addr(vars->este.img, &vars->este.bits_per_pixel, &vars->este.line_length, &vars->este.endian);
 
 	else if (vars->side == 1 && vars->stepY == -1)
-		vars->buffer = (unsigned int *)mlx_get_data_addr(vars->textura_oeste.textura, &vars->textura_oeste.bits_per_pixel, &vars->textura_oeste.line_length, &vars->textura_oeste.endian);
+		vars->buffer = (int *)mlx_get_data_addr(vars->oeste.img, &vars->oeste.bits_per_pixel, &vars->oeste.line_length, &vars->oeste.endian);
 }
 
 int render_frame(t_vars *vars)
 {
-	int counter;
-	vars->img = mlx_new_image(vars->mlx, vars->screenwidth, vars->screenheight);
+	vars->imagen.img = mlx_new_image(vars->mlx, vars->screenwidth, vars->screenheight);
+	vars->imagen.addr = mlx_get_data_addr(vars->imagen.img, &vars->imagen.bits_per_pixel, &vars->imagen.line_length, &vars->imagen.endian);
 	vars->i = 0;
-	vars->addr_img = mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian);
-	
 
 
 	while (vars->i < vars->screenwidth)
@@ -292,9 +290,9 @@ int render_frame(t_vars *vars)
 		vars->drawStart = -vars->lineHeight / 2 + vars->screenheight / 2;
 		if (vars->drawStart < 0)
 			vars->drawStart = 0;
-		int drawEnd = vars->lineHeight / 2 + vars->screenheight / 2;
-		if (drawEnd >= vars->screenheight)
-			drawEnd = vars->screenheight - 1;
+		vars->drawEnd = vars->lineHeight / 2 + vars->screenheight / 2;
+		if (vars->drawEnd >= vars->screenheight)
+			vars->drawEnd = vars->screenheight - 1;
 
 		textures_to_struc(vars);
 
@@ -310,13 +308,12 @@ int render_frame(t_vars *vars)
 		if (vars->side == 1 && vars->rayDirY < 0)
 			vars->texX = texWidth - vars->texX - 1;
 
-		draw_walls(vars->i, vars->drawStart, drawEnd, 0, vars);
-		draw_sky_floor(vars->i, vars->drawStart, drawEnd,vars);
-
+		draw_walls(vars->i, vars->drawStart, vars->drawEnd, 0, &vars->imagen, vars);
+		draw_sky_floor(vars->i, vars->drawStart, vars->drawEnd,&vars->imagen, vars);
 		vars->ZBuffer[vars->i] = vars->perpWallDist;
 		vars->i++;
 	}
-	vars->buffer = (unsigned int *)mlx_get_data_addr(vars->textura_columna.textura, &vars->textura_columna.bits_per_pixel, &vars->textura_columna.line_length, &vars->textura_columna.endian);
+	vars->buffer = (int *)mlx_get_data_addr(vars->columna.img, &vars->columna.bits_per_pixel, &vars->columna.line_length, &vars->columna.endian);
 	calculate_sprite_dist(vars);
 	sort_sprites(vars);
 	vars->counter = vars->num_sprites;
@@ -327,14 +324,15 @@ int render_frame(t_vars *vars)
 	move_right(vars);
 	move_camera(vars);
 	
-	mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0);
-	mlx_destroy_image(vars->mlx, vars->img);
+	mlx_put_image_to_window(vars->mlx, vars->win, vars->imagen.img, 0, 0);
+	mlx_destroy_image(vars->mlx, vars->imagen.img);
 	return (0);
 }
 int main()
 {
 	// t_textura textura;
 	t_vars vars;
+	vars.i = 0;
 	// t_vars textura_norte;
 	vars.screenheight = 480;
 	vars.screenwidth = 640;
@@ -348,13 +346,14 @@ int main()
 	vars.dirY = 0;
 	vars.planeX = 0;
 	vars.planeY = 0.66;
+
 	vars.a = 0;
 	vars.d = 0;
 	vars.w = 0;
 	vars.s = 0;
 	vars.left = 0;
 	vars.right = 0;
-	int x = 0;
+	// int x = 0;
 
 	//cambiar variables de texturas en la estructura
 	load_textures(&vars);

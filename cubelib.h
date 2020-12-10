@@ -6,7 +6,7 @@
 /*   By: ihorcada <ihorcada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:20:27 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2020/12/10 10:56:42 by ihorcada         ###   ########.fr       */
+/*   Updated: 2020/12/10 12:32:04 by ihorcada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,30 +32,31 @@ typedef struct s_sprite
   double y;
   int coordX;
   int coordY;
-  int texture;
   double distance;
   int tmp;
 }				t_sprite;
-typedef struct s_textura
+typedef struct s_img
 {
+	void 	*img;
+	void 	*addr;
 	int 	bits_per_pixel;
 	int 	line_length;
 	int 	endian;
-	void  	*textura;
-	int		tex_height;
-	int		tex_width;
-}t_textura;
+	int		height;
+	int		width;
+}			t_img;
 
 typedef struct s_vars
 {
 
-	t_textura textura_norte;
-	t_textura textura_sur;
-	t_textura textura_este;
-	t_textura textura_oeste;
-	t_textura textura_suelo;
-	t_textura textura_columna;
+	t_img norte;
+	t_img sur;
+	t_img este;
+	t_img oeste;
+	t_img suelo;
+	t_img columna;
 	t_sprite *sprite;
+	t_img imagen;
 
 
 	void *mlx;
@@ -80,7 +81,7 @@ typedef struct s_vars
 	int text_height;
 	double step;
 
-	unsigned int *buffer;
+	int *buffer;
 
 	void *img;
 	void *addr_img;
@@ -145,16 +146,17 @@ typedef struct s_vars
 
 int worldMap[mapWidth][mapHeight];
 // int move_player(int keycode, t_vars *vars);
-void my_mlx_pixel_put(t_vars *vars, int x, int y, int color);
-void draw_walls(int x, int drawStart, int drawEnd, unsigned int color, t_vars *vars);
+void my_mlx_pixel_put(t_img *imagen, int x, int y, int color);
+void draw_walls(int x, int drawStart, int drawEnd, int color, t_img *img, t_vars *vars);
 void load_textures(t_vars *vars);
-void draw_sky_floor(int x, int drawStart, int drawEnd, t_vars *vars);
+void draw_sky_floor(int x, int drawStart, int drawEnd, t_img *img, t_vars *vars);
 // void draw_floor(int x, int drawStart, int drawEnd, t_vars *vars);
-void draw_sprite(int color, t_vars *vars );
+void draw_sprite(int color, t_vars *vars);
 double ft_abs(double n);
 void calculate_sprites(t_vars *vars);
 void textures_to_struc(t_vars *vars);
 int render_frame(t_vars *vars);
+
 int main();
 void move_up(t_vars *vars);
 void move_down(t_vars *vars);
@@ -167,6 +169,9 @@ void sort_sprites(t_vars *vars);
 void calculate_sprites(t_vars *vars);
 int move_player_press(int keycode, t_vars *vars);
 int move_player_release(int keycode, t_vars *vars);
+void sprite_dimensions(t_vars *vars);
+
+
 
 
 

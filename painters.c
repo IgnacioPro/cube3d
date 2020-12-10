@@ -6,24 +6,23 @@
 /*   By: ihorcada <ihorcada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/08 18:53:59 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2020/12/10 10:55:23 by ihorcada         ###   ########.fr       */
+/*   Updated: 2020/12/10 14:13:52 by ihorcada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubelib.h"
 
-void draw_walls(int x, int drawStart, int drawEnd, unsigned int color, t_vars *vars)
+void draw_walls(int x, int drawStart, int drawEnd, int color, t_img *img, t_vars *vars)
 {
-	vars->step = 1 * (double)(texHeight) / vars->lineHeight;
+	vars->step = 1.0 * texHeight / vars->lineHeight;
 	vars->texPos = (drawStart - vars->screenheight / 2 + vars->lineHeight / 2) * vars->step;
 	while (drawStart <= drawEnd)
 	{
 		vars->texY = (int)vars->texPos;
 		vars->texPos += vars->step;
 		color = (unsigned int)vars->buffer[texHeight * vars->texY + vars->texX];
-		my_mlx_pixel_put(vars, x, drawStart, color);
-
-		++drawStart;
+		my_mlx_pixel_put(img, x, drawStart, color);
+		drawStart++;
 	}
 }
 
@@ -48,7 +47,7 @@ void draw_sprite(int color, t_vars *vars)
 				vars->texY = ((d * 64) / vars->spriteHeight) / 256;
 				color = (unsigned int)vars->buffer[64 * vars->texY + vars->texX];
 				if ((color & 0x00FFFFFF) != 0)
-					my_mlx_pixel_put(vars, sprite, i, color);
+					my_mlx_pixel_put(&vars->imagen, sprite, i, color);
 				i++;
 			}
 		}
@@ -68,7 +67,7 @@ void draw_sprite(int color, t_vars *vars)
 // 		j++;
 // 	}
 // }
-void draw_sky_floor(int x, int drawStart, int drawEnd, t_vars *vars)
+void draw_sky_floor(int x, int drawStart, int drawEnd, t_img *img, t_vars *vars)
 {
 	int j;
 
@@ -76,13 +75,13 @@ void draw_sky_floor(int x, int drawStart, int drawEnd, t_vars *vars)
 
 	while (j < drawStart)
 	{
-		my_mlx_pixel_put(vars, x, j, 0x19D9F0);
+		my_mlx_pixel_put(img, x, j, 0x19D9F0);
 		j++;
 	}
 	j = drawEnd + 1;
 	while (j < vars->screenheight)
 	{
-		my_mlx_pixel_put(vars, x, j, 0xED1010);
+		my_mlx_pixel_put(img, x, j, 0xED1010);
 		j++;
 	}
 }

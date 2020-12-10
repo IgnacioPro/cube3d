@@ -4,7 +4,7 @@ NAME		= cub3D
 CC			= cc
 RM			= rm -f
 CFLAGS		= -g3 
-FRAMEWORK	= -lz -L . -lmlx  -framework OpenGL -framework AppKit
+FRAMEWORK	= -lz -L . -lmlx  -framework OpenGL -framework AppKit -fsanitize=address 
 
 .c.o:
 			${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
