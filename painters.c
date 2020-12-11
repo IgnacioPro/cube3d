@@ -6,7 +6,7 @@
 /*   By: ihorcada <ihorcada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/08 18:53:59 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2020/12/10 14:13:52 by ihorcada         ###   ########.fr       */
+/*   Updated: 2020/12/11 12:51:07 by ihorcada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,13 @@ void draw_sky_floor(int x, int drawStart, int drawEnd, t_img *img, t_vars *vars)
 
 	j = 0;
 
-	while (j < drawStart)
+	while (j < (drawStart))
 	{
 		my_mlx_pixel_put(img, x, j, 0x19D9F0);
 		j++;
 	}
 	j = drawEnd + 1;
-	while (j < vars->screenheight)
+	while (j < vars->screenheight && j > 0)
 	{
 		my_mlx_pixel_put(img, x, j, 0xED1010);
 		j++;

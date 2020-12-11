@@ -30,9 +30,14 @@ int worldMap[mapWidth][mapHeight] =
 void my_mlx_pixel_put(t_img *imagen, int x, int y, int color)
 {
 	char *dst;
-	// int offset = (y * imagen->line_length + x *(imagen->bits_per_pixel / 8));
+	int offset = (y * imagen->line_length + x *(imagen->bits_per_pixel / 8));
 	dst = imagen->addr + (y * imagen->line_length + x * (imagen->bits_per_pixel / 8));
 	*(unsigned int*)dst = color;
+	if (y <0)
+	{
+		printf("ajajajajjjaa\n");
+		printf("%d\n",x);
+	}
 }
 
 void sprite_dimensions(t_vars *vars)
@@ -41,7 +46,7 @@ void sprite_dimensions(t_vars *vars)
 	{
 		vars->sprite[vars->counter].x = vars->sprite[vars->counter].coordX - vars->posX + 0.5;
 		vars->sprite[vars->counter].y = vars->sprite[vars->counter].coordY - vars->posY + 0.5;
-		vars->invDet = 1.0 / (vars->planeX * vars->dirY - vars->dirX * vars->planeY);
+		vars->invDet = 1 / (vars->planeX * vars->dirY - vars->dirX * vars->planeY);
 		vars->transformX = vars->invDet * (vars->dirY * vars->sprite[vars->counter].x - vars->dirX * vars->sprite[vars->counter].y);
 		vars->transformY = vars->invDet * (-vars->planeY * vars->sprite[vars->counter].x + vars->planeX * vars->sprite[vars->counter].y);
 		vars->spriteScreenX = (int)((vars->screenwidth / 2) * (1 + vars->transformX / vars->transformY));
@@ -238,8 +243,11 @@ int render_frame(t_vars *vars)
 		vars->mapX = (int)vars->posX; // casteado a int
 		vars->mapY = (int)vars->posY; // casteado a int
 		
-		vars->deltaDistX = ft_abs(1 / vars->rayDirX);
-		vars->deltaDistY = ft_abs(1 / vars->rayDirY);
+		vars->deltaDistX = fabs(1 / vars->rayDirX);
+		vars->deltaDistY = fabs(1 / vars->rayDirY);
+
+		// vars->deltaDistX = (vars->rayDirY == 0) ? 0 : ((vars->rayDirX == 0) ? 1 : fabs(1 / vars->rayDirX));
+      	// vars->deltaDistY = (vars->rayDirX == 0) ? 0 : ((vars->rayDirY == 0) ? 1 : fabs(1 / vars->rayDirY));
 		vars->hit = 0;
 		// double texPos;
 		// int texX;
@@ -318,6 +326,7 @@ int render_frame(t_vars *vars)
 	sort_sprites(vars);
 	vars->counter = vars->num_sprites;
 	sprite_dimensions(vars);
+
 	move_up(vars);
 	move_down(vars);
 	move_left(vars);
@@ -336,17 +345,15 @@ int main()
 	// t_vars textura_norte;
 	vars.screenheight = 480;
 	vars.screenwidth = 640;
-	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, vars.screenwidth, vars.screenheight, "Cube");
+	
 	vars.moveSpeed = 0.1;
-	vars.rotSpeed = 0.05;
+	vars.rotSpeed = 0.1;
 	vars.posX = 22;
-	vars.posY = 12;
+	vars.posY = 11;
 	vars.dirX = -1;
 	vars.dirY = 0;
 	vars.planeX = 0;
 	vars.planeY = 0.66;
-
 	vars.a = 0;
 	vars.d = 0;
 	vars.w = 0;
@@ -354,6 +361,8 @@ int main()
 	vars.left = 0;
 	vars.right = 0;
 	// int x = 0;
+	vars.mlx = mlx_init();
+	vars.win = mlx_new_window(vars.mlx, vars.screenwidth, vars.screenheight, "Cube");
 
 	//cambiar variables de texturas en la estructura
 	load_textures(&vars);
