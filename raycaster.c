@@ -52,7 +52,7 @@ void sprite_dimensions(t_vars *vars)
 		vars->spriteScreenX = (int)((vars->screenwidth / 2) * (1 + vars->transformX / vars->transformY));
 
 		//calcular altura sprites en pantalla
-		vars->spriteHeight = ft_abs((int)(vars->screenheight / (vars->transformY)));
+		vars->spriteHeight = abs((int)(vars->screenheight / (vars->transformY)));
 		//calcular lineas
 		vars->drawStartY = -vars->spriteHeight / 2 + vars->screenheight / 2;
 		if (vars->drawStartY < 0)
@@ -61,7 +61,7 @@ void sprite_dimensions(t_vars *vars)
 		if (vars->drawEndY >= vars->screenheight)
 			vars->drawEndY = vars->screenheight - 1;
 		//calcular anchura sprite
-		vars->spriteWidth = ft_abs((int)(vars->screenheight / (vars->transformY)));
+		vars->spriteWidth = abs((int)(vars->screenheight / (vars->transformY)));
 		vars->drawStartX = -vars->spriteWidth / 2 + vars->spriteScreenX;
 		if (vars->drawStartX < 0)
 			vars->drawStartX = 0;
@@ -129,12 +129,12 @@ int move_player_release(int keycode, t_vars *vars)
 	return (0);
 }
 
-double ft_abs(double n)
-{
-	if (n < 0)
-		return (-n);
-	return (n);
-}
+// double ft_abs(double n)
+// {
+// 	if (n < 0)
+// 		return (-n);
+// 	return (n);
+// }
 
 void calculate_sprite_dist(t_vars *vars)
 {
