@@ -6,7 +6,7 @@
 /*   By: ihorcada <ihorcada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:17:37 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2020/12/11 13:53:37 by ihorcada         ###   ########.fr       */
+/*   Updated: 2020/12/11 14:05:16 by ihorcada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void move_left(t_vars *vars)
 	{
 		if (vars->posX - vars->dirY * vars->moveSpeed >= 1 && vars->posX - vars->dirY * vars->moveSpeed < (double)mapWidth - 1)
 			vars->posX -= vars->dirY * vars->moveSpeed;
-		if (vars->posY += vars->dirX * vars->moveSpeed >= 1 && vars->posY + vars->dirX * vars->moveSpeed < (double)mapHeight - 1)
+		if (vars->posY + vars->dirX * vars->moveSpeed >= 1 && vars->posY + vars->dirX * vars->moveSpeed < (double)mapHeight - 1)
 			vars->posY += vars->dirX * vars->moveSpeed;
 	}
 }
