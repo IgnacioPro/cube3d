@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cubelib.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ihorcada <ihorcada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:20:27 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2020/12/10 12:32:04 by ihorcada         ###   ########.fr       */
+/*   Updated: 2020/12/12 14:17:39 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ void calculate_sprites(t_vars *vars);
 void textures_to_struc(t_vars *vars);
 int render_frame(t_vars *vars);
 
-int main();
+int main(int argc, char *argv[] );
 void move_up(t_vars *vars);
 void move_down(t_vars *vars);
 // int on_keypress(t_vars *vars);

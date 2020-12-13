@@ -1,4 +1,5 @@
 #include "cubelib.h"
+#include "./getnextline/get_next_line_bonus.h"
 
 int worldMap[mapWidth][mapHeight] =
 	{
@@ -33,11 +34,6 @@ void my_mlx_pixel_put(t_img *imagen, int x, int y, int color)
 	int offset = (y * imagen->line_length + x *(imagen->bits_per_pixel / 8));
 	dst = imagen->addr + (y * imagen->line_length + x * (imagen->bits_per_pixel / 8));
 	*(unsigned int*)dst = color;
-	if (y <0)
-	{
-		printf("ajajajajjjaa\n");
-		printf("%d\n",x);
-	}
 }
 
 void sprite_dimensions(t_vars *vars)
@@ -228,6 +224,12 @@ void textures_to_struc(t_vars *vars)
 		vars->buffer = (int *)mlx_get_data_addr(vars->oeste.img, &vars->oeste.bits_per_pixel, &vars->oeste.line_length, &vars->oeste.endian);
 }
 
+int		quit(t_vars *vars)
+{
+	mlx_destroy_window(vars->mlx, vars->win);
+	vars->win = NULL;
+}
+
 int render_frame(t_vars *vars)
 {
 	vars->imagen.img = mlx_new_image(vars->mlx, vars->screenwidth, vars->screenheight);
@@ -337,9 +339,10 @@ int render_frame(t_vars *vars)
 	mlx_destroy_image(vars->mlx, vars->imagen.img);
 	return (0);
 }
-int main()
+
+
+int main(int argc, char *argv[] )
 {
-	// t_textura textura;
 	t_vars vars;
 	vars.i = 0;
 	// t_vars textura_norte;
@@ -364,6 +367,23 @@ int main()
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, vars.screenwidth, vars.screenheight, "Cube");
 
+	int fd;
+	char *line = 0;
+	char	*lineadress[66];
+	int j = 0;
+	int i;
+	if (!(fd = open("map.cub", O_RDONLY)))
+	{
+		printf("\nError in open\n");
+		return (0);
+	}
+	while ((i = get_next_line(fd, &line)) > 0)
+	{
+		printf("|%s\n", line);
+		// lineadress[j - 1] = line;
+		j++;
+	}
+	// get_next_line(1, )
 	//cambiar variables de texturas en la estructura
 	load_textures(&vars);
 	calculate_sprites(&vars);
@@ -372,5 +392,7 @@ int main()
 	mlx_hook(vars.win, 3, 1L << 1, move_player_release, &vars);
 
 	mlx_loop(vars.mlx);
+	mlx_destroy_window(vars.mlx, vars.win);
 	free(vars.sprite);
+	// mlx_hook(vars.win, 33, 1L << 17, quit, &vars);
 }

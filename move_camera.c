@@ -3,20 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   move_camera.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ihorcada <ihorcada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 19:20:40 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2020/12/09 12:17:36 by ihorcada         ###   ########.fr       */
+/*   Updated: 2020/12/11 16:57:21 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubelib.h"
 
-
-void move_camera(t_vars *vars)
+void	move_camera(t_vars *vars)
 {
-if (vars->right == 1) // look right
-	{
+if (vars->right == 1)
+{
 		vars->oldDirX = vars->dirX;
 		vars->dirX = vars->dirX * cos(-vars->rotSpeed) - vars->dirY * sin(-vars->rotSpeed);
 		vars->dirY = vars->oldDirX * sin(-vars->rotSpeed) + vars->dirY * cos(-vars->rotSpeed);
