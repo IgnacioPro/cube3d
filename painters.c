@@ -6,7 +6,7 @@
 /*   By: ihorcada <ihorcada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/08 18:53:59 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2020/12/11 12:51:07 by ihorcada         ###   ########.fr       */
+/*   Updated: 2020/12/14 11:27:36 by ihorcada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,18 +55,7 @@ void draw_sprite(int color, t_vars *vars)
 	}
 }
 
-// void draw_sky(int x, int drawStart, t_vars *vars)
-// {
-// 	int j;
 
-// 	j = 0;
-
-// 	while (j < drawStart)
-// 	{
-// 		my_mlx_pixel_put(vars, x, j, 0x19D9F0);
-// 		j++;
-// 	}
-// }
 void draw_sky_floor(int x, int drawStart, int drawEnd, t_img *img, t_vars *vars)
 {
 	int j;

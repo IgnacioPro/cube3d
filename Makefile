@@ -11,7 +11,10 @@ FRAMEWORK	= -lz -L . -lmlx  -framework OpenGL -framework AppKit -fsanitize=addre
 
 ${NAME}:	${OBJS}
 			${MAKE} -C ./minilibx
+			${MAKE} -C ./libft
+
 			mv ./minilibx/libmlx.a .
+			mv ./libft/libft.a .
 			${CC} -o ${NAME} ${OBJS} ${FRAMEWORK}
 
 all:		${NAME}
@@ -21,7 +24,7 @@ clean:
 			${MAKE} clean -C ./minilibx
 
 fclean : 	clean
-			${RM} ${NAME} libmlx.a
+			${RM} ${NAME} libmlx.a libft.a
 
 re:			fclean all
 

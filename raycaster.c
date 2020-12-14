@@ -149,10 +149,10 @@ void sort_sprites(t_vars *vars)
 	int i;
 	int j;
 
-	i = 0;
 	j = vars->num_sprites;
 	while(j > 0)
 	{
+		i = 0;
 		while (i < vars->num_sprites - 1)
 		{
 			if (vars->sprite[i].distance > vars->sprite[i + 1].distance)
@@ -224,7 +224,7 @@ void textures_to_struc(t_vars *vars)
 		vars->buffer = (int *)mlx_get_data_addr(vars->oeste.img, &vars->oeste.bits_per_pixel, &vars->oeste.line_length, &vars->oeste.endian);
 }
 
-int		quit(t_vars *vars)
+void		quit(t_vars *vars)
 {
 	mlx_destroy_window(vars->mlx, vars->win);
 	vars->win = NULL;
@@ -320,6 +320,7 @@ int render_frame(t_vars *vars)
 
 		draw_walls(vars->i, vars->drawStart, vars->drawEnd, 0, &vars->imagen, vars);
 		draw_sky_floor(vars->i, vars->drawStart, vars->drawEnd,&vars->imagen, vars);
+		
 		vars->ZBuffer[vars->i] = vars->perpWallDist;
 		vars->i++;
 	}
@@ -334,10 +335,16 @@ int render_frame(t_vars *vars)
 	move_left(vars);
 	move_right(vars);
 	move_camera(vars);
-	
+
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->imagen.img, 0, 0);
 	mlx_destroy_image(vars->mlx, vars->imagen.img);
 	return (0);
+}
+
+int close_x(t_vars *vars)
+{
+	// mlx_destroy_window(vars->mlx, vars->win);
+	exit(0);
 }
 
 
@@ -369,7 +376,7 @@ int main(int argc, char *argv[] )
 
 	int fd;
 	char *line = 0;
-	char	*lineadress[66];
+	char	*lineadress;
 	int j = 0;
 	int i;
 	if (!(fd = open("map.cub", O_RDONLY)))
@@ -383,13 +390,13 @@ int main(int argc, char *argv[] )
 		// lineadress[j - 1] = line;
 		j++;
 	}
-	// get_next_line(1, )
-	//cambiar variables de texturas en la estructura
+	
 	load_textures(&vars);
 	calculate_sprites(&vars);
 	mlx_loop_hook(vars.mlx, render_frame, &vars);
 	mlx_hook(vars.win, 2, 1L << 0, move_player_press, &vars);
 	mlx_hook(vars.win, 3, 1L << 1, move_player_release, &vars);
+	mlx_hook(vars.win, 17, 0L, close_x, &vars);
 
 	mlx_loop(vars.mlx);
 	mlx_destroy_window(vars.mlx, vars.win);

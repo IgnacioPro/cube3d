@@ -8,4 +8,4 @@ a.out
 .vscode
 a.out.DSYM
 cub3D
-libmlx.a
+*.a

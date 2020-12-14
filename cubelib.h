@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cubelib.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
+/*   By: ihorcada <ihorcada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:20:27 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2020/12/12 14:17:39 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2020/12/14 11:18:57 by ihorcada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ typedef struct s_vars
 	int *textureBuffer;
 
 	int lineHeight;
-	double ZBuffer[640];
+	double ZBuffer[640]; // cambiar a dinámico
 	double invDet;
 	double transformX;
 	double transformY;
