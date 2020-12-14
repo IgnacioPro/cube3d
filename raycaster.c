@@ -348,7 +348,7 @@ int close_x(t_vars *vars)
 }
 
 
-int main(int argc, char *argv[] )
+int main()
 {
 	t_vars vars;
 	vars.i = 0;
@@ -374,22 +374,22 @@ int main(int argc, char *argv[] )
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, vars.screenwidth, vars.screenheight, "Cube");
 
-	int fd;
-	char *line = 0;
-	char	*lineadress;
-	int j = 0;
-	int i;
-	if (!(fd = open("map.cub", O_RDONLY)))
-	{
-		printf("\nError in open\n");
-		return (0);
-	}
-	while ((i = get_next_line(fd, &line)) > 0)
-	{
-		printf("|%s\n", line);
-		// lineadress[j - 1] = line;
-		j++;
-	}
+	// int fd;
+	// char *line = 0;
+	// char	*lineadress;
+	// int j = 0;
+	// int i;
+	// if (!(fd = open(argv[1], O_RDONLY)))
+	// {
+	// 	printf("\nError in open\n");
+	// 	return (0);
+	// }
+	// while ((i = get_next_line(fd, &line)) > 0)
+	// {
+	// 	printf("|%s\n", line);
+	// 	// lineadress[j - 1] = line;
+	// 	j++;
+	// }
 	
 	load_textures(&vars);
 	calculate_sprites(&vars);

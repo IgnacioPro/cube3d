@@ -6,7 +6,7 @@
 /*   By: ihorcada <ihorcada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:20:27 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2020/12/14 11:18:57 by ihorcada         ###   ########.fr       */
+/*   Updated: 2020/12/14 13:13:24 by ihorcada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,10 +170,5 @@ void calculate_sprites(t_vars *vars);
 int move_player_press(int keycode, t_vars *vars);
 int move_player_release(int keycode, t_vars *vars);
 void sprite_dimensions(t_vars *vars);
-
-
-
-
-
 
 #endif
