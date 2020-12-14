@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ihorcada <ihorcada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 12:14:47 by ihorcada          #+#    #+#             */
-/*   Updated: 2020/12/14 14:30:15 by ihorcada         ###   ########.fr       */
+/*   Updated: 2020/12/14 20:29:53 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int main (int argc, char *argv[])
 	fd = open(argv[1], O_RDONLY);
 	if (argc > 3 || argc < 2)
 	{
-		printf("Number of arguments is invalid\n");
+		printf("Number o  f arguments is invalid\n");
 		exit(0);
 	}
 	map_name_validator(data);
