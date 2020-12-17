@@ -1,4 +1,4 @@
-R 1000 1000
+R 1234 5678
 NO ./image_texture/test.xpm
 SO ./image_texture/test1.xpm
 WE ./image_texture/test2.xpm
@@ -6,8 +6,6 @@ EA ./image_texture/test3.xpm
 S ./image_sprite/test0.xpm
 F 209,209,209
 C 23,236,255
-
-
 
 111111
 100101

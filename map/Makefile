@@ -1,7 +1,7 @@
 SRCS = read_map.c ../getnextline/get_next_line.c ../getnextline/get_next_line_utils.c
 OBJS = $(SRCS:.c=.o)
 NAME = cub3D
-CC = gcc 
+CC = gcc -Wall -Werror -Wextra -fsanitize=address
 all: $(NAME)
 
 $(NAME):	$(OBJS)
