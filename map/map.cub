@@ -4,8 +4,8 @@ SO ./image_tex\ ture/test1.xpm
 WE ./image_texture/test2.xpm
 EA ./image_texture/test3.xpm
 S ./image_sprite/test0.xpm
-F 123,88,45
-C 23,236,255
+F 111,222,255
+C 0,0,0
 
 111111
 100101

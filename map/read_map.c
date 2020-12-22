@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ihorcada <ihorcada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 12:14:47 by ihorcada          #+#    #+#             */
-/*   Updated: 2020/12/18 14:36:24 by ihorcada         ###   ########.fr       */
+/*   Updated: 2020/12/22 20:27:02 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ typedef struct s_data
 	char *sprite;
 	int floor[3];
 	int ceiling[3];
+
+	int comma;
+	int rgb_error;
 
 	
 	
@@ -128,60 +131,136 @@ void sprite_texture(t_data *data)
 		data->i++;
 }
 
+int	valid_rgb(int c)
+{
+	if (ft_isdigit(c) || c == 44 || c == 32)
+		return (1);
+	return (0);
+}
+
+void rgb_error()
+{
+	ft_putstr_fd("Error\n RGB Invalid.",2);
+	exit(0);
+}
+
+void error_check(t_data *data)
+{
+	int i;
+	data->floor[0] = -1;
+	data->floor[1] = -1;
+	data->floor[2] = -1;
+
+
+	i = data->i;
+	data->rgb_error = 0;
+	if (data->linea[i] != ' ' )
+		data->rgb_error = 1;
+	while (data->linea[i] != '\0')
+	{
+		if (data->linea[i] == ',')
+			data->comma++;
+		if (data->linea[i] == '-')
+			data->rgb_error = 1;
+		if (data->linea[i] == ',' && data->linea[i + 1] == ',' )
+			data->rgb_error = 1;
+		if (!(valid_rgb(data->linea[i])))
+			data->rgb_error = 1;
+		i++;
+	}
+	if( data->comma != 2)
+		data->rgb_error = 1;
+	
+	if (data->rgb_error == 1)
+		rgb_error();
+	
+}
+
+
 void floor_color(t_data *data)
 {
-		data->i++;
+	data->i++;
+	error_check(data);	
 	while (data->linea[data->i] == ' ')
-		data->i++;
-	data->floor[0] = ft_atoi(&data->linea[data->i]);
+		data->i++;		
+	if (ft_isdigit(data->linea[data->i]))
+		data->floor[0] = ft_atoi(&data->linea[data->i]);
+	else
+		rgb_error();
 	while (ft_isdigit(data->linea[data->i]))
 		data->i++;
-	while (data->linea[data->i] == ',' || data->linea[data->i] == ' ' )
+	
+	
+	if (data->linea[data->i] == ',')
 		data->i++;
-	while (data->linea[data->i] == ' ')
-		data->i++;
-	data->floor[1] = ft_atoi(&data->linea[data->i]);
+
+	if  (ft_isdigit(data->linea[data->i]))
+		data->floor[1] = ft_atoi(&data->linea[data->i]);
+	else 
+		rgb_error();
 	while (ft_isdigit(data->linea[data->i]))
 		data->i++;
-	while (data->linea[data->i] == ',' || data->linea[data->i] == ' ')
+	if (data->linea[data->i] == ',')
 		data->i++;
-	while (data->linea[data->i] == ' ')
+	
+	if (ft_isdigit(data->linea[data->i]))
+		data->floor[2] = ft_atoi(&data->linea[data->i]);
+	else
+		rgb_error();
+	while (ft_isdigit(data->linea[data->i]))
 		data->i++;
-	data->floor[2] = ft_atoi(&data->linea[data->i]);
-		// data->i++;
-	// if ((data->linea[data->i]) != '\0')
-	// {
-	// 	perror("RGB Floor Invalid\n");
-	// 	exit(0);
-	// }
+	if (data->linea[data->i] != '\0')
+		rgb_error();
+	if (data->floor[0] > 255)
+		rgb_error();
+	else if (data->floor[1] > 255)
+		rgb_error();
+	else if (data->floor[2] > 255)
+		rgb_error();
 }
+
+
 
 void ceiling_color(t_data *data)
 {
-		data->i++;
+	data->i++;
+	// error_check(data);	
 	while (data->linea[data->i] == ' ')
-		data->i++;
-	data->ceiling[0] = ft_atoi(&data->linea[data->i]);
+		data->i++;		
+	if (ft_isdigit(data->linea[data->i]))
+		data->ceiling[0] = ft_atoi(&data->linea[data->i]);
+	else
+		rgb_error();
 	while (ft_isdigit(data->linea[data->i]))
 		data->i++;
-	while (data->linea[data->i] == ',' || data->linea[data->i] == ' ' )
+	
+	
+	if (data->linea[data->i] == ',')
 		data->i++;
-	while (data->linea[data->i] == ' ')
-		data->i++;
-	data->ceiling[1] = ft_atoi(&data->linea[data->i]);
+
+	if  (ft_isdigit(data->linea[data->i]))
+		data->ceiling[1] = ft_atoi(&data->linea[data->i]);
+	else 
+		rgb_error();
 	while (ft_isdigit(data->linea[data->i]))
 		data->i++;
-	while (data->linea[data->i] == ',' || data->linea[data->i] == ' ')
+	if (data->linea[data->i] == ',')
 		data->i++;
-	while (data->linea[data->i] == ' ')
+	
+	if (ft_isdigit(data->linea[data->i]))
+		data->ceiling[2] = ft_atoi(&data->linea[data->i]);
+	else
+		rgb_error();
+	while (ft_isdigit(data->linea[data->i]))
 		data->i++;
-	data->ceiling[2] = ft_atoi(&data->linea[data->i]);
-		// data->i++;
-	// if ((data->linea[data->i]) != '\0')
-	// {
-	// 	perror("RGB Floor Invalid\n");
-	// 	exit(0);
-	// }
+	if (data->linea[data->i] != '\0')
+		rgb_error();
+	if (data->ceiling[0] > 255)
+		rgb_error();
+	else if (data->ceiling[1] > 255)
+		rgb_error();
+	else if (data->ceiling[2] > 255)
+		rgb_error();
 }
 
 int main(int argc, char *argv[])
@@ -192,6 +271,7 @@ int main(int argc, char *argv[])
 	int i = 0;
 	data.arg1 = argv[1];
 	data.arg2 = argv[2];
+
 
 	if ((fd = open(argv[1], O_RDONLY)) == -1)
 	{
@@ -251,6 +331,7 @@ int main(int argc, char *argv[])
 	printf("Ceiling 1:%d\n", data.ceiling[0]);
 	printf("Ceiling 2:%d\n", data.ceiling[1]);
 	printf("Ceiling 3:%d\n", data.ceiling[2]);
+
 	
 
 
