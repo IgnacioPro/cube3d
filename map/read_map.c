@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 12:14:47 by ihorcada          #+#    #+#             */
-/*   Updated: 2020/12/22 20:27:02 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2020/12/28 16:52:28 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,16 @@ typedef struct s_data
 	
 	
 } t_data;
-
+void texture_error()
+{
+			ft_putstr_fd("Error\nTexture is invalid.", 2);
+			exit(0);
+		}
+void resolution_error()
+{
+	ft_putstr_fd("Error\nResolution is invalid.", 2);
+	exit(0);
+}
 void map_name_validator(t_data data)
 {
 	char *lastFour;
@@ -60,30 +69,62 @@ void save_image_validator(t_data data)
 	j = ft_strncmp(data.arg2, "--save", 6);
 	if (j != 0)
 	{
-		perror("Second argument is invalid. Try '--save'.\n");
+		ft_putstr_fd("Error\nSecond argument is invalid. Try '--save'.\n", 2);
 		exit(0);
 	}
 }
 
+int	valid_resolution(int c)
+{
+	if (ft_isdigit(c) || c == 32)
+		return (1);
+	return (0);
+}
+
 void get_resolution(t_data *data)
 {
+	int i;
+	data->y = -1;
+	i = data->i + 1;
+	while(data->linea[i] != '\0')
+		{
+
+			if (!(valid_resolution(data->linea[i])))
+				resolution_error();
+			i++;
+			
+		}
+	data->i++;
+	if(data->linea[data->i] != ' ')
+		resolution_error();
 	data->i++;
 	while (data->linea[data->i] == ' ')
 		data->i++;
-	data->x = ft_atoi(&data->linea[data->i]);
+	if (ft_isdigit(data->linea[data->i]))
+		data->x = ft_atoi(&data->linea[data->i]);
 	while (ft_isdigit(data->linea[data->i]))
 		data->i++;
 	while (data->linea[data->i] == ' ')
 		data->i++;
-	data->y = ft_atoi(&data->linea[data->i]);
+	if (ft_isdigit(data->linea[data->i]))
+		data->y = ft_atoi(&data->linea[data->i]);
 	while (ft_isdigit(data->linea[data->i]))
 		data->i++;
+	while (data->linea[data->i] != '\0')
+	{
+		if(data->linea[data->i] != ' ' )
+			resolution_error();
+		data->i++;
+	}
+	if (data->y < 0 || data->x < 0)
+		resolution_error();
 }
 
 void north_texture(t_data *data)
 {
 	data->i += 2;
-	
+	if (data->linea[data->i] != ' ')
+		texture_error();
 	while (data->linea[data->i] == ' ')
 		data->i++;
 	data->north = &data->linea[data->i];
@@ -93,7 +134,8 @@ void north_texture(t_data *data)
 void south_texture(t_data *data)
 {
 	data->i += 2;
-	
+	if (data->linea[data->i] != ' ')
+		texture_error();
 	while (data->linea[data->i] == ' ')
 		data->i++;
 	data->south = &data->linea[data->i];
@@ -103,7 +145,9 @@ void south_texture(t_data *data)
 void east_texture(t_data *data)
 {
 	data->i += 2;
-	
+
+	if (data->linea[data->i] != ' ')
+		texture_error();
 	while (data->linea[data->i] == ' ')
 		data->i++;
 	data->east = &data->linea[data->i];
@@ -113,7 +157,8 @@ void east_texture(t_data *data)
 void west_texture(t_data *data)
 {
 	data->i += 2;
-	
+	if (data->linea[data->i] != ' ')
+		texture_error();
 	while (data->linea[data->i] == ' ')
 		data->i++;
 	data->west = &data->linea[data->i];
@@ -122,7 +167,7 @@ void west_texture(t_data *data)
 }
 void sprite_texture(t_data *data)
 {
-	data->i ++;
+	data->i++;
 	
 	while (data->linea[data->i] == ' ')
 		data->i++;
@@ -140,7 +185,7 @@ int	valid_rgb(int c)
 
 void rgb_error()
 {
-	ft_putstr_fd("Error\n RGB Invalid.",2);
+	ft_putstr_fd("Error\nRGB Invalid.",2);
 	exit(0);
 }
 

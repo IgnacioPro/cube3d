@@ -1,11 +1,11 @@
-R 1234 5678
+R 123 45                
 NO ./image_texture/test.xpm               
-SO ./image_tex\ ture/test1.xpm
+SO ./image_texture/test1.xpm
 WE ./image_texture/test2.xpm
 EA ./image_texture/test3.xpm
-S ./image_sprite/test0.xpm
-F 111,222,255
-C 0,0,0
+S./image_sprite/test0.xpm
+F 255,254,255
+C 1,2,255
 
 111111
 100101
