@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 12:14:47 by ihorcada          #+#    #+#             */
-/*   Updated: 2021/01/06 12:02:34 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/07 19:58:11 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,12 @@ typedef struct s_data
 	int mapwidth;
 	int coord_check;
 	int c;
-	
+	int n_lines;
+	int rl;
+	int mapstart;
+
+	int playerX;
+	int playerY;
 } t_data;
 void texture_error()
 {
@@ -121,6 +126,7 @@ void get_resolution(t_data *data)
 	}
 	if (data->y < 0 || data->x < 0)
 		resolution_error();
+	data->n_lines++;
 }
 
 void north_texture(t_data *data)
@@ -133,6 +139,7 @@ void north_texture(t_data *data)
 	data->north = &data->linea[data->i];
 	while(ft_isalpha(data->linea[data->i]) && data->linea[data->i] != ' ')
 		data->i++;
+	data->n_lines++;
 }
 void south_texture(t_data *data)
 {
@@ -144,6 +151,8 @@ void south_texture(t_data *data)
 	data->south = &data->linea[data->i];
 	while(ft_isalpha(data->linea[data->i]) && data->linea[data->i] != ' ')
 		data->i++;
+	data->n_lines++;
+	
 }
 void east_texture(t_data *data)
 {
@@ -156,6 +165,7 @@ void east_texture(t_data *data)
 	data->east = &data->linea[data->i];
 	while(ft_isalpha(data->linea[data->i]) && data->linea[data->i] != ' ')
 		data->i++;
+	data->n_lines++;
 }
 void west_texture(t_data *data)
 {
@@ -167,6 +177,8 @@ void west_texture(t_data *data)
 	data->west = &data->linea[data->i];
 	while(ft_isalpha(data->linea[data->i]) && data->linea[data->i] != ' ')
 		data->i++;
+	data->n_lines++;
+	
 }
 void sprite_texture(t_data *data)
 {
@@ -178,6 +190,7 @@ void sprite_texture(t_data *data)
 		data->i++;
 	if (data->sprite == '\0')
 		texture_error();
+	data->n_lines++;
 }
 
 int	valid_rgb(int c)
@@ -266,6 +279,7 @@ void floor_color(t_data *data)
 		rgb_error();
 	else if (data->floor[2] > 255)
 		rgb_error();
+	data->n_lines++;
 }
 
 
@@ -303,6 +317,7 @@ void ceiling_color(t_data *data)
 		rgb_error();
 	if (data->ceiling[0] > 255 || data->ceiling[1] > 255 || data->ceiling[2] > 255)
 		rgb_error();
+	data->n_lines++;
 }
 
 int invalid_map_chars(int c)
@@ -330,8 +345,8 @@ void map_parser(t_data *data)
 	{
 		if (invalid_map_chars(trim[i]))
 			map_error();
-		if (trim[i] == ' ')
-			trim[i] = '%';
+		// if (trim[i] == ' ')
+		// 	trim[i] = '%';
 		if (ft_strchr("NSEW", trim[i]))
 			data->coord_check++;
 		i++;
@@ -340,16 +355,38 @@ void map_parser(t_data *data)
 	data->mapY++;
 	if (i > data->mapX)
 		data->mapX = i;
-	// printf("%s\n",trim);
-	// free(trim);
-
+	free(trim);
 }
 
 void map_store(t_data *data)
 {
+	int i;
+	i = 0;
+	data->map[data->c] = (char*)malloc((data->mapX + 1) * sizeof(char*));
+	data->map[data->c] = ft_memset(data->map[data->c], '%', data->mapX +1);
+	data->map[data->c][data->mapX + 1] = '\0';
+		
+	// printf("esto eeeees: %s\n", data->map[data->c]);
 
-		data->map[data->c] = ft_strdup(data->linea);
-		data->c++;
+	// data->map[data->c] = data->linea;
+		// printf("esto eeeees: %s\n", data->map[data->c]);
+	while (data->linea[i] != '\0')
+	{
+	
+		data->map[data->c][i] = data->linea[i];
+		if (data->linea[i] == ' ')
+			data->map[data->c][i] = '%';
+		if (ft_strchr("NSEW", data->map[data->c][i]) )
+			{
+				data->playerY = data->c;
+				data->playerX = i;
+			}
+		i++;
+	}
+	data->map[data->c][data->mapX + 1] = '\0';
+	data->c++;
+	// printf("esto eeeees: %s\n", data->map[data->c]);
+
 
 }
 
@@ -357,14 +394,16 @@ int main(int argc, char *argv[])
 {
 	t_data data;
 	int fd;
-	char *line = 0;
 	int i = 0;
+	int z = 0;
 	data.arg1 = argv[1];
 	data.arg2 = argv[2];
 	data.mapY = 0;
 	data.mapX = 0;
 	data.coord_check = 0;
 	data.c = 0;
+	data.n_lines = 0;
+	data.rl = 0;
 
 
 
@@ -389,9 +428,8 @@ int main(int argc, char *argv[])
 		save_image_validator(data);
 
 	
-	while ((i = get_next_line(fd, &line)) > 0)
+	while ((i = get_next_line(fd, &data.linea)) > 0)
 	{
-		data.linea = line;
 		data.i = 0;
 		while(data.linea[data.i] ==  ' ')
 			data.i++;
@@ -413,50 +451,84 @@ int main(int argc, char *argv[])
 		else if (data.linea[data.i] == 'F')
 			floor_color(&data);
 		else if (data.linea[data.i] == 'C')
-			ceiling_color(&data);	
-		else if (data.linea[data.i] == '1' || data.linea[data.i] == '2')
-			map_parser(&data);
-		
-	
+			ceiling_color(&data);
+			
+		else if (!(ft_strchr("SRNEWFC", data.linea[data.i])))
+		{
+			data.mapstart = data.rl;
+			break;
+		}
+		data.rl++;
+		free(data.linea);
 	}
-	if (data.coord_check != 1)
-			map_error();
 
+	
 	close(fd);
-	data.map = (char**)malloc(data.mapY * (sizeof(char*)));
-
 	if ((fd = open(argv[1], O_RDONLY)) == -1)
 	{
 		ft_putstr_fd("Error\nError opening map\n", 2);
 		exit(0);
 	}
-	while ((i = get_next_line(fd, &line)) > 0)
+	while ((i = get_next_line(fd, &data.linea)) > 0)
 	{
-		data.linea = line;
-		if (data.linea[data.i] == '1' || data.linea[data.i] == '2')
-			map_store(&data);
+		
+		if (z < data.mapstart)
+			z++;
+		else
+			map_parser(&data);
+		// data.map[data.c] = data.linea;
+		// data.c++;
 	}
 	close(fd);
-	printf("\nla x es: %d\n", data.x);
-	printf("la y es: %d\n", data.y);
-	printf("Norte:%s\n", data.north);
-	printf("Sur:%s\n", data.south);
-	printf("Este:%s\n", data.east);
-	printf("Oeste:%s\n", data.west);
-	printf("Sprite:%s\n", data.sprite);
-	printf("Floor 1:%d\n", data.floor[0]);
-	printf("Floor 2:%d\n", data.floor[1]);
-	printf("Floor 3:%d\n", data.floor[2]);
-	printf("Ceiling 1:%d\n", data.ceiling[0]);
-	printf("Ceiling 2:%d\n", data.ceiling[1]);
-	printf("Ceiling 3:%d\n", data.ceiling[2]);
+	data.map = (char**)malloc(data.mapY * (sizeof(char*)));
+	if ((fd = open(argv[1], O_RDONLY)) == -1)
+	{
+		ft_putstr_fd("Error\nError opening map\n", 2);
+		exit(0);
+	}
+	z = 0;
+	while ((i = get_next_line(fd, &data.linea)) > 0)
+	{
+		if (z < data.mapstart)
+			z++;
+		else
+			map_store(&data);
+	}
+
+	if (data.coord_check != 1)
+		map_error();
+	if (data.n_lines != 8)
+		map_error();
+	close(fd);
+	i = 0;
+
+	// printf("\nla x es: %d\n", data.x);
+	// printf("la y es: %d\n", data.y);
+	// printf("Norte:%s\n", data.north);
+	// printf("Sur:%s\n", data.south);
+	// printf("Este:%s\n", data.east);
+	// printf("Oeste:%s\n", data.west);
+	// printf("Sprite:%s\n", data.sprite);
+	// printf("Floor 1:%d\n", data.floor[0]);
+	// printf("Floor 2:%d\n", data.floor[1]);
+	// printf("Floor 3:%d\n", data.floor[2]);
+	// printf("Ceiling 1:%d\n", data.ceiling[0]);
+	// printf("Ceiling 2:%d\n", data.ceiling[1]);
+	// printf("Ceiling 3:%d\n", data.ceiling[2]);
 	printf("\nMapX: %d\n",data.mapX);
 	printf("MapY: %d\n",data.mapY);
+	i = 0;
 	while (i < data.mapY)
 	{
+
 		printf("%s\n", data.map[i]);
 		i++;
 	}
+	// printf("Lines read: %d\n", data.n_lines);
+	printf("Map start: %d\n", data.mapstart);
+	printf("Player X: %d\n", data.playerX);
+	printf("Player Y: %d\n", data.playerY);
 	free(data.map);
+	free(data.linea);
 	return (0);
 }
