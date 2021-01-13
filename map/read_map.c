@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 12:14:47 by ihorcada          #+#    #+#             */
-/*   Updated: 2021/01/12 19:50:59 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/13 16:57:13 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,68 +14,67 @@
 #include "../cubelib.h"
 #include "../libft/libft.h"
 
-typedef struct s_data
+typedef struct	s_data
 {
-	char *linea;
-	char *arg1;
-	char *arg2;
-	int x;
-	int y;
-	int i;
-	
-	char *north;
-	char *east;
-	char *west;
-	char *south;
-	char *sprite;
-	int floor[3];
-	int ceiling[3];
-	int col;
+	char		*linea;
+	char		*arg1;
+	char		*arg2;
+	int			x;
+	int			y;
+	int			i;
+	char		*north;
+	char		*east;
+	char		*west;
+	char		*south;
+	char		*sprite;
+	int			floor[3];
+	int			ceiling[3];
+	int			col;
+	int			comma;
+	int			rgb_error;
+	int			mapx;
+	int			mapy;
+	char		**map;
+	int			mapwidth;
+	int			coord_check;
+	int			c;
+	int			n_lines;
+	int			rl;
+	int			mapstart;
+	int			playerx;
+	int			playery;
+}				t_data;
 
-	int comma;
-	int rgb_error;
-
-	int mapX;
-	int mapY;
-	char **map;
-	int mapwidth;
-	int coord_check;
-	int c;
-	int n_lines;
-	int rl;
-	int mapstart;
-
-	int playerX;
-	int playerY;
-} t_data;
-void texture_error()
+void	texture_error(void)
 {
 	ft_putstr_fd("Error\nTexture is invalid.", 2);
 	exit(0);
 }
-void resolution_error()
+
+void	resolution_error(void)
 {
 	ft_putstr_fd("Error\nResolution is invalid.", 2);
 	exit(0);
 }
-void map_name_validator(t_data data)
+
+void	map_name_validator(t_data data)
 {
-	char *lastFour;
-	int j;
-	lastFour = ft_substr(data.arg1, (ft_strlen(data.arg1) - 4), 5);
-	j = ft_strncmp(lastFour, ".cub", 4);
+	char	*lastfour;
+	int		j;
+
+	lastfour = ft_substr(data.arg1, (ft_strlen(data.arg1) - 4), 5);
+	j = ft_strncmp(lastfour, ".cub", 4);
 	if (j != 0)
 	{
 		printf("Error. Map name is invalid.\n");
 		exit(0);
 	}
 }
-void save_image_validator(t_data data)
+
+void	save_image_validator(t_data data)
 {
 	int j;
 
-	// j = NULL;
-	// if (data.arg2 && ft_strlen(data.arg2) == 6)
 	j = ft_strncmp(data.arg2, "--save", 6);
 	if (j != 0)
 	{
@@ -84,26 +83,27 @@ void save_image_validator(t_data data)
 	}
 }
 
-int	valid_resolution(int c)
+int		valid_resolution(int c)
 {
 	if (ft_isdigit(c) || c == 32)
 		return (1);
 	return (0);
 }
 
-void get_resolution(t_data *data)
+void	get_resolution(t_data *data)
 {
 	int i;
+
 	data->y = -1;
 	i = data->i + 1;
-	while(data->linea[i] != '\0')
+	while (data->linea[i] != '\0')
 	{
 		if (!(valid_resolution(data->linea[i])))
 			resolution_error();
 		i++;
 	}
 	data->i++;
-	if(data->linea[data->i] != ' ')
+	if (data->linea[data->i] != ' ')
 		resolution_error();
 	data->i++;
 	while (data->linea[data->i] == ' ')
@@ -120,18 +120,16 @@ void get_resolution(t_data *data)
 		data->i++;
 	while (data->linea[data->i] != '\0')
 	{
-		if(data->linea[data->i] != ' ' )
+		if (data->linea[data->i] != ' ')
 			resolution_error();
 		data->i++;
 	}
-	printf("La x es: %d\n La y es: %d \n", data->x, data->y);
-
 	if (data->y < 0 || data->x < 0)
 		resolution_error();
 	data->n_lines++;
 }
 
-void north_texture(t_data *data)
+void	north_texture(t_data *data)
 {
 	data->i += 2;
 	if (data->linea[data->i] != ' ')
@@ -139,11 +137,12 @@ void north_texture(t_data *data)
 	while (data->linea[data->i] == ' ')
 		data->i++;
 	data->north = &data->linea[data->i];
-	while(ft_isalpha(data->linea[data->i]) && data->linea[data->i] != ' ')
+	while (ft_isalpha(data->linea[data->i]) && data->linea[data->i] != ' ')
 		data->i++;
 	data->n_lines++;
 }
-void south_texture(t_data *data)
+
+void	south_texture(t_data *data)
 {
 	data->i += 2;
 	if (data->linea[data->i] != ' ')
@@ -151,25 +150,25 @@ void south_texture(t_data *data)
 	while (data->linea[data->i] == ' ')
 		data->i++;
 	data->south = &data->linea[data->i];
-	while(ft_isalpha(data->linea[data->i]) && data->linea[data->i] != ' ')
+	while (ft_isalpha(data->linea[data->i]) && data->linea[data->i] != ' ')
 		data->i++;
 	data->n_lines++;
-	
 }
-void east_texture(t_data *data)
+
+void	east_texture(t_data *data)
 {
 	data->i += 2;
-
 	if (data->linea[data->i] != ' ')
 		texture_error();
 	while (data->linea[data->i] == ' ')
 		data->i++;
 	data->east = &data->linea[data->i];
-	while(ft_isalpha(data->linea[data->i]) && data->linea[data->i] != ' ')
+	while (ft_isalpha(data->linea[data->i]) && data->linea[data->i] != ' ')
 		data->i++;
 	data->n_lines++;
 }
-void west_texture(t_data *data)
+
+void	west_texture(t_data *data)
 {
 	data->i += 2;
 	if (data->linea[data->i] != ' ')
@@ -177,61 +176,47 @@ void west_texture(t_data *data)
 	while (data->linea[data->i] == ' ')
 		data->i++;
 	data->west = &data->linea[data->i];
-	while(ft_isalpha(data->linea[data->i]) && data->linea[data->i] != ' ')
+	while (ft_isalpha(data->linea[data->i]) && data->linea[data->i] != ' ')
 		data->i++;
 	data->n_lines++;
-	
 }
-void sprite_texture(t_data *data)
+
+void	sprite_texture(t_data *data)
 {
 	data->i++;
 	while (data->linea[data->i] == ' ')
 		data->i++;
 	data->sprite = &data->linea[data->i];
-	while(ft_isalpha(data->linea[data->i]) && data->linea[data->i] != ' ')
+	while (ft_isalpha(data->linea[data->i]) && data->linea[data->i] != ' ')
 		data->i++;
 	if (data->sprite == '\0')
 		texture_error();
 	data->n_lines++;
 }
 
-int empty_line(char *str)
-{
-	int i;
-	
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == ' ')
-			i++;
-	}
-	return(0);
-}
-
-int	valid_rgb(int c)
+int		valid_rgb(int c)
 {
 	if (ft_isdigit(c) || c == 44 || c == 32)
 		return (1);
 	return (0);
 }
 
-void rgb_error()
+void	rgb_error(void)
 {
-	ft_putstr_fd("Error\nRGB Invalid.",2);
+	ft_putstr_fd("Error\nRGB Invalid.", 2);
 	exit(0);
 }
 
-void error_check(t_data *data)
+void	error_check(t_data *data)
 {
 	int i;
+
 	data->floor[0] = -1;
 	data->floor[1] = -1;
 	data->floor[2] = -1;
-
-
 	i = data->i;
 	data->rgb_error = 0;
-	if (data->linea[i] != ' ' )
+	if (data->linea[i] != ' ')
 		data->rgb_error = 1;
 	while (data->linea[i] != '\0')
 	{
@@ -239,47 +224,40 @@ void error_check(t_data *data)
 			data->comma++;
 		if (data->linea[i] == '-')
 			data->rgb_error = 1;
-		if (data->linea[i] == ',' && data->linea[i + 1] == ',' )
+		if (data->linea[i] == ',' && data->linea[i + 1] == ',')
 			data->rgb_error = 1;
 		if (!(valid_rgb(data->linea[i])))
 			data->rgb_error = 1;
 		i++;
 	}
-	if( data->comma != 2)
+	if (data->comma != 2)
 		data->rgb_error = 1;
-	
 	if (data->rgb_error == 1)
 		rgb_error();
-	
 }
 
-
-void floor_color(t_data *data)
+void	floor_color(t_data *data)
 {
 	data->i++;
-	error_check(data);	
+	error_check(data);
 	while (data->linea[data->i] == ' ')
-		data->i++;		
+		data->i++;
 	if (ft_isdigit(data->linea[data->i]))
 		data->floor[0] = ft_atoi(&data->linea[data->i]);
 	else
 		rgb_error();
 	while (ft_isdigit(data->linea[data->i]))
 		data->i++;
-	
-	
 	if (data->linea[data->i] == ',')
 		data->i++;
-
-	if  (ft_isdigit(data->linea[data->i]))
+	if (ft_isdigit(data->linea[data->i]))
 		data->floor[1] = ft_atoi(&data->linea[data->i]);
-	else 
+	else
 		rgb_error();
 	while (ft_isdigit(data->linea[data->i]))
 		data->i++;
 	if (data->linea[data->i] == ',')
 		data->i++;
-	
 	if (ft_isdigit(data->linea[data->i]))
 		data->floor[2] = ft_atoi(&data->linea[data->i]);
 	else
@@ -297,14 +275,11 @@ void floor_color(t_data *data)
 	data->n_lines++;
 }
 
-
-
-void ceiling_color(t_data *data)
+void	ceiling_color(t_data *data)
 {
 	data->i++;
-	// error_check(data);	
 	while (data->linea[data->i] == ' ')
-		data->i++;		
+		data->i++;
 	if (ft_isdigit(data->linea[data->i]))
 		data->ceiling[0] = ft_atoi(&data->linea[data->i]);
 	else
@@ -313,15 +288,14 @@ void ceiling_color(t_data *data)
 		data->i++;
 	if (data->linea[data->i] == ',')
 		data->i++;
-	if  (ft_isdigit(data->linea[data->i]))
+	if (ft_isdigit(data->linea[data->i]))
 		data->ceiling[1] = ft_atoi(&data->linea[data->i]);
-	else 
+	else
 		rgb_error();
 	while (ft_isdigit(data->linea[data->i]))
 		data->i++;
 	if (data->linea[data->i] == ',')
 		data->i++;
-	
 	if (ft_isdigit(data->linea[data->i]))
 		data->ceiling[2] = ft_atoi(&data->linea[data->i]);
 	else
@@ -330,32 +304,33 @@ void ceiling_color(t_data *data)
 		data->i++;
 	if (data->linea[data->i] != '\0')
 		rgb_error();
-	if (data->ceiling[0] > 255 || data->ceiling[1] > 255 || data->ceiling[2] > 255)
+	if (data->ceiling[0] > 255 || data->ceiling[1] > 255 ||
+		data->ceiling[2] > 255)
 		rgb_error();
 	data->n_lines++;
 }
 
-int invalid_map_chars(int c)
+int		invalid_map_chars(int c)
 {
 	if (ft_strchr("012NSEW ", c))
-		return(0);
+		return (0);
 	else
-		return(1);
+		return (1);
 }
-void map_error()
+
+void	map_error(void)
 {
 	ft_putstr_fd("Error\nMap is Invalid", 2);
 	exit(0);
 }
 
-void map_parser(t_data *data)
+void	map_parser(t_data *data)
 {
-	char *trim;
-	int i;
+	char	*trim;
+	int		i;
 
 	i = 0;
 	trim = ft_strdup(data->linea);
-
 	while (trim[i])
 	{
 		if (invalid_map_chars(trim[i]))
@@ -364,42 +339,42 @@ void map_parser(t_data *data)
 			data->coord_check++;
 		i++;
 	}
-	data->mapY++;
-	if (i > data->mapX)
-		data->mapX = i;
+	data->mapy++;
+	if (i > data->mapx)
+		data->mapx = i;
 	free(trim);
 }
 
-void map_store(t_data *data)
+void		map_store(t_data *data)
 {
 	int i;
+
 	i = 0;
-	data->map[data->c] = (char*)malloc((data->mapX + 1) * sizeof(char));
-	data->map[data->c] = ft_memset(data->map[data->c], ' ', data->mapX);
-	data->map[data->c][data->mapX ] = '\0';
+	data->map[data->c] = (char*)malloc((data->mapx + 1) * sizeof(char));
+	data->map[data->c] = ft_memset(data->map[data->c], ' ', data->mapx);
+	data->map[data->c][data->mapx] = '\0';
 	while (data->linea[i] != '\0')
 	{
 		data->map[data->c][i] = data->linea[i];
 		if (data->linea[i] == ' ')
 			data->map[data->c][i] = ' ';
-		if (ft_strchr("NSEW", data->map[data->c][i]) )
+		if (ft_strchr("NSEW", data->map[data->c][i]))
 		{
-			data->playerX = data->c;
-			data->playerY = i;
-			data->map[data->playerX][data->playerY] = '0';
+			data->playerx = data->c;
+			data->playery = i;
+			data->map[data->playerx][data->playery] = '0';
 		}
 		i++;
 	}
 	data->c++;
-	
 }
 
 int			check_map(char **map, int row, int col, t_data *data)
 {
 	char	c;
 	int		ok;
-	
-	if (row < 0 || col < 0 || row >= data->mapY || col >= data->mapX)
+
+	if (row < 0 || col < 0 || row >= data->mapy || col >= data->mapx)
 		return (1);
 	c = map[row][col];
 	if (c == ' ')
@@ -414,25 +389,23 @@ int			check_map(char **map, int row, int col, t_data *data)
 	return (ok);
 }
 
-
-
-int main(int argc, char *argv[])
+int			main(int argc, char *argv[])
 {
-	t_data data;
-	int fd;
-	int i = 0;
-	int z = 0;
+	t_data	data;
+	int		fd;
+	int		i;
+	int		z;
+
+	i = 0;
+	z = 0;
 	data.arg1 = argv[1];
 	data.arg2 = argv[2];
-	data.mapY = 0;
-	data.mapX = 0;
+	data.mapy = 0;
+	data.mapx = 0;
 	data.coord_check = 0;
 	data.c = 0;
 	data.n_lines = 0;
 	data.rl = 0;
-
-
-
 	if ((fd = open(argv[1], O_RDONLY)) == -1)
 	{
 		ft_putstr_fd("Error\nError opening map\n", 2);
@@ -446,22 +419,19 @@ int main(int argc, char *argv[])
 
 	if (argc > 3 || argc < 2)
 	{
-		ft_putstr_fd("Error\nNumber of arguments is invalid\n",2);
+		ft_putstr_fd("Error\nNumber of arguments is invalid\n", 2);
 		exit(0);
 	}
 	map_name_validator(data);
 	if (argc == 3)
 		save_image_validator(data);
-
-	
 	while ((i = get_next_line(fd, &data.linea)) > 0)
 	{
-		
 		int c;
+
 		data.i = 0;
-		
 		c = data.linea[data.i];
-		while(data.linea[data.i] ==  ' ')
+		while (data.linea[data.i] == ' ')
 			data.i++;
 		if (data.linea[data.i] == 'R')
 			get_resolution(&data);
@@ -469,9 +439,9 @@ int main(int argc, char *argv[])
 			north_texture(&data);
 		else if (data.linea[data.i] == 'S' && data.linea[data.i + 1] == ' ')
 			sprite_texture(&data);
-		else if (data.linea[data.i] == 'S' && data.linea[data.i + 1] != ' ' && 
+		else if (data.linea[data.i] == 'S' && data.linea[data.i + 1] != ' ' &&
 			data.linea[data.i + 1] != 'O')
-				texture_error();
+			texture_error();
 		else if (data.linea[data.i] == 'S' && data.linea[data.i + 1] == 'O')
 			south_texture(&data);
 		else if (data.linea[data.i] == 'E' && data.linea[data.i + 1] == 'A')
@@ -482,19 +452,17 @@ int main(int argc, char *argv[])
 			floor_color(&data);
 		else if (data.linea[data.i] == 'C')
 			ceiling_color(&data);
-		// else if (!(strchr("NSEW012", data.linea[data.i])))
-		else if (data.linea[data.i] == '1' || c == '2' || c == '0' || c == 'N' ||
-			c == 'S' || c == 'E' || c == 'W') 
+			// else if (!(strchr("NSEW012", data.linea[data.i])))
+		else if (data.linea[data.i] == '1' || c == '2' || c == '0' ||
+			c == 'N' || c == 'S' || c == 'E' || c == 'W')
 		{
 			data.mapstart = data.rl;
-			break;
+			break ;
 		}
 		data.rl++;
-		// free(data.linea);
 	}
 	if (data.n_lines != 8)
 		map_error();
-	
 	close(fd);
 	if ((fd = open(argv[1], O_RDONLY)) == -1)
 	{
@@ -503,16 +471,13 @@ int main(int argc, char *argv[])
 	}
 	while ((i = get_next_line(fd, &data.linea)) > 0)
 	{
-		
 		if (z < data.mapstart)
 			z++;
 		else
 			map_parser(&data);
-		// data.map[data.c] = data.linea;
-		// data.c++;
 	}
 	close(fd);
-	data.map = (char**)malloc(data.mapY * (sizeof(char*)));
+	data.map = (char**)malloc(data.mapy * (sizeof(char*)));
 	if ((fd = open(argv[1], O_RDONLY)) == -1)
 	{
 		ft_putstr_fd("Error\nError opening map\n", 2);
@@ -529,9 +494,7 @@ int main(int argc, char *argv[])
 	if (data.coord_check != 1 || data.n_lines != 8)
 		map_error();
 	close(fd);
-	// printf("esto es la posicion incial: %c\n", data.map[data.playerX][data.playerY]);
-	// map_validator(&data);
-	if(check_map(data.map, data.playerX, data.playerY, &data))
+	if (check_map(data.map, data.playerx, data.playery, &data))
 		map_error();
 	printf("\nla x es: %d\n", data.x);
 	printf("la y es: %d\n", data.y);
@@ -546,22 +509,18 @@ int main(int argc, char *argv[])
 	printf("Ceiling 1:%d\n", data.ceiling[0]);
 	printf("Ceiling 2:%d\n", data.ceiling[1]);
 	printf("Ceiling 3:%d\n", data.ceiling[2]);
-	printf("\nMapX: %d\n",data.mapX);
-	printf("MapY: %d\n",data.mapY);
+	printf("\nMapx: %d\n", data.mapx);
+	printf("Mapy: %d\n", data.mapy);
 	i = 0;
-	while (i < data.mapY)
+	while (i < data.mapy)
 	{
 		printf("%s\n", data.map[i]);
 		i++;
 	}
-	
 	printf("Map start: %d\n", data.mapstart);
-	printf("Player X: %d\n", data.playerX);
-	printf("Player Y: %d\n", data.playerY);
-	// map_validator(&data);
-
+	printf("Player X: %d\n", data.playerx);
+	printf("Player Y: %d\n", data.playery);
 	free(data.linea);
 	free(data.map);
-
 	return (0);
 }
