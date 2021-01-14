@@ -6,46 +6,13 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 12:14:47 by ihorcada          #+#    #+#             */
-/*   Updated: 2021/01/14 20:21:30 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/14 20:30:03 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../getnextline/get_next_line.h"
 #include "../cubelib.h"
 #include "../libft/libft.h"
-
-typedef struct	s_data
-{
-	char		*linea;
-	char		*arg1;
-	char		*arg2;
-	int			x;
-	int			y;
-	int			i;
-	char		*north;
-	char		*east;
-	char		*west;
-	char		*south;
-	char		*sprite;
-	int			floor[3];
-	int			ceiling[3];
-	int			col;
-	int			comma;
-	int			rgb_error;
-	int			mapx;
-	int			mapy;
-	char		**map;
-	int			mapwidth;
-	int			coord_check;
-	int			c;
-	int			n_lines;
-	int			rl;
-	int			mapstart;
-	int			playerx;
-	int			playery;
-	int			argc;
-	int			fd;
-}				t_data;
 
 void	texture_error(void)
 {
