@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 12:14:47 by ihorcada          #+#    #+#             */
-/*   Updated: 2021/01/13 16:57:13 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/14 20:21:30 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ typedef struct	s_data
 	int			mapstart;
 	int			playerx;
 	int			playery;
+	int			argc;
+	int			fd;
 }				t_data;
 
 void	texture_error(void)
@@ -83,14 +85,14 @@ void	save_image_validator(t_data data)
 	}
 }
 
-int		valid_resolution(int c)
+int	valid_resolution(int c)
 {
 	if (ft_isdigit(c) || c == 32)
 		return (1);
 	return (0);
 }
 
-void	get_resolution(t_data *data)
+void	resolution_format(t_data *data)
 {
 	int i;
 
@@ -103,6 +105,11 @@ void	get_resolution(t_data *data)
 		i++;
 	}
 	data->i++;
+}
+
+void	get_resolution(t_data *data)
+{
+	resolution_format(data);
 	if (data->linea[data->i] != ' ')
 		resolution_error();
 	data->i++;
@@ -124,7 +131,7 @@ void	get_resolution(t_data *data)
 			resolution_error();
 		data->i++;
 	}
-	if (data->y < 0 || data->x < 0)
+	if (data->y <= 0 || data->x <= 0)
 		resolution_error();
 	data->n_lines++;
 }
@@ -211,11 +218,8 @@ void	error_check(t_data *data)
 {
 	int i;
 
-	data->floor[0] = -1;
-	data->floor[1] = -1;
-	data->floor[2] = -1;
 	i = data->i;
-	data->rgb_error = 0;
+	data->comma = 0;
 	if (data->linea[i] != ' ')
 		data->rgb_error = 1;
 	while (data->linea[i] != '\0')
@@ -244,33 +248,21 @@ void	floor_color(t_data *data)
 		data->i++;
 	if (ft_isdigit(data->linea[data->i]))
 		data->floor[0] = ft_atoi(&data->linea[data->i]);
-	else
-		rgb_error();
 	while (ft_isdigit(data->linea[data->i]))
 		data->i++;
 	if (data->linea[data->i] == ',')
 		data->i++;
 	if (ft_isdigit(data->linea[data->i]))
 		data->floor[1] = ft_atoi(&data->linea[data->i]);
-	else
-		rgb_error();
 	while (ft_isdigit(data->linea[data->i]))
 		data->i++;
 	if (data->linea[data->i] == ',')
 		data->i++;
 	if (ft_isdigit(data->linea[data->i]))
 		data->floor[2] = ft_atoi(&data->linea[data->i]);
-	else
-		rgb_error();
 	while (ft_isdigit(data->linea[data->i]))
 		data->i++;
 	if (data->linea[data->i] != '\0')
-		rgb_error();
-	if (data->floor[0] > 255)
-		rgb_error();
-	else if (data->floor[1] > 255)
-		rgb_error();
-	else if (data->floor[2] > 255)
 		rgb_error();
 	data->n_lines++;
 }
@@ -278,34 +270,26 @@ void	floor_color(t_data *data)
 void	ceiling_color(t_data *data)
 {
 	data->i++;
+	error_check(data);
 	while (data->linea[data->i] == ' ')
 		data->i++;
 	if (ft_isdigit(data->linea[data->i]))
 		data->ceiling[0] = ft_atoi(&data->linea[data->i]);
-	else
-		rgb_error();
 	while (ft_isdigit(data->linea[data->i]))
 		data->i++;
 	if (data->linea[data->i] == ',')
 		data->i++;
 	if (ft_isdigit(data->linea[data->i]))
 		data->ceiling[1] = ft_atoi(&data->linea[data->i]);
-	else
-		rgb_error();
 	while (ft_isdigit(data->linea[data->i]))
 		data->i++;
 	if (data->linea[data->i] == ',')
 		data->i++;
 	if (ft_isdigit(data->linea[data->i]))
 		data->ceiling[2] = ft_atoi(&data->linea[data->i]);
-	else
-		rgb_error();
 	while (ft_isdigit(data->linea[data->i]))
 		data->i++;
 	if (data->linea[data->i] != '\0')
-		rgb_error();
-	if (data->ceiling[0] > 255 || data->ceiling[1] > 255 ||
-		data->ceiling[2] > 255)
 		rgb_error();
 	data->n_lines++;
 }
@@ -345,7 +329,7 @@ void	map_parser(t_data *data)
 	free(trim);
 }
 
-void		map_store(t_data *data)
+void	map_store(t_data *data)
 {
 	int i;
 
@@ -369,7 +353,7 @@ void		map_store(t_data *data)
 	data->c++;
 }
 
-int			check_map(char **map, int row, int col, t_data *data)
+int		check_map(char **map, int row, int col, t_data *data)
 {
 	char	c;
 	int		ok;
@@ -389,137 +373,186 @@ int			check_map(char **map, int row, int col, t_data *data)
 	return (ok);
 }
 
-int			main(int argc, char *argv[])
+void	print_all(t_data *data)
 {
-	t_data	data;
-	int		fd;
-	int		i;
-	int		z;
+	int i;
 
+	printf("\nLa resolucion x es: %d\nLa resolucion  y es: %d\n", data->x, data->y);
+	printf("Norte:%s\n", data->north);
+	printf("Sur:%s\n", data->south);
+	printf("Este:%s\n", data->east);
+	printf("Oeste:%s\n", data->west);
+	printf("Sprite:%s\n", data->sprite);
+	printf("Floor 1:%d\n", data->floor[0]);
+	printf("Floor 2:%d\n", data->floor[1]);
+	printf("Floor 3:%d\n", data->floor[2]);
+	printf("Ceiling 1:%d\n", data->ceiling[0]);
+	printf("Ceiling 2:%d\n", data->ceiling[1]);
+	printf("Ceiling 3:%d\n", data->ceiling[2]);
+	printf("\nMapx: %d\n", data->mapx);
+	printf("Mapy: %d\n", data->mapy);
 	i = 0;
-	z = 0;
-	data.arg1 = argv[1];
-	data.arg2 = argv[2];
-	data.mapy = 0;
-	data.mapx = 0;
-	data.coord_check = 0;
-	data.c = 0;
-	data.n_lines = 0;
-	data.rl = 0;
-	if ((fd = open(argv[1], O_RDONLY)) == -1)
+	while (i < data->mapy)
 	{
-		ft_putstr_fd("Error\nError opening map\n", 2);
-		exit(0);
+		printf("%s\n", data->map[i]);
+		i++;
 	}
-	if (!data.arg1)
-	{
-		ft_putstr_fd("Error\nNo map provided\n", 2);
-		exit(0);
-	}
+	printf("Map start: %d\n", data->mapstart);
+	printf("Player X: %d\n", data->playerx);
+	printf("Player Y: %d\n", data->playery);
+}
 
-	if (argc > 3 || argc < 2)
+void	errors(t_data *data)
+{
+	if (data->ceiling[0] > 255 || data->ceiling[1] > 255 ||
+		data->ceiling[2] > 255 || data->floor[0] > 255 ||
+		data->floor[1] > 255 ||
+		data->floor[2] > 255)
+		rgb_error();
+	if (data->n_lines != 8)
+		map_error();
+}
+
+void	error_opening_map(void)
+{
+	ft_putstr_fd("Error\nError opening map\n", 2);
+	exit(0);
+}
+
+void	vars_init(t_data *data)
+{
+	data->mapy = 0;
+	data->mapx = 0;
+	data->coord_check = 0;
+	data->c = 0;
+	data->n_lines = 0;
+	data->rl = 0;
+	data->rgb_error = 0;
+}
+
+void	opening2(t_data *data)
+{
+	int fd;
+	int z;
+	int i;
+
+	z = 0;
+	i = 0;
+	if ((fd = open(data->arg1, O_RDONLY)) == -1)
+		error_opening_map();
+	while ((i = get_next_line(fd, &data->linea)) > 0)
+	{
+		if (z < data->mapstart)
+			z++;
+		else
+			map_parser(data);
+	}
+	data->map = (char**)malloc(data->mapy * (sizeof(char*)));
+	close(fd);
+}
+
+void	opening3(t_data *data)
+{
+	int fd;
+	int i;
+	int z;
+
+	z = 0;
+	if ((fd = open(data->arg1, O_RDONLY)) == -1)
+		error_opening_map();
+	while ((i = get_next_line(fd, &data->linea)) > 0)
+	{
+		if (z < data->mapstart)
+			z++;
+		else
+			map_store(data);
+	}
+	close(fd);
+	if (data->coord_check != 1 || data->n_lines != 8)
+		map_error();
+}
+
+void	opening1(t_data *data)
+{
+	if ((data->fd = open(data->arg1, O_RDONLY)) == -1)
+		error_opening_map();
+	if (!data->arg1)
+		error_opening_map();
+	if (data->argc > 3 || data->argc < 2)
 	{
 		ft_putstr_fd("Error\nNumber of arguments is invalid\n", 2);
 		exit(0);
 	}
-	map_name_validator(data);
-	if (argc == 3)
-		save_image_validator(data);
-	while ((i = get_next_line(fd, &data.linea)) > 0)
-	{
-		int c;
+	map_name_validator(*data);
+	if (data->argc == 3)
+		save_image_validator(*data);
+}
 
-		data.i = 0;
-		c = data.linea[data.i];
-		while (data.linea[data.i] == ' ')
-			data.i++;
-		if (data.linea[data.i] == 'R')
-			get_resolution(&data);
-		else if (data.linea[data.i] == 'N' && data.linea[data.i + 1] == 'O')
-			north_texture(&data);
-		else if (data.linea[data.i] == 'S' && data.linea[data.i + 1] == ' ')
-			sprite_texture(&data);
-		else if (data.linea[data.i] == 'S' && data.linea[data.i + 1] != ' ' &&
-			data.linea[data.i + 1] != 'O')
-			texture_error();
-		else if (data.linea[data.i] == 'S' && data.linea[data.i + 1] == 'O')
-			south_texture(&data);
-		else if (data.linea[data.i] == 'E' && data.linea[data.i + 1] == 'A')
-			east_texture(&data);
-		else if (data.linea[data.i] == 'W' && data.linea[data.i + 1] == 'E')
-			west_texture(&data);
-		else if (data.linea[data.i] == 'F')
-			floor_color(&data);
-		else if (data.linea[data.i] == 'C')
-			ceiling_color(&data);
-			// else if (!(strchr("NSEW012", data.linea[data.i])))
-		else if (data.linea[data.i] == '1' || c == '2' || c == '0' ||
-			c == 'N' || c == 'S' || c == 'E' || c == 'W')
+void	formatter(t_data *data)
+{
+	data->i = 0;
+	while (data->linea[data->i] == ' ')
+		data->i++;
+	if (data->linea[data->i] == 'R')
+		get_resolution(data);
+	else if (data->linea[data->i] == 'N' && data->linea[data->i + 1] == 'O')
+		north_texture(data);
+	else if (data->linea[data->i] == 'S' && data->linea[data->i + 1] == ' ')
+		sprite_texture(data);
+	else if (data->linea[data->i] == 'S' && data->linea[data->i + 1] != ' ' &&
+		data->linea[data->i + 1] != 'O')
+		texture_error();
+	else if (data->linea[data->i] == 'S' && data->linea[data->i + 1] == 'O')
+		south_texture(data);
+	else if (data->linea[data->i] == 'E' && data->linea[data->i + 1] == 'A')
+		east_texture(data);
+	else if (data->linea[data->i] == 'W' && data->linea[data->i + 1] == 'E')
+		west_texture(data);
+	else if (data->linea[data->i] == 'F')
+		floor_color(data);
+	else if (data->linea[data->i] == 'C')
+		ceiling_color(data);
+}
+
+void	file_reader(t_data *data)
+{
+	int i;
+
+	while ((i = get_next_line(data->fd, &data->linea)) > 0)
+	{
+		formatter(data);
+		if (data->linea[data->i] == '1' ||
+			data->linea[data->i] == '2' ||
+			data->linea[data->i] == '0' ||
+			data->linea[data->i] == 'N' ||
+			data->linea[data->i] == 'S' ||
+			data->linea[data->i] == 'E' ||
+			data->linea[data->i] == 'W')
 		{
-			data.mapstart = data.rl;
+			data->mapstart = data->rl;
 			break ;
 		}
-		data.rl++;
+		data->rl++;
 	}
-	if (data.n_lines != 8)
-		map_error();
-	close(fd);
-	if ((fd = open(argv[1], O_RDONLY)) == -1)
-	{
-		ft_putstr_fd("Error\nError opening map\n", 2);
-		exit(0);
-	}
-	while ((i = get_next_line(fd, &data.linea)) > 0)
-	{
-		if (z < data.mapstart)
-			z++;
-		else
-			map_parser(&data);
-	}
-	close(fd);
-	data.map = (char**)malloc(data.mapy * (sizeof(char*)));
-	if ((fd = open(argv[1], O_RDONLY)) == -1)
-	{
-		ft_putstr_fd("Error\nError opening map\n", 2);
-		exit(0);
-	}
-	z = 0;
-	while ((i = get_next_line(fd, &data.linea)) > 0)
-	{
-		if (z < data.mapstart)
-			z++;
-		else
-			map_store(&data);
-	}
-	if (data.coord_check != 1 || data.n_lines != 8)
-		map_error();
-	close(fd);
+}
+
+int		main(int argc, char *argv[])
+{
+	t_data	data;
+
+	data.arg1 = argv[1];
+	data.arg2 = argv[2];
+	data.argc = argc;
+	vars_init(&data);
+	opening1(&data);
+	file_reader(&data);
+	errors(&data);
+	close(data.fd);
+	opening2(&data);
+	opening3(&data);
 	if (check_map(data.map, data.playerx, data.playery, &data))
 		map_error();
-	printf("\nla x es: %d\n", data.x);
-	printf("la y es: %d\n", data.y);
-	printf("Norte:%s\n", data.north);
-	printf("Sur:%s\n", data.south);
-	printf("Este:%s\n", data.east);
-	printf("Oeste:%s\n", data.west);
-	printf("Sprite:%s\n", data.sprite);
-	printf("Floor 1:%d\n", data.floor[0]);
-	printf("Floor 2:%d\n", data.floor[1]);
-	printf("Floor 3:%d\n", data.floor[2]);
-	printf("Ceiling 1:%d\n", data.ceiling[0]);
-	printf("Ceiling 2:%d\n", data.ceiling[1]);
-	printf("Ceiling 3:%d\n", data.ceiling[2]);
-	printf("\nMapx: %d\n", data.mapx);
-	printf("Mapy: %d\n", data.mapy);
-	i = 0;
-	while (i < data.mapy)
-	{
-		printf("%s\n", data.map[i]);
-		i++;
-	}
-	printf("Map start: %d\n", data.mapstart);
-	printf("Player X: %d\n", data.playerx);
-	printf("Player Y: %d\n", data.playery);
+	print_all(&data);
 	free(data.linea);
 	free(data.map);
 	return (0);
