@@ -6,25 +6,13 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 12:14:47 by ihorcada          #+#    #+#             */
-/*   Updated: 2021/01/14 20:30:03 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/15 11:25:56 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../getnextline/get_next_line.h"
 #include "../cubelib.h"
 #include "../libft/libft.h"
-
-void	texture_error(void)
-{
-	ft_putstr_fd("Error\nTexture is invalid.", 2);
-	exit(0);
-}
-
-void	resolution_error(void)
-{
-	ft_putstr_fd("Error\nResolution is invalid.", 2);
-	exit(0);
-}
 
 void	map_name_validator(t_data data)
 {
@@ -52,7 +40,7 @@ void	save_image_validator(t_data data)
 	}
 }
 
-int	valid_resolution(int c)
+int		valid_resolution(int c)
 {
 	if (ft_isdigit(c) || c == 32)
 		return (1);
@@ -168,111 +156,12 @@ void	sprite_texture(t_data *data)
 	data->n_lines++;
 }
 
-int		valid_rgb(int c)
-{
-	if (ft_isdigit(c) || c == 44 || c == 32)
-		return (1);
-	return (0);
-}
-
-void	rgb_error(void)
-{
-	ft_putstr_fd("Error\nRGB Invalid.", 2);
-	exit(0);
-}
-
-void	error_check(t_data *data)
-{
-	int i;
-
-	i = data->i;
-	data->comma = 0;
-	if (data->linea[i] != ' ')
-		data->rgb_error = 1;
-	while (data->linea[i] != '\0')
-	{
-		if (data->linea[i] == ',')
-			data->comma++;
-		if (data->linea[i] == '-')
-			data->rgb_error = 1;
-		if (data->linea[i] == ',' && data->linea[i + 1] == ',')
-			data->rgb_error = 1;
-		if (!(valid_rgb(data->linea[i])))
-			data->rgb_error = 1;
-		i++;
-	}
-	if (data->comma != 2)
-		data->rgb_error = 1;
-	if (data->rgb_error == 1)
-		rgb_error();
-}
-
-void	floor_color(t_data *data)
-{
-	data->i++;
-	error_check(data);
-	while (data->linea[data->i] == ' ')
-		data->i++;
-	if (ft_isdigit(data->linea[data->i]))
-		data->floor[0] = ft_atoi(&data->linea[data->i]);
-	while (ft_isdigit(data->linea[data->i]))
-		data->i++;
-	if (data->linea[data->i] == ',')
-		data->i++;
-	if (ft_isdigit(data->linea[data->i]))
-		data->floor[1] = ft_atoi(&data->linea[data->i]);
-	while (ft_isdigit(data->linea[data->i]))
-		data->i++;
-	if (data->linea[data->i] == ',')
-		data->i++;
-	if (ft_isdigit(data->linea[data->i]))
-		data->floor[2] = ft_atoi(&data->linea[data->i]);
-	while (ft_isdigit(data->linea[data->i]))
-		data->i++;
-	if (data->linea[data->i] != '\0')
-		rgb_error();
-	data->n_lines++;
-}
-
-void	ceiling_color(t_data *data)
-{
-	data->i++;
-	error_check(data);
-	while (data->linea[data->i] == ' ')
-		data->i++;
-	if (ft_isdigit(data->linea[data->i]))
-		data->ceiling[0] = ft_atoi(&data->linea[data->i]);
-	while (ft_isdigit(data->linea[data->i]))
-		data->i++;
-	if (data->linea[data->i] == ',')
-		data->i++;
-	if (ft_isdigit(data->linea[data->i]))
-		data->ceiling[1] = ft_atoi(&data->linea[data->i]);
-	while (ft_isdigit(data->linea[data->i]))
-		data->i++;
-	if (data->linea[data->i] == ',')
-		data->i++;
-	if (ft_isdigit(data->linea[data->i]))
-		data->ceiling[2] = ft_atoi(&data->linea[data->i]);
-	while (ft_isdigit(data->linea[data->i]))
-		data->i++;
-	if (data->linea[data->i] != '\0')
-		rgb_error();
-	data->n_lines++;
-}
-
 int		invalid_map_chars(int c)
 {
 	if (ft_strchr("012NSEW ", c))
 		return (0);
 	else
 		return (1);
-}
-
-void	map_error(void)
-{
-	ft_putstr_fd("Error\nMap is Invalid", 2);
-	exit(0);
 }
 
 void	map_parser(t_data *data)
@@ -367,17 +256,6 @@ void	print_all(t_data *data)
 	printf("Map start: %d\n", data->mapstart);
 	printf("Player X: %d\n", data->playerx);
 	printf("Player Y: %d\n", data->playery);
-}
-
-void	errors(t_data *data)
-{
-	if (data->ceiling[0] > 255 || data->ceiling[1] > 255 ||
-		data->ceiling[2] > 255 || data->floor[0] > 255 ||
-		data->floor[1] > 255 ||
-		data->floor[2] > 255)
-		rgb_error();
-	if (data->n_lines != 8)
-		map_error();
 }
 
 void	error_opening_map(void)
