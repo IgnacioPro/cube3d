@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 20:39:53 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/14 20:40:20 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/15 11:37:35 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,11 @@ void	rgb_error(void)
 void	map_error(void)
 {
 	ft_putstr_fd("Error\nMap is Invalid", 2);
+	exit(0);
+}
+
+void	error_opening_map(void)
+{
+	ft_putstr_fd("Error\nError opening map\n", 2);
 	exit(0);
 }

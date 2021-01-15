@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 12:14:47 by ihorcada          #+#    #+#             */
-/*   Updated: 2021/01/15 11:25:56 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/15 11:46:13 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,71 +88,6 @@ void	get_resolution(t_data *data)
 	}
 	if (data->y <= 0 || data->x <= 0)
 		resolution_error();
-	data->n_lines++;
-}
-
-void	north_texture(t_data *data)
-{
-	data->i += 2;
-	if (data->linea[data->i] != ' ')
-		texture_error();
-	while (data->linea[data->i] == ' ')
-		data->i++;
-	data->north = &data->linea[data->i];
-	while (ft_isalpha(data->linea[data->i]) && data->linea[data->i] != ' ')
-		data->i++;
-	data->n_lines++;
-}
-
-void	south_texture(t_data *data)
-{
-	data->i += 2;
-	if (data->linea[data->i] != ' ')
-		texture_error();
-	while (data->linea[data->i] == ' ')
-		data->i++;
-	data->south = &data->linea[data->i];
-	while (ft_isalpha(data->linea[data->i]) && data->linea[data->i] != ' ')
-		data->i++;
-	data->n_lines++;
-}
-
-void	east_texture(t_data *data)
-{
-	data->i += 2;
-	if (data->linea[data->i] != ' ')
-		texture_error();
-	while (data->linea[data->i] == ' ')
-		data->i++;
-	data->east = &data->linea[data->i];
-	while (ft_isalpha(data->linea[data->i]) && data->linea[data->i] != ' ')
-		data->i++;
-	data->n_lines++;
-}
-
-void	west_texture(t_data *data)
-{
-	data->i += 2;
-	if (data->linea[data->i] != ' ')
-		texture_error();
-	while (data->linea[data->i] == ' ')
-		data->i++;
-	data->west = &data->linea[data->i];
-	while (ft_isalpha(data->linea[data->i]) && data->linea[data->i] != ' ')
-		data->i++;
-	data->n_lines++;
-}
-
-void	sprite_texture(t_data *data)
-{
-	data->i++;
-	while (data->linea[data->i] == ' ')
-		data->i++;
-	data->sprite = &data->linea[data->i];
-	while (ft_isalpha(data->linea[data->i]) && data->linea[data->i] != ' ')
-		data->i++;
-	if (data->sprite == '\0')
-		texture_error();
 	data->n_lines++;
 }
 
@@ -256,12 +191,6 @@ void	print_all(t_data *data)
 	printf("Map start: %d\n", data->mapstart);
 	printf("Player X: %d\n", data->playerx);
 	printf("Player Y: %d\n", data->playery);
-}
-
-void	error_opening_map(void)
-{
-	ft_putstr_fd("Error\nError opening map\n", 2);
-	exit(0);
 }
 
 void	vars_init(t_data *data)
