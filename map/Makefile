@@ -1,4 +1,4 @@
-SRCS = read_map.c ../getnextline/get_next_line.c ../getnextline/get_next_line_utils.c error_messages.c ./colors/get_colors.c ./colors/rgb_errors.c ./textures/parse_textures.c ./resolution/parse_resolution.c ./reader/open_file.c
+SRCS = read_map.c ../getnextline/get_next_line.c ../getnextline/get_next_line_utils.c error_messages.c ./colors/get_colors.c ./colors/rgb_errors.c ./textures/parse_textures.c ./resolution/parse_resolution.c ./reader/open_file.c ./parser/map_parser.c ./reader/validators.c
 OBJS = $(SRCS:.c=.o)
 NAME = cub3D
 CC = gcc -Wall -Werror -Wextra -fsanitize=address
