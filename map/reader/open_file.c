@@ -6,55 +6,13 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 12:06:35 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/15 12:08:27 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/19 20:31:10 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cubelib.h"
 #include "../../libft/libft.h"
 #include "../../getnextline/get_next_line.h"
-
-void	opening2(t_data *data)
-{
-	int fd;
-	int z;
-	int i;
-
-	z = 0;
-	i = 0;
-	if ((fd = open(data->arg1, O_RDONLY)) == -1)
-		error_opening_map();
-	while ((i = get_next_line(fd, &data->linea)) > 0)
-	{
-		if (z < data->mapstart)
-			z++;
-		else
-			map_parser(data);
-	}
-	data->map = (char**)malloc(data->mapy * (sizeof(char*)));
-	close(fd);
-}
-
-void	opening3(t_data *data)
-{
-	int fd;
-	int i;
-	int z;
-
-	z = 0;
-	if ((fd = open(data->arg1, O_RDONLY)) == -1)
-		error_opening_map();
-	while ((i = get_next_line(fd, &data->linea)) > 0)
-	{
-		if (z < data->mapstart)
-			z++;
-		else
-			map_store(data);
-	}
-	close(fd);
-	if (data->coord_check != 1 || data->n_lines != 8)
-		map_error();
-}
 
 void	opening1(t_data *data)
 {
@@ -70,6 +28,51 @@ void	opening1(t_data *data)
 	map_name_validator(*data);
 	if (data->argc == 3)
 		save_image_validator(*data);
+}
+
+void	opening2(t_data *data)
+{
+	int fd;
+	int z;
+	int i;
+
+	z = 0;
+	// i = 0;
+	if ((fd = open(data->arg1, O_RDONLY)) == -1)
+		error_opening_map();
+	while ((i = get_next_line(fd, &data->linea)) > 0)
+	{
+		if (z < data->mapstart)
+			z++;
+		else
+			map_parser(data);
+		free(data->linea);
+	}
+	data->map = (char**)malloc(data->mapy * (sizeof(char*)));
+	close(fd);
+}
+
+void	opening3(t_data *data)
+{
+	int fd;
+	int i;
+	int z;
+
+	z = 0;
+	if ((fd = open(data->arg1, O_RDONLY)) == -1)
+		error_opening_map();
+	free(data->linea);
+	while ((i = get_next_line(fd, &data->linea)) > 0)
+	{
+		if (z < data->mapstart)
+			z++;
+		else
+			map_store(data);
+		free(data->linea);
+	}
+	close(fd);
+	if (data->coord_check != 1 || data->n_lines != 8)
+		map_error();
 }
 
 void	formatter(t_data *data)
@@ -114,8 +117,10 @@ void	file_reader(t_data *data)
 			data->linea[data->i] == 'W')
 		{
 			data->mapstart = data->rl;
+			free(data->linea);
 			break ;
 		}
 		data->rl++;
+		free(data->linea);
 	}
 }

@@ -28,15 +28,17 @@ int worldMap[mapWidth][mapHeight] =
 		{1, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
 
-void my_mlx_pixel_put(t_img *imagen, int x, int y, int color)
+void	my_mlx_pixel_put(t_img *imagen, int x, int y, int color)
 {
 	char *dst;
-	int offset = (y * imagen->line_length + x *(imagen->bits_per_pixel / 8));
+	int offset;
+	
+	offset = (y * imagen->line_length + x *(imagen->bits_per_pixel / 8));
 	dst = imagen->addr + (y * imagen->line_length + x * (imagen->bits_per_pixel / 8));
 	*(unsigned int*)dst = color;
 }
 
-void sprite_dimensions(t_vars *vars)
+void	sprite_dimensions(t_vars *vars)
 {
 	while (vars->counter-- > 0)
 	{
@@ -68,7 +70,7 @@ void sprite_dimensions(t_vars *vars)
 	}
 }
 
-void load_textures(t_vars *vars)
+void	load_textures(t_vars *vars)
 {
 	vars->norte.img = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/mossy.xpm", &vars->norte.height, &vars->norte.width);
 	vars->sur.img = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/redbrick.xpm", &vars->sur.height, &vars->sur.width);
@@ -80,20 +82,18 @@ void load_textures(t_vars *vars)
 
 int move_player_press(int keycode, t_vars *vars)
 {
-	if (keycode == 13)// W
+	if (keycode == 13)
 		vars->w = 1;	
-   	if (keycode == 1) // S
+   	if (keycode == 1)
 		vars->s = 1;
-   	if (keycode == 0) // a
+   	if (keycode == 0)
 		vars->a = 1;
    	if (keycode == 2)
-   		vars->d = 1; // D
+   		vars->d = 1;
 	if (keycode == 124)
 		vars->right = 1;
 	if (keycode == 123)
 		vars->left = 1;	
-	// printf("%d\n", vars->w);
-
 	if (keycode == 53)
 	{
 		mlx_destroy_window(vars->mlx, vars->win);
@@ -119,18 +119,11 @@ int move_player_release(int keycode, t_vars *vars)
 	if (keycode == 53)
 	{
 		mlx_destroy_window(vars->mlx, vars->win);
-		free(vars->sprite);
+		// free(vars->sprite);
 		exit(0);
 	}
 	return (0);
 }
-
-// double ft_abs(double n)
-// {
-// 	if (n < 0)
-// 		return (-n);
-// 	return (n);
-// }
 
 void calculate_sprite_dist(t_vars *vars)
 {
@@ -324,12 +317,12 @@ int render_frame(t_vars *vars)
 		vars->ZBuffer[vars->i] = vars->perpWallDist;
 		vars->i++;
 	}
-	vars->buffer = (int *)mlx_get_data_addr(vars->columna.img, &vars->columna.bits_per_pixel, &vars->columna.line_length, &vars->columna.endian);
+	vars->buffer = (int *)mlx_get_data_addr(vars->columna.img, &vars->columna.bits_per_pixel, 
+		&vars->columna.line_length, &vars->columna.endian);
 	calculate_sprite_dist(vars);
 	sort_sprites(vars);
 	vars->counter = vars->num_sprites;
 	sprite_dimensions(vars);
-
 	move_up(vars);
 	move_down(vars);
 	move_left(vars);
@@ -343,63 +336,73 @@ int render_frame(t_vars *vars)
 
 int close_x(t_vars *vars)
 {
-	// mlx_destroy_window(vars->mlx, vars->win);
+	mlx_destroy_window(vars->mlx, vars->win);
 	exit(0);
 }
 
+void	vars_init(t_data *data, t_vars *vars)
+{
+	data->mapy = 0;
+	data->mapx = 0;
+	data->coord_check = 0;
+	data->c = 0;
+	data->n_lines = 0;
+	data->rl = 0;
+	data->rgb_error = 0;
+	vars->moveSpeed = 0.1;
+	vars->rotSpeed = 0.1;
+	vars->posX = 22;
+	vars->posY = 11;
+	vars->dirX = -1;
+	vars->dirY = 0;
+	vars->planeX = 0;
+	vars->planeY = 0.66;
+	vars->a = 0;
+	vars->d = 0;
+	vars->w = 0;
+	vars->s = 0;
+	vars->left = 0;
+	vars->right = 0;
+	vars->i = 0;
+	vars->screenheight = 480;
+	vars->screenwidth = 640;
+}
 
-int main()
+int main(int argc, char *argv[])
 {
 	t_vars vars;
-	vars.i = 0;
-	// t_vars textura_norte;
-	vars.screenheight = 480;
-	vars.screenwidth = 640;
-	
-	vars.moveSpeed = 0.1;
-	vars.rotSpeed = 0.1;
-	vars.posX = 22;
-	vars.posY = 11;
-	vars.dirX = -1;
-	vars.dirY = 0;
-	vars.planeX = 0;
-	vars.planeY = 0.66;
-	vars.a = 0;
-	vars.d = 0;
-	vars.w = 0;
-	vars.s = 0;
-	vars.left = 0;
-	vars.right = 0;
-	// int x = 0;
-	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, vars.screenwidth, vars.screenheight, "Cube");
+	t_data data;
 
-	// int fd;
-	// char *line = 0;
-	// char	*lineadress;
-	// int j = 0;
-	// int i;
-	// if (!(fd = open(argv[1], O_RDONLY)))
-	// {
-	// 	printf("\nError in open\n");
-	// 	return (0);
-	// }
-	// while ((i = get_next_line(fd, &line)) > 0)
-	// {
-	// 	printf("|%s\n", line);
-	// 	// lineadress[j - 1] = line;
-	// 	j++;
-	// }
-	
+	data.arg1 = argv[1];
+	data.arg2 = argv[2];
+	data.argc = argc;
+	vars_init(&data, &vars);
+	opening1(&data);
+	file_reader(&data);
+	errors(&data);
+	close(data.fd);
+	opening2(&data);
+	opening3(&data);
+	if (check_map(data.map, data.playerx, data.playery, &data))
+		map_error();
+	print_all(&data);
+	vars.mlx = mlx_init();
+	vars.win = mlx_new_window(vars.mlx, vars.screenwidth, vars.screenheight, "cub3D");
 	load_textures(&vars);
 	calculate_sprites(&vars);
 	mlx_loop_hook(vars.mlx, render_frame, &vars);
 	mlx_hook(vars.win, 2, 1L << 0, move_player_press, &vars);
 	mlx_hook(vars.win, 3, 1L << 1, move_player_release, &vars);
 	mlx_hook(vars.win, 17, 0L, close_x, &vars);
-
 	mlx_loop(vars.mlx);
 	mlx_destroy_window(vars.mlx, vars.win);
-	free(vars.sprite);
-	// mlx_hook(vars.win, 33, 1L << 17, quit, &vars);
+	// free(data.north);
+	// free(data.south);
+	// free(data.east);
+	// free(data.west);
+	// free(data.sprite);
+	// free(data.playerx);
+	// free(data.playery);
+
+	return(0);
 }

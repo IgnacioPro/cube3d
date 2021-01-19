@@ -3,19 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   painters.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ihorcada <ihorcada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/08 18:53:59 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2020/12/14 11:27:36 by ihorcada         ###   ########.fr       */
+/*   Updated: 2021/01/15 16:51:33 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubelib.h"
 
-void draw_walls(int x, int drawStart, int drawEnd, int color, t_img *img, t_vars *vars)
+void	draw_walls(int x, int drawStart, int drawEnd, int color, t_img *img, t_vars *vars)
 {
 	vars->step = 1.0 * texHeight / vars->lineHeight;
-	vars->texPos = (drawStart - vars->screenheight / 2 + vars->lineHeight / 2) * vars->step;
+	vars->texPos = (drawStart - vars->screenheight / 2 + 
+	vars->lineHeight / 2) * vars->step;
 	while (drawStart <= drawEnd)
 	{
 		vars->texY = (int)vars->texPos;
@@ -26,21 +27,22 @@ void draw_walls(int x, int drawStart, int drawEnd, int color, t_img *img, t_vars
 	}
 }
 
-void draw_sprite(int color, t_vars *vars)
+void	draw_sprite(int color, t_vars *vars)
 {
 	int sprite;
-
 	int i;
 	int d;
 
 	sprite = vars->drawStartX;
 	while (sprite < vars->drawEndX)
 	{
-		vars->texX = (int)(256 * (sprite - (-vars->spriteWidth / 2 + vars->spriteScreenX)) * texWidth / vars->spriteWidth) / 256;
-		if (vars->transformY > 0 && sprite > 0 && sprite < vars->screenwidth && vars->transformY < vars->ZBuffer[sprite])
+		vars->texX = (int)(256 * (sprite - (-vars->spriteWidth / 2 +
+		vars->spriteScreenX))
+		* texWidth / vars->spriteWidth) / 256;
+		if (vars->transformY > 0 && sprite > 0 && sprite < vars->screenwidth &&
+		vars->transformY < vars->ZBuffer[sprite])
 		{
 			i = vars->drawStartY;
-
 			while (i < vars->drawEndY)
 			{
 				d = (i)*256 - vars->screenheight * 128 + vars->spriteHeight * 128;
@@ -55,13 +57,11 @@ void draw_sprite(int color, t_vars *vars)
 	}
 }
 
-
-void draw_sky_floor(int x, int drawStart, int drawEnd, t_img *img, t_vars *vars)
+void	draw_sky_floor(int x, int drawStart, int drawEnd, t_img *img, t_vars *vars)
 {
 	int j;
 
 	j = 0;
-
 	while (j < (drawStart))
 	{
 		my_mlx_pixel_put(img, x, j, 0x19D9F0);

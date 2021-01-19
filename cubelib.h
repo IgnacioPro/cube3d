@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cubelib.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ihorcada <ihorcada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:20:27 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2020/12/14 13:13:24 by ihorcada         ###   ########.fr       */
+/*   Updated: 2021/01/17 11:59:04 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #define CUBELIB_H_
 
 #include "mlx.h"
+#include "libft/libft.h"
+#include "getnextline/get_next_line.h"
 
 // #define screenWidth 640
 // #define screenHeight 480
@@ -25,6 +27,39 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+typedef struct	s_data
+{
+	char		*linea;
+	char		*arg1;
+	char		*arg2;
+	int			x;
+	int			y;
+	int			i;
+	char		*north;
+	char		*east;
+	char		*west;
+	char		*south;
+	char		*sprite;
+	int			floor[3];
+	int			ceiling[3];
+	int			col;
+	int			comma;
+	int			rgb_error;
+	int			mapx;
+	int			mapy;
+	char		**map;
+	int			mapwidth;
+	int			coord_check;
+	int			c;
+	int			n_lines;
+	int			rl;
+	int			mapstart;
+	int			playerx;
+	int			playery;
+	int			argc;
+	int			fd;
+}				t_data;
 
 typedef struct s_sprite
 {
@@ -80,9 +115,7 @@ typedef struct s_vars
 	int text_width;
 	int text_height;
 	double step;
-
 	int *buffer;
-
 	void *img;
 	void *addr_img;
 	int         bits_per_pixel;
@@ -144,31 +177,67 @@ typedef struct s_vars
 	int screenwidth;
 } t_vars;
 
-int worldMap[mapWidth][mapHeight];
-// int move_player(int keycode, t_vars *vars);
-void my_mlx_pixel_put(t_img *imagen, int x, int y, int color);
-void draw_walls(int x, int drawStart, int drawEnd, int color, t_img *img, t_vars *vars);
-void load_textures(t_vars *vars);
-void draw_sky_floor(int x, int drawStart, int drawEnd, t_img *img, t_vars *vars);
-// void draw_floor(int x, int drawStart, int drawEnd, t_vars *vars);
-void draw_sprite(int color, t_vars *vars);
-double ft_abs(double n);
-void calculate_sprites(t_vars *vars);
-void textures_to_struc(t_vars *vars);
-int render_frame(t_vars *vars);
 
-int main(int argc, char *argv[] );
-void move_up(t_vars *vars);
-void move_down(t_vars *vars);
-// int on_keypress(t_vars *vars);
-void move_left(t_vars *vars);
-void move_right(t_vars *vars);
-void move_camera(t_vars *vars);
-void calculate_sprite_dist(t_vars *vars);
-void sort_sprites(t_vars *vars);
-void calculate_sprites(t_vars *vars);
-int move_player_press(int keycode, t_vars *vars);
-int move_player_release(int keycode, t_vars *vars);
-void sprite_dimensions(t_vars *vars);
+int		worldMap[mapWidth][mapHeight];
+void	my_mlx_pixel_put(t_img *imagen, int x, int y, int color);
+void	draw_walls(int x, int drawStart, int drawEnd, int color, t_img *img, t_vars *vars);
+void	load_textures(t_vars *vars);
+void	draw_sky_floor(int x, int drawStart, int drawEnd, t_img *img, t_vars *vars);
+void	draw_sprite(int color, t_vars *vars);
+double	ft_abs(double n);
+void	calculate_sprites(t_vars *vars);
+void	textures_to_struc(t_vars *vars);
+int		render_frame(t_vars *vars);
+
+// int		main(int argc, char *argv[] );
+void	move_up(t_vars *vars);
+void	move_down(t_vars *vars);
+void	move_left(t_vars *vars);
+void	move_right(t_vars *vars);
+void	move_camera(t_vars *vars);
+void	calculate_sprite_dist(t_vars *vars);
+void	sort_sprites(t_vars *vars);
+void	calculate_sprites(t_vars *vars);
+int		move_player_press(int keycode, t_vars *vars);
+int		move_player_release(int keycode, t_vars *vars);
+void	sprite_dimensions(t_vars *vars);
+
+void	texture_error(void);
+void	resolution_error(void);
+void	rgb_error(void);
+void	map_error(void);
+void	floor_color(t_data *data);
+void	ceiling_color(t_data *data);
+void	error_check(t_data *data);
+int		valid_rgb(int c);
+void	errors(t_data *data);
+void	error_opening_map(void);
+
+void	north_texture(t_data *data);
+void	south_texture(t_data *data);
+void	east_texture(t_data *data);
+void	west_texture(t_data *data);
+void	sprite_texture(t_data *data);
+
+int		valid_resolution(int c);
+void	resolution_format(t_data *data);
+void	get_resolution(t_data *data);
+
+void	opening1(t_data *data);
+void	opening2(t_data *data);
+void	opening3(t_data *data);
+void	formatter(t_data *data);
+void	file_reader(t_data *data);
+
+void	map_name_validator(t_data data);
+void	save_image_validator(t_data data);
+int		invalid_map_chars(int c);
+void	map_parser(t_data *data);
+void	map_store(t_data *data);
+int		check_map(char **map, int row, int col, t_data *data);
+void	vars_init(t_data *data, t_vars *vars);
+int		main(int argc, char *argv[]);
+int		main_raycaster(void);
+void	print_all(t_data *data);
 
 #endif

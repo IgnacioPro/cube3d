@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 12:14:47 by ihorcada          #+#    #+#             */
-/*   Updated: 2021/01/15 12:22:00 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/19 11:38:25 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	print_all(t_data *data)
 {
 	int i;
 
-	printf("\nLa resolucion x es: %d\nLa resolucion  y es: %d\n", data->x, data->y);
+	printf("La resolucion x es: %d\nLa resolucion  y es: %d\n", data->x, data->y);
 	printf("Norte:%s\n", data->north);
 	printf("Sur:%s\n", data->south);
 	printf("Este:%s\n", data->east);
@@ -43,35 +43,54 @@ void	print_all(t_data *data)
 	printf("Player Y: %d\n", data->playery);
 }
 
-void	vars_init(t_data *data)
-{
-	data->mapy = 0;
-	data->mapx = 0;
-	data->coord_check = 0;
-	data->c = 0;
-	data->n_lines = 0;
-	data->rl = 0;
-	data->rgb_error = 0;
-}
+// void	vars_init(t_data *data, t_vars *vars)
+// {
+// 	data->mapy = 0;
+// 	data->mapx = 0;
+// 	data->coord_check = 0;
+// 	data->c = 0;
+// 	data->n_lines = 0;
+// 	data->rl = 0;
+// 	data->rgb_error = 0;
+// 	vars->moveSpeed = 0.1;
+// 	vars->rotSpeed = 0.1;
+// 	vars->posX = 22;
+// 	vars->posY = 11;
+// 	vars->dirX = -1;
+// 	vars->dirY = 0;
+// 	vars->planeX = 0;
+// 	vars->planeY = 0.66;
+// 	vars->a = 0;
+// 	vars->d = 0;
+// 	vars->w = 0;
+// 	vars->s = 0;
+// 	vars->left = 0;
+// 	vars->right = 0;
+// 	vars->i = 0;
+// 	vars->screenheight = 480;
+// 	vars->screenwidth = 640;
+// }
 
-int		main(int argc, char *argv[])
-{
-	t_data	data;
+// int		main(int argc, char *argv[])
+// {
+// 	t_data	data;
+// 	t_vars	vars;
 
-	data.arg1 = argv[1];
-	data.arg2 = argv[2];
-	data.argc = argc;
-	vars_init(&data);
-	opening1(&data);
-	file_reader(&data);
-	errors(&data);
-	close(data.fd);
-	opening2(&data);
-	opening3(&data);
-	if (check_map(data.map, data.playerx, data.playery, &data))
-		map_error();
-	print_all(&data);
-	free(data.linea);
-	free(data.map);
-	return (0);
-}
+// 	data.arg1 = argv[1];
+// 	data.arg2 = argv[2];
+// 	data.argc = argc;
+// 	// vars_init(&data, &vars);
+// 	opening1(&data);
+// 	file_reader(&data);
+// 	errors(&data);
+// 	close(data.fd);
+// 	opening2(&data);
+// 	opening3(&data);
+// 	if (check_map(data.map, data.playerx, data.playery, &data))
+// 		map_error();
+// 	print_all(&data);
+// 	free(data.linea);
+// 	free(data.map);
+// 	// main_raycaster();
+// 	return (0);
+// }

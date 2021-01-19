@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 11:58:07 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/15 12:03:29 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/18 19:56:20 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,5 @@ void	get_resolution(t_data *data)
 	if (data->y <= 0 || data->x <= 0)
 		resolution_error();
 	data->n_lines++;
+	// free(data->linea);
 }

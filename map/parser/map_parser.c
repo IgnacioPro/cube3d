@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 12:16:05 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/15 12:17:32 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/19 19:26:32 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,25 @@ int		invalid_map_chars(int c)
 
 void	map_parser(t_data *data)
 {
-	char	*trim;
+	// char	*trim;
 	int		i;
 
 	i = 0;
-	trim = ft_strdup(data->linea);
-	while (trim[i])
+	// trim = (char*)malloc(ft_strlen(data->linea) * sizeof(char));
+	// trim = ft_strdup(data->linea);
+	while (data->linea[i])
 	{
-		if (invalid_map_chars(trim[i]))
+		if (invalid_map_chars(data->linea[i]))
 			map_error();
-		if (ft_strchr("NSEW", trim[i]))
+		if (ft_strchr("NSEW", data->linea[i]))
 			data->coord_check++;
 		i++;
 	}
+	// free(trim);
+	// free(data->linea);
 	data->mapy++;
 	if (i > data->mapx)
 		data->mapx = i;
-	free(trim);
 }
 
 void	map_store(t_data *data)
@@ -48,12 +50,14 @@ void	map_store(t_data *data)
 	int i;
 
 	i = 0;
-	data->map[data->c] = (char*)malloc((data->mapx + 1) * sizeof(char));
+	data->map[data->c] = (char*)malloc((data->mapx) * sizeof(char));
+	// data->map[data->c] = (char*)malloc((data->mapx + 1) * sizeof(char));
 	data->map[data->c] = ft_memset(data->map[data->c], ' ', data->mapx);
 	data->map[data->c][data->mapx] = '\0';
 	while (data->linea[i] != '\0')
 	{
-		data->map[data->c][i] = data->linea[i];
+		data->map[data->c][i] = (data->linea[i]);
+
 		if (data->linea[i] == ' ')
 			data->map[data->c][i] = ' ';
 		if (ft_strchr("NSEW", data->map[data->c][i]))
@@ -64,20 +68,20 @@ void	map_store(t_data *data)
 		}
 		i++;
 	}
+	// data->map[data->c][i] = '\0'; 
 	data->c++;
+	// free(data->linea);
 }
 
 int		check_map(char **map, int row, int col, t_data *data)
 {
-	char	c;
 	int		ok;
 
 	if (row < 0 || col < 0 || row >= data->mapy || col >= data->mapx)
 		return (1);
-	c = map[row][col];
-	if (c == ' ')
+	if (map[row][col] == ' ')
 		return (1);
-	else if (c == '3' || c == '1')
+	else if (map[row][col] == '3' || map[row][col] == '1')
 		return (0);
 	map[row][col] = '3';
 	ok = check_map(map, row, col - 1, data);
