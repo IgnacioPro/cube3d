@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/08 18:53:59 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/15 16:51:33 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/20 18:40:03 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	draw_walls(int x, int drawStart, int drawEnd, int color, t_img *img, t_vars
 	vars->step = 1.0 * texHeight / vars->lineHeight;
 	vars->texPos = (drawStart - vars->screenheight / 2 + 
 	vars->lineHeight / 2) * vars->step;
-	while (drawStart <= drawEnd)
+	while (drawStart < drawEnd) //cambiado de <=
 	{
 		vars->texY = (int)vars->texPos;
 		vars->texPos += vars->step;
@@ -67,7 +67,7 @@ void	draw_sky_floor(int x, int drawStart, int drawEnd, t_img *img, t_vars *vars)
 		my_mlx_pixel_put(img, x, j, 0x19D9F0);
 		j++;
 	}
-	j = drawEnd + 1;
+	j = drawEnd;
 	while (j < vars->screenheight && j > 0)
 	{
 		my_mlx_pixel_put(img, x, j, 0xED1010);

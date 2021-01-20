@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 12:16:05 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/19 19:26:32 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/20 18:35:08 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	map_store(t_data *data)
 	int i;
 
 	i = 0;
-	data->map[data->c] = (char*)malloc((data->mapx) * sizeof(char));
+	data->map[data->c] = (char*)malloc((data->mapx + 1) * sizeof(char));
 	// data->map[data->c] = (char*)malloc((data->mapx + 1) * sizeof(char));
 	data->map[data->c] = ft_memset(data->map[data->c], ' ', data->mapx);
 	data->map[data->c][data->mapx] = '\0';
