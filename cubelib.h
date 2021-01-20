@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:20:27 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/17 11:59:04 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/20 18:50:28 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ typedef struct s_vars
 	int *textureBuffer;
 
 	int lineHeight;
-	double ZBuffer[640]; // cambiar a dinámico
+	double *ZBuffer; // cambiar a dinámico
 	double invDet;
 	double transformX;
 	double transformY;

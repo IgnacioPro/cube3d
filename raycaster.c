@@ -364,8 +364,7 @@ void	vars_init(t_data *data, t_vars *vars)
 	vars->left = 0;
 	vars->right = 0;
 	vars->i = 0;
-	vars->screenheight = 480;
-	vars->screenwidth = 640;
+
 }
 
 int main(int argc, char *argv[])
@@ -386,6 +385,9 @@ int main(int argc, char *argv[])
 	if (check_map(data.map, data.playerx, data.playery, &data))
 		map_error();
 	print_all(&data);
+	vars.screenheight = data.y;
+	vars.screenwidth = data.x;
+	vars.ZBuffer = (double*)malloc(data.x * sizeof(double));
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, vars.screenwidth, vars.screenheight, "cub3D");
 	load_textures(&vars);
