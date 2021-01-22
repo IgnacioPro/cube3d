@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 12:16:05 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/20 18:35:08 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/22 19:49:20 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,9 @@ int		invalid_map_chars(int c)
 
 void	map_parser(t_data *data)
 {
-	// char	*trim;
 	int		i;
 
 	i = 0;
-	// trim = (char*)malloc(ft_strlen(data->linea) * sizeof(char));
-	// trim = ft_strdup(data->linea);
 	while (data->linea[i])
 	{
 		if (invalid_map_chars(data->linea[i]))
@@ -38,50 +35,87 @@ void	map_parser(t_data *data)
 			data->coord_check++;
 		i++;
 	}
-	// free(trim);
-	// free(data->linea);
 	data->mapy++;
 	if (i > data->mapx)
 		data->mapx = i;
 }
 
-void	map_store(t_data *data)
+void	map_store(t_data *data, t_vars *vars)
 {
 	int i;
 
 	i = 0;
 	data->map[data->c] = (char*)malloc((data->mapx + 1) * sizeof(char));
-	// data->map[data->c] = (char*)malloc((data->mapx + 1) * sizeof(char));
+	// data->map_eval[data->c] = (char*)malloc((data->mapx + 1) * sizeof(char));
+	vars->worldmap[data->c] = (char*)malloc((data->mapx + 1) * sizeof(char));
+	
 	data->map[data->c] = ft_memset(data->map[data->c], ' ', data->mapx);
+	// data->map_eval[data->c] = ft_memset(data->map_eval[data->c], ' ', data->mapx);
+	vars->worldmap[data->c] = ft_memset(vars->worldmap[data->c], ' ', data->mapx);
 	data->map[data->c][data->mapx] = '\0';
+	// data->map_eval[data->c][data->mapx] = '\0';
+	vars->worldmap[data->c][data->mapx] = '\0';
+
 	while (data->linea[i] != '\0')
 	{
 		data->map[data->c][i] = (data->linea[i]);
-
+		// data->map_eval[data->c][i] = (data->linea[i]);
+		vars->worldmap[data->c][i] = (data->linea[i]);
+		
 		if (data->linea[i] == ' ')
+		{
 			data->map[data->c][i] = ' ';
+			// data->map_eval[data->c][i] = ' ';
+			vars->worldmap[data->c][i] = ' ';
+		}
+
 		if (ft_strchr("NSEW", data->map[data->c][i]))
 		{
 			data->playerx = data->c;
 			data->playery = i;
+			if (data->map[data->playerx][data->playery] == 'S')
+			{
+				vars->planeX = 0.66;
+				vars->planeY = 0;
+				vars->dirX = 0;
+				vars->dirY = 1;
+			}
+			if (data->map[data->playerx][data->playery] == 'N')
+			{
+				vars->planeX = -0.66;
+				vars->planeY = 0;
+				vars->dirX = 0;
+				vars->dirY = -1;
+			}
+			if (data->map[data->playerx][data->playery] == 'E')
+			{
+				vars->planeX = 0;
+				vars->planeY = -0.66;
+				vars->dirX = 1;
+				vars->dirY = 0;
+			}
+			
 			data->map[data->playerx][data->playery] = '0';
+			// data->map_eval[data->playerx][data->playery] = '0';
+			vars->worldmap[data->playerx][data->playery] = '0';
+			
 		}
 		i++;
 	}
-	// data->map[data->c][i] = '\0'; 
 	data->c++;
-	// free(data->linea);
 }
 
 int		check_map(char **map, int row, int col, t_data *data)
 {
 	int		ok;
+	char c;
 
 	if (row < 0 || col < 0 || row >= data->mapy || col >= data->mapx)
 		return (1);
-	if (map[row][col] == ' ')
+	c = map[row][col];
+	if (c == ' ')
 		return (1);
-	else if (map[row][col] == '3' || map[row][col] == '1')
+	else if (c == '3' || c == '1')
 		return (0);
 	map[row][col] = '3';
 	ok = check_map(map, row, col - 1, data);

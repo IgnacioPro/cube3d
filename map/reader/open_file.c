@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 12:06:35 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/19 20:31:10 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/22 19:39:37 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	opening1(t_data *data)
 		save_image_validator(*data);
 }
 
-void	opening2(t_data *data)
+void	opening2(t_data *data, t_vars *vars)
 {
 	int fd;
 	int z;
@@ -49,10 +49,13 @@ void	opening2(t_data *data)
 		free(data->linea);
 	}
 	data->map = (char**)malloc(data->mapy * (sizeof(char*)));
+	// data->map_eval = (char**)malloc(data->mapy * (sizeof(char*)));
+	vars->worldmap = (char**)malloc(data->mapy * (sizeof(char*)));
+
 	close(fd);
 }
 
-void	opening3(t_data *data)
+void	opening3(t_data *data, t_vars *vars)
 {
 	int fd;
 	int i;
@@ -67,7 +70,7 @@ void	opening3(t_data *data)
 		if (z < data->mapstart)
 			z++;
 		else
-			map_store(data);
+			map_store(data, vars);
 		free(data->linea);
 	}
 	close(fd);

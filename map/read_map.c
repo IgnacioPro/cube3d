@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 12:14:47 by ihorcada          #+#    #+#             */
-/*   Updated: 2021/01/19 11:38:25 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/22 19:43:19 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 void	print_all(t_data *data)
 {
-	int i;
+	// int i;
 
 	printf("La resolucion x es: %d\nLa resolucion  y es: %d\n", data->x, data->y);
 	printf("Norte:%s\n", data->north);
@@ -32,12 +32,12 @@ void	print_all(t_data *data)
 	printf("Ceiling 3:%d\n", data->ceiling[2]);
 	printf("\nMapx: %d\n", data->mapx);
 	printf("Mapy: %d\n", data->mapy);
-	i = 0;
-	while (i < data->mapy)
-	{
-		printf("%s\n", data->map[i]);
-		i++;
-	}
+	// i = 0;
+	// while (i < data->mapy)
+	// {
+	// 	printf("%s\n", vars->worldmap[i]);
+	// 	i++;
+	// }
 	printf("Map start: %d\n", data->mapstart);
 	printf("Player X: %d\n", data->playerx);
 	printf("Player Y: %d\n", data->playery);

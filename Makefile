@@ -16,7 +16,7 @@ SRCS		= 	raycaster.c \
 
 OBJS		= ${SRCS:.c=.o}
 NAME		= cub3D
-CC = gcc -Wall -Werror -Wextra -fsanitize=address
+CC = gcc -Wall -Werror -Wextra
 RM			= rm -f
 CFLAGS		= -g3 -g
 FRAMEWORK	= -lz -L . -lmlx  -framework OpenGL -framework AppKit

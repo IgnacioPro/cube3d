@@ -1,11 +1,16 @@
-R 700 700
-NO ./wolftex/greystone.png
-EA ./wolftex/wood.png
-SO ./wolftex/redbrick.png
-WE ./wolftex/wood.png
-S ./wolftex/barrel.png
+R 300 250
+NO ./srcs/textures/colorstone.xpm
+EA ./srcs/textures/greystone.xpm
+SO ./srcs/textures/mossy.xpm
+WE ./srcs/textures/purplestone.xpm
+S ./srcs/textures/pillar.xpm
 C 11,11,111
 F 123,144,245
-111
-1N1
-111
+
+
+111111111
+100000001
+100000001
+10N000001
+100000001
+111111111

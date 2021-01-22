@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:20:27 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/20 18:50:28 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/22 20:10:59 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 
 // #define screenWidth 640
 // #define screenHeight 480
-#define mapWidth 24
-#define mapHeight 24
 #define texWidth 64
 #define texHeight 64
 
@@ -124,7 +122,7 @@ typedef struct s_vars
 	int *textureBuffer;
 
 	int lineHeight;
-	double *ZBuffer; // cambiar a dinámico
+	double *ZBuffer;
 	double invDet;
 	double transformX;
 	double transformY;
@@ -175,13 +173,15 @@ typedef struct s_vars
 
 	int screenheight;
 	int screenwidth;
+	char **worldmap;
+	int mapheight;
+	int mapwidth;
 } t_vars;
 
 
-int		worldMap[mapWidth][mapHeight];
 void	my_mlx_pixel_put(t_img *imagen, int x, int y, int color);
 void	draw_walls(int x, int drawStart, int drawEnd, int color, t_img *img, t_vars *vars);
-void	load_textures(t_vars *vars);
+void	load_textures(t_vars *vars, t_data *data);
 void	draw_sky_floor(int x, int drawStart, int drawEnd, t_img *img, t_vars *vars);
 void	draw_sprite(int color, t_vars *vars);
 double	ft_abs(double n);
@@ -197,7 +197,6 @@ void	move_right(t_vars *vars);
 void	move_camera(t_vars *vars);
 void	calculate_sprite_dist(t_vars *vars);
 void	sort_sprites(t_vars *vars);
-void	calculate_sprites(t_vars *vars);
 int		move_player_press(int keycode, t_vars *vars);
 int		move_player_release(int keycode, t_vars *vars);
 void	sprite_dimensions(t_vars *vars);
@@ -224,8 +223,8 @@ void	resolution_format(t_data *data);
 void	get_resolution(t_data *data);
 
 void	opening1(t_data *data);
-void	opening2(t_data *data);
-void	opening3(t_data *data);
+void	opening2(t_data *data, t_vars *vars);
+void	opening3(t_data *data, t_vars *vars);
 void	formatter(t_data *data);
 void	file_reader(t_data *data);
 
@@ -233,7 +232,7 @@ void	map_name_validator(t_data data);
 void	save_image_validator(t_data data);
 int		invalid_map_chars(int c);
 void	map_parser(t_data *data);
-void	map_store(t_data *data);
+void	map_store(t_data *data, t_vars *vars);
 int		check_map(char **map, int row, int col, t_data *data);
 void	vars_init(t_data *data, t_vars *vars);
 int		main(int argc, char *argv[]);

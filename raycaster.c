@@ -1,32 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycaster.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/22 11:58:33 by IgnacioHB         #+#    #+#             */
+/*   Updated: 2021/01/22 20:31:37 by IgnacioHB        ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
 #include "cubelib.h"
 #include "./getnextline/get_next_line_bonus.h"
-
-int worldMap[mapWidth][mapHeight] =
-	{
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-		{1, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 2, 2, 0, 2, 2, 0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1},
-		{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1},
-		{1, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1},
-		{1, 2, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 2, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 2, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 2, 0, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
 
 void	my_mlx_pixel_put(t_img *imagen, int x, int y, int color)
 {
@@ -70,14 +56,18 @@ void	sprite_dimensions(t_vars *vars)
 	}
 }
 
-void	load_textures(t_vars *vars)
+void	load_textures(t_vars *vars, t_data *data)
 {
-	vars->norte.img = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/mossy.xpm", &vars->norte.height, &vars->norte.width);
-	vars->sur.img = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/redbrick.xpm", &vars->sur.height, &vars->sur.width);
-	vars->este.img = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/wood.xpm", &vars->este.height, &vars->este.width);
-	vars->oeste.img = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/greystone.xpm", &vars->oeste.height, &vars->oeste.width);
-	vars->suelo.img = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/colorstone.xpm", &vars->suelo.height, &vars->suelo.width);
-	vars->columna.img = mlx_xpm_file_to_image(vars->mlx, "./srcs/textures/pillar.xpm", &vars->columna.height, &vars->columna.width);
+	if (!(vars->norte.img = mlx_xpm_file_to_image(vars->mlx, data->north, &vars->norte.height, &vars->norte.width)))
+		texture_error();
+	if (!(vars->sur.img = mlx_xpm_file_to_image(vars->mlx, data->south, &vars->sur.height, &vars->sur.width)))
+		texture_error();
+	if (!(vars->este.img = mlx_xpm_file_to_image(vars->mlx, data->east, &vars->este.height, &vars->este.width)))
+		texture_error();
+	if (!(vars->oeste.img = mlx_xpm_file_to_image(vars->mlx, data->west, &vars->oeste.height, &vars->oeste.width)))
+		texture_error();
+	if (!(vars->columna.img = mlx_xpm_file_to_image(vars->mlx, data->sprite, &vars->columna.height, &vars->columna.width)))
+		texture_error();
 }
 
 int move_player_press(int keycode, t_vars *vars)
@@ -168,12 +158,12 @@ void calculate_sprites(t_vars *vars)
 
 	i = 0;
 	x = 0;
-	while (x < mapWidth)
+	while (x < vars->mapwidth)
 	{
 		y = 0;
-		while (y < mapHeight)
+		while (y < vars->mapheight)
 		{
-			if (worldMap[x][y] == 2)
+			if (vars->worldmap[x][y] == '2')
 				i++;
 			y++;
 		}
@@ -183,16 +173,16 @@ void calculate_sprites(t_vars *vars)
 	vars->sprite = (t_sprite *)malloc(i * sizeof(t_sprite));
 	x = 0;
 	i = 0;
-	while (x < mapWidth)
+	while (x < vars->mapwidth)
 	{
 		y = 0;
 
-		while (y < mapHeight)
+		while (y < vars->mapheight)
 		{
-			if (worldMap[x][y] == 2)
+			if (vars->worldmap[x][y] == '2')
 			{
-				vars->sprite[i].coordX = x;
-				vars->sprite[i].coordY = y;
+				vars->sprite[i].coordX = y;
+				vars->sprite[i].coordY = x;
 				i++;
 			}
 			y++;
@@ -228,7 +218,6 @@ int render_frame(t_vars *vars)
 	vars->imagen.img = mlx_new_image(vars->mlx, vars->screenwidth, vars->screenheight);
 	vars->imagen.addr = mlx_get_data_addr(vars->imagen.img, &vars->imagen.bits_per_pixel, &vars->imagen.line_length, &vars->imagen.endian);
 	vars->i = 0;
-
 
 	while (vars->i < vars->screenwidth)
 	{
@@ -281,7 +270,7 @@ int render_frame(t_vars *vars)
 				vars->mapY += vars->stepY;
 				vars->side = 1;
 			}
-			if (worldMap[vars->mapX][vars->mapY] == 1)
+			if (vars->worldmap[vars->mapY][vars->mapX] == '1') //problemas aquí al cocharme con algunos muros
 				vars->hit = 1;
 		}
 		if (vars->side == 0)
@@ -350,9 +339,9 @@ void	vars_init(t_data *data, t_vars *vars)
 	data->rl = 0;
 	data->rgb_error = 0;
 	vars->moveSpeed = 0.1;
-	vars->rotSpeed = 0.1;
-	vars->posX = 22;
-	vars->posY = 11;
+	vars->rotSpeed = 0.05;
+	vars->posX = 0;
+	vars->posY = 0;
 	vars->dirX = -1;
 	vars->dirY = 0;
 	vars->planeX = 0;
@@ -364,7 +353,6 @@ void	vars_init(t_data *data, t_vars *vars)
 	vars->left = 0;
 	vars->right = 0;
 	vars->i = 0;
-
 }
 
 int main(int argc, char *argv[])
@@ -380,31 +368,34 @@ int main(int argc, char *argv[])
 	file_reader(&data);
 	errors(&data);
 	close(data.fd);
-	opening2(&data);
-	opening3(&data);
+	opening2(&data, &vars);
+	opening3(&data, &vars);
 	if (check_map(data.map, data.playerx, data.playery, &data))
 		map_error();
 	print_all(&data);
 	vars.screenheight = data.y;
 	vars.screenwidth = data.x;
+	vars.mapheight = data.mapx;
+	vars.mapwidth = data.mapy;
+	vars.posX = data.playery;
+	vars.posY = data.playerx;
 	vars.ZBuffer = (double*)malloc(data.x * sizeof(double));
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, vars.screenwidth, vars.screenheight, "cub3D");
-	load_textures(&vars);
+	load_textures(&vars, &data);
 	calculate_sprites(&vars);
 	mlx_loop_hook(vars.mlx, render_frame, &vars);
 	mlx_hook(vars.win, 2, 1L << 0, move_player_press, &vars);
 	mlx_hook(vars.win, 3, 1L << 1, move_player_release, &vars);
 	mlx_hook(vars.win, 17, 0L, close_x, &vars);
+	printf("Number of sprites: %d\n", vars.num_sprites);
+	int i = 0;
+	while (i < data.mapy)
+	{
+		printf("%s\n", vars.worldmap[i]);
+		i++;
+	}
 	mlx_loop(vars.mlx);
 	mlx_destroy_window(vars.mlx, vars.win);
-	// free(data.north);
-	// free(data.south);
-	// free(data.east);
-	// free(data.west);
-	// free(data.sprite);
-	// free(data.playerx);
-	// free(data.playery);
-
 	return(0);
 }
