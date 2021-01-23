@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 12:16:05 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/22 19:49:20 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/23 13:22:05 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,21 +73,21 @@ void	map_store(t_data *data, t_vars *vars)
 		{
 			data->playerx = data->c;
 			data->playery = i;
-			if (data->map[data->playerx][data->playery] == 'S')
+			if (data->map[data->playerx][data->playery] == 'E')
 			{
 				vars->planeX = 0.66;
 				vars->planeY = 0;
 				vars->dirX = 0;
 				vars->dirY = 1;
 			}
-			if (data->map[data->playerx][data->playery] == 'N')
+			if (data->map[data->playerx][data->playery] == 'W')
 			{
 				vars->planeX = -0.66;
 				vars->planeY = 0;
 				vars->dirX = 0;
 				vars->dirY = -1;
 			}
-			if (data->map[data->playerx][data->playery] == 'E')
+			if (data->map[data->playerx][data->playery] == 'S')
 			{
 				vars->planeX = 0;
 				vars->planeY = -0.66;

@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 11:58:33 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/22 20:31:37 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/23 13:30:10 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,8 +181,8 @@ void calculate_sprites(t_vars *vars)
 		{
 			if (vars->worldmap[x][y] == '2')
 			{
-				vars->sprite[i].coordX = y;
-				vars->sprite[i].coordY = x;
+				vars->sprite[i].coordX = x;
+				vars->sprite[i].coordY = y;
 				i++;
 			}
 			y++;
@@ -221,62 +221,64 @@ int render_frame(t_vars *vars)
 
 	while (vars->i < vars->screenwidth)
 	{
+		vars->hit = 0;
+
 		vars->cameraX = 2 * vars->i / (double)vars->screenwidth - 1;
 		vars->rayDirX = vars->dirX + vars->planeX * vars->cameraX;
 		vars->rayDirY = vars->dirY + vars->planeY * vars->cameraX;
-		vars->mapX = (int)vars->posX; // casteado a int
-		vars->mapY = (int)vars->posY; // casteado a int
+		vars->mapY = (int)vars->posX; // casteado a int
+		vars->mapX = (int)vars->posY; // casteado a int
 		
 		vars->deltaDistX = fabs(1 / vars->rayDirX);
 		vars->deltaDistY = fabs(1 / vars->rayDirY);
 
 		// vars->deltaDistX = (vars->rayDirY == 0) ? 0 : ((vars->rayDirX == 0) ? 1 : fabs(1 / vars->rayDirX));
       	// vars->deltaDistY = (vars->rayDirX == 0) ? 0 : ((vars->rayDirY == 0) ? 1 : fabs(1 / vars->rayDirY));
-		vars->hit = 0;
+		// vars->hit = 0;
 		// double texPos;
 		// int texX;
 
 		if (vars->rayDirX < 0)
 		{
 			vars->stepX = -1;
-			vars->sideDistX = (vars->posX - vars->mapX) * vars->deltaDistX;
+			vars->sideDistX = (vars->posX - vars->mapY) * vars->deltaDistX;
 		}
 		else
 		{
 			vars->stepX = 1;
-			vars->sideDistX = (vars->mapX + 1.0 - vars->posX) * vars->deltaDistX;
+			vars->sideDistX = (vars->mapY + 1.0 - vars->posX) * vars->deltaDistX;
 		}
 		if (vars->rayDirY < 0)
 		{
 			vars->stepY = -1;
-			vars->sideDistY = (vars->posY - vars->mapY) * vars->deltaDistY;
+			vars->sideDistY = (vars->posY - vars->mapX) * vars->deltaDistY;
 		}
 		else
 		{
 			vars->stepY = 1;
-			vars->sideDistY = (vars->mapY + 1.0 - vars->posY) * vars->deltaDistY;
+			vars->sideDistY = (vars->mapX + 1.0 - vars->posY) * vars->deltaDistY;
 		}
 		while (vars->hit == 0)
 		{
 			if (vars->sideDistX < vars->sideDistY)
 			{
 				vars->sideDistX += vars->deltaDistX;
-				vars->mapX += vars->stepX;
+				vars->mapY += vars->stepX;
 				vars->side = 0;
 			}
 			else
 			{
 				vars->sideDistY += vars->deltaDistY;
-				vars->mapY += vars->stepY;
+				vars->mapX += vars->stepY;
 				vars->side = 1;
 			}
 			if (vars->worldmap[vars->mapY][vars->mapX] == '1') //problemas aquí al cocharme con algunos muros
 				vars->hit = 1;
 		}
 		if (vars->side == 0)
-			vars->perpWallDist = (vars->mapX - vars->posX + (1 - vars->stepX) / 2) / vars->rayDirX;
+			vars->perpWallDist = (vars->mapY - vars->posX + (1 - vars->stepX) / 2) / vars->rayDirX;
 		else
-			vars->perpWallDist = (vars->mapY - vars->posY + (1 - vars->stepY) / 2) / vars->rayDirY;
+			vars->perpWallDist = (vars->mapX - vars->posY + (1 - vars->stepY) / 2) / vars->rayDirY;
 
 		vars->lineHeight = (int)(vars->screenheight / vars->perpWallDist);
 		vars->drawStart = -vars->lineHeight / 2 + vars->screenheight / 2;
@@ -339,7 +341,7 @@ void	vars_init(t_data *data, t_vars *vars)
 	data->rl = 0;
 	data->rgb_error = 0;
 	vars->moveSpeed = 0.1;
-	vars->rotSpeed = 0.05;
+	vars->rotSpeed = 0.1;
 	vars->posX = 0;
 	vars->posY = 0;
 	vars->dirX = -1;
@@ -377,8 +379,8 @@ int main(int argc, char *argv[])
 	vars.screenwidth = data.x;
 	vars.mapheight = data.mapx;
 	vars.mapwidth = data.mapy;
-	vars.posX = data.playery;
-	vars.posY = data.playerx;
+	vars.posX = data.playerx;
+	vars.posY = data.playery;
 	vars.ZBuffer = (double*)malloc(data.x * sizeof(double));
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, vars.screenwidth, vars.screenheight, "cub3D");

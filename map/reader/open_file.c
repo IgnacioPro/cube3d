@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 12:06:35 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/22 19:39:37 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/22 22:29:17 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	opening2(t_data *data, t_vars *vars)
 		free(data->linea);
 	}
 	data->map = (char**)malloc(data->mapy * (sizeof(char*)));
-	// data->map_eval = (char**)malloc(data->mapy * (sizeof(char*)));
 	vars->worldmap = (char**)malloc(data->mapy * (sizeof(char*)));
 
 	close(fd);

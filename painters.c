@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/08 18:53:59 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/22 20:02:12 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/23 13:39:45 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	draw_sprite(int color, t_vars *vars)
 		vars->texX = (int)(256 * (sprite - (-vars->spriteWidth / 2 +
 		vars->spriteScreenX))
 		* texWidth / vars->spriteWidth) / 256;
-		if (vars->transformY > 0 && sprite > 0 && sprite < vars->screenwidth &&
+		if (vars->transformY > 0.01 && sprite > 0.01 && sprite < vars->screenwidth &&
 		vars->transformY < vars->ZBuffer[sprite])
 		{
 			i = vars->drawStartY;
