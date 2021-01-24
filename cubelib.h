@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:20:27 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/22 20:10:59 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/24 16:57:26 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ typedef struct s_sprite
 {
   double x;
   double y;
-  int coordX;
-  int coordY;
+  int cx;
+  int cy;
   double distance;
   int tmp;
 }				t_sprite;
@@ -101,8 +101,8 @@ typedef struct s_vars
 	double posY;
 	double dirX;
 	double dirY;
-	double planeX;
-	double planeY;
+	double px;
+	double py;
 	int texY;
 	double texPos;
 	int texX;
@@ -124,10 +124,10 @@ typedef struct s_vars
 	int lineHeight;
 	double *ZBuffer;
 	double invDet;
-	double transformX;
-	double transformY;
+	double t_x;
+	double t_y;
 
-	int spriteScreenX;
+	int screenx;
 	int spriteHeight;
 	int drawStartY;
 	int drawEndY;
@@ -161,7 +161,7 @@ typedef struct s_vars
 	int hit;
 	int drawStart;
 	int drawEnd;
-	int counter;
+	int c;
 	int i;
 
 	int a;
@@ -235,8 +235,10 @@ void	map_parser(t_data *data);
 void	map_store(t_data *data, t_vars *vars);
 int		check_map(char **map, int row, int col, t_data *data);
 void	vars_init(t_data *data, t_vars *vars);
+void	data_init(t_data *data, t_vars *vars);
 int		main(int argc, char *argv[]);
 int		main_raycaster(void);
 void	print_all(t_data *data);
+void	sprite_size(t_vars *vars);
 
 #endif

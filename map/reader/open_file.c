@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 12:06:35 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/22 22:29:17 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/24 13:59:23 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ void	opening3(t_data *data, t_vars *vars)
 	}
 	close(fd);
 	if (data->coord_check != 1 || data->n_lines != 8)
+		map_error();
+	if (check_map(data->map, data->playerx, data->playery, data))
 		map_error();
 }
 

@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 12:16:05 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/23 13:22:05 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/24 16:48:01 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	map_store(t_data *data, t_vars *vars)
 	
 	data->map[data->c] = ft_memset(data->map[data->c], ' ', data->mapx);
 	// data->map_eval[data->c] = ft_memset(data->map_eval[data->c], ' ', data->mapx);
-	vars->worldmap[data->c] = ft_memset(vars->worldmap[data->c], ' ', data->mapx);
+	vars->worldmap[data->c] = ft_memset(vars->worldmap[data->c], '1', data->mapx);
 	data->map[data->c][data->mapx] = '\0';
 	// data->map_eval[data->c][data->mapx] = '\0';
 	vars->worldmap[data->c][data->mapx] = '\0';
@@ -66,31 +66,31 @@ void	map_store(t_data *data, t_vars *vars)
 		{
 			data->map[data->c][i] = ' ';
 			// data->map_eval[data->c][i] = ' ';
-			vars->worldmap[data->c][i] = ' ';
+			vars->worldmap[data->c][i] = '1';
 		}
 
 		if (ft_strchr("NSEW", data->map[data->c][i]))
 		{
 			data->playerx = data->c;
 			data->playery = i;
-			if (data->map[data->playerx][data->playery] == 'E')
+			if (vars->worldmap[data->playerx][data->playery] == 'E')
 			{
-				vars->planeX = 0.66;
-				vars->planeY = 0;
+				vars->px = 0.66;
+				vars->py = 0;
 				vars->dirX = 0;
 				vars->dirY = 1;
 			}
-			if (data->map[data->playerx][data->playery] == 'W')
+			if (vars->worldmap[data->playerx][data->playery] == 'W')
 			{
-				vars->planeX = -0.66;
-				vars->planeY = 0;
+				vars->px = -0.66;
+				vars->py = 0;
 				vars->dirX = 0;
 				vars->dirY = -1;
 			}
-			if (data->map[data->playerx][data->playery] == 'S')
+			if (vars->worldmap[data->playerx][data->playery] == 'S')
 			{
-				vars->planeX = 0;
-				vars->planeY = -0.66;
+				vars->px = 0;
+				vars->py = -0.66;
 				vars->dirX = 1;
 				vars->dirY = 0;
 			}
@@ -98,9 +98,11 @@ void	map_store(t_data *data, t_vars *vars)
 			data->map[data->playerx][data->playery] = '0';
 			// data->map_eval[data->playerx][data->playery] = '0';
 			vars->worldmap[data->playerx][data->playery] = '0';
-			
+			if (data->map[data->c][i] == '\0')
+				vars->worldmap[data->c][i] = '1';
 		}
 		i++;
+
 	}
 	data->c++;
 }
