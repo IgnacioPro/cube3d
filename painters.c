@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/08 18:53:59 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/24 12:25:16 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/24 17:50:52 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	draw_walls(int x, int drawStart, int drawEnd, int color, t_img *img, t_vars
 	vars->step = 1.0 * texHeight / vars->lineHeight;
 	vars->texPos = (drawStart - vars->screenheight / 2 + 
 	vars->lineHeight / 2) * vars->step;
-	while (drawStart < drawEnd) //cambiado de <=
+	while (drawStart <= drawEnd) //cambiado de <=
 	{
 		vars->texY = (int)vars->texPos;
 		vars->texPos += vars->step;

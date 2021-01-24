@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 11:58:33 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/24 17:47:59 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/24 18:03:19 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,49 +79,6 @@ void	load_textures(t_vars *vars, t_data *data)
 		texture_error();
 }
 
-int		move_player_press(int keycode, t_vars *vars)
-{
-	if (keycode == 13)
-		vars->w = 1;
-	if (keycode == 1)
-		vars->s = 1;
-	if (keycode == 0)
-		vars->a = 1;
-	if (keycode == 2)
-		vars->d = 1;
-	if (keycode == 124)
-		vars->right = 1;
-	if (keycode == 123)
-		vars->left = 1;
-	if (keycode == 53)
-	{
-		mlx_destroy_window(vars->mlx, vars->win);
-		exit(0);
-	}
-	return (0);
-}
-
-int		move_player_release(int keycode, t_vars *vars)
-{
-	if (keycode == 13)
-		vars->w = 0;
-	if (keycode == 1)
-		vars->s = 0;
-	if (keycode == 0)
-		vars->a = 0;
-	if (keycode == 2)
-		vars->d = 0;
-	if (keycode == 124)
-		vars->right = 0;
-	if (keycode == 123)
-		vars->left = 0;
-	if (keycode == 53)
-	{
-		mlx_destroy_window(vars->mlx, vars->win);
-		exit(0);
-	}
-	return (0);
-}
 
 void	calculate_sprite_dist(t_vars *vars)
 {

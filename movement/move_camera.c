@@ -6,11 +6,11 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 19:20:40 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/24 16:41:18 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/24 18:00:57 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cubelib.h"
+#include "../cubelib.h"
 
 void	move_camera(t_vars *vars)
 {

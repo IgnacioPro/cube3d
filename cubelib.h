@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:20:27 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/24 17:47:54 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/24 17:52:08 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,9 +240,9 @@ int		main(int argc, char *argv[]);
 int		main_raycaster(void);
 void	print_all(t_data *data);
 void	sprite_size(t_vars *vars);
-void sprites_coord(t_vars *vars);
-void render(t_vars *vars);
-void calculate_ray(t_vars *vars);
+void	sprites_coord(t_vars *vars);
+void	render(t_vars *vars);
+void	calculate_ray(t_vars *vars);
 void	calculate_side_dist(t_vars *vars);
 void	calculate_tex_walls(t_vars *vars);
 

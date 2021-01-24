@@ -1,6 +1,6 @@
 SRCS		= 	raycaster.c \
-				move_camera.c \
-				move_player.c \
+				./movement/move_camera.c \
+				./movement/move_player.c \
 				painters.c \
 				./getnextline/get_next_line_bonus.c \
 				./getnextline/get_next_line_utils_bonus.c \
@@ -12,7 +12,8 @@ SRCS		= 	raycaster.c \
 				./map/colors/get_colors.c \
 				./map/colors/rgb_errors.c \
 				./map/parser/map_parser.c \
-				./map/read_map.c
+				./map/read_map.c \
+				./movement/key_events.c
 
 OBJS		= ${SRCS:.c=.o}
 NAME		= cub3D

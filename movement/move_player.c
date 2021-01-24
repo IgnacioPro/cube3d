@@ -6,11 +6,11 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:17:37 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/24 11:54:42 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/24 18:02:04 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cubelib.h"
+#include "../cubelib.h"
 
 void	move_up(t_vars *vars)
 {
@@ -102,3 +102,4 @@ void	move_right(t_vars *vars)
 		// 	vars->posY -= vars->dirX * vars->moveSpeed;
 	}
 }
+
