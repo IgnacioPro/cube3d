@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 11:58:33 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/24 17:01:01 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/24 17:47:59 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,15 @@ void	calculate_sprites(t_vars *vars)
 	}
 	vars->num_sprites = i;
 	vars->sprite = (t_sprite *)malloc(i * sizeof(t_sprite));
+	sprites_coord(vars);
+}
+
+void	sprites_coord(t_vars *vars)
+{
+	int x;
+	int i;
+	int y;
+
 	x = 0;
 	i = 0;
 	while (x < vars->mapwidth)
@@ -241,77 +250,98 @@ int		render_frame(t_vars *vars)
 		vars->mapX = (int)vars->posY;
 		vars->deltaDistX = fabs(1 / vars->rayDirX);
 		vars->deltaDistY = fabs(1 / vars->rayDirY);
-		vars->hit = 0;
-		if (vars->rayDirX < 0)
-		{
-			vars->stepX = -1;
-			vars->sideDistX = (vars->posX - vars->mapY) * vars->deltaDistX;
-		}
-		else
-		{
-			vars->stepX = 1;
-			vars->sideDistX = (vars->mapY + 1.0 - vars->posX)
-			* vars->deltaDistX;
-		}
-		if (vars->rayDirY < 0)
-		{
-			vars->stepY = -1;
-			vars->sideDistY = (vars->posY - vars->mapX) * vars->deltaDistY;
-		}
-		else
-		{
-			vars->stepY = 1;
-			vars->sideDistY = (vars->mapX + 1.0 - vars->posY)
-			* vars->deltaDistY;
-		}
-		while (vars->hit == 0)
-		{
-			if (vars->sideDistX < vars->sideDistY)
-			{
-				vars->sideDistX += vars->deltaDistX;
-				vars->mapY += vars->stepX;
-				vars->side = 0;
-			}
-			else
-			{
-				vars->sideDistY += vars->deltaDistY;
-				vars->mapX += vars->stepY;
-				vars->side = 1;
-			}
-			if (vars->worldmap[vars->mapY][vars->mapX] == '1')
-				vars->hit = 1;
-		}
-		if (vars->side == 0)
-			vars->perpWallDist = (vars->mapY - vars->posX
-			+ (1 - vars->stepX) / 2) / vars->rayDirX;
-		else
-			vars->perpWallDist = (vars->mapX - vars->posY
-			+ (1 - vars->stepY) / 2) / vars->rayDirY;
-		vars->lineHeight = (int)(vars->screenheight / vars->perpWallDist);
-		vars->drawStart = -vars->lineHeight / 2 + vars->screenheight / 2;
-		if (vars->drawStart < 0)
-			vars->drawStart = 0;
-		vars->drawEnd = vars->lineHeight / 2 + vars->screenheight / 2;
-		if (vars->drawEnd >= vars->screenheight)
-			vars->drawEnd = vars->screenheight - 1;
-		textures_to_struc(vars);
-		if (vars->side == 0)
-			vars->wallX = vars->posY + vars->perpWallDist * vars->rayDirY;
-		else
-			vars->wallX = vars->posX + vars->perpWallDist * vars->rayDirX;
-		vars->wallX -= floor(vars->wallX);
-		vars->texX = (int)(vars->wallX * ((double)texWidth));
-		if (vars->side == 0 && vars->rayDirX > 0)
-			vars->texX = texWidth - vars->texX - 1;
-		if (vars->side == 1 && vars->rayDirY < 0)
-			vars->texX = texWidth - vars->texX - 1;
-		draw_walls(vars->i, vars->drawStart,
-		vars->drawEnd, 0, &vars->imagen, vars);
-		draw_sky_floor(vars->i, vars->drawStart,
-		vars->drawEnd, &vars->imagen, vars);
-		vars->ZBuffer[vars->i] = vars->perpWallDist;
-		vars->i++;
+		calculate_side_dist(vars);
+		calculate_ray(vars);
+		calculate_tex_walls(vars);
 	}
+	render(vars);
+	return (0);
+}
+
+void	calculate_tex_walls(t_vars *vars)
+{
+	if (vars->drawStart < 0)
+		vars->drawStart = 0;
+	vars->drawEnd = vars->lineHeight / 2 + vars->screenheight / 2;
+	if (vars->drawEnd >= vars->screenheight)
+		vars->drawEnd = vars->screenheight - 1;
+	textures_to_struc(vars);
+	if (vars->side == 0)
+		vars->wallX = vars->posY + vars->perpWallDist * vars->rayDirY;
+	else
+		vars->wallX = vars->posX + vars->perpWallDist * vars->rayDirX;
+	vars->wallX -= floor(vars->wallX);
+	vars->texX = (int)(vars->wallX * ((double)texWidth));
+	if (vars->side == 0 && vars->rayDirX > 0)
+		vars->texX = texWidth - vars->texX - 1;
+	if (vars->side == 1 && vars->rayDirY < 0)
+		vars->texX = texWidth - vars->texX - 1;
+	draw_walls(vars->i, vars->drawStart,
+	vars->drawEnd, 0, &vars->imagen, vars);
+	draw_sky_floor(vars->i, vars->drawStart,
+	vars->drawEnd, &vars->imagen, vars);
+	vars->ZBuffer[vars->i] = vars->perpWallDist;
+	vars->i++;
+}
+
+void	calculate_side_dist(t_vars *vars)
+{
+	vars->hit = 0;
+	if (vars->rayDirX < 0)
+	{
+		vars->stepX = -1;
+		vars->sideDistX = (vars->posX - vars->mapY) * vars->deltaDistX;
+	}
+	else
+	{
+		vars->stepX = 1;
+		vars->sideDistX = (vars->mapY + 1.0 - vars->posX)
+		* vars->deltaDistX;
+	}
+	if (vars->rayDirY < 0)
+	{
+		vars->stepY = -1;
+		vars->sideDistY = (vars->posY - vars->mapX) * vars->deltaDistY;
+	}
+	else
+	{
+		vars->stepY = 1;
+		vars->sideDistY = (vars->mapX + 1.0 - vars->posY)
+		* vars->deltaDistY;
+	}
+}
+
+void	calculate_ray(t_vars *vars)
+{
+	while (vars->hit == 0)
+	{
+		if (vars->sideDistX < vars->sideDistY)
+		{
+			vars->sideDistX += vars->deltaDistX;
+			vars->mapY += vars->stepX;
+			vars->side = 0;
+		}
+		else
+		{
+			vars->sideDistY += vars->deltaDistY;
+			vars->mapX += vars->stepY;
+			vars->side = 1;
+		}
+		if (vars->worldmap[vars->mapY][vars->mapX] == '1')
+			vars->hit = 1;
+	}
+	if (vars->side == 0)
+		vars->perpWallDist = (vars->mapY - vars->posX
+		+ (1 - vars->stepX) / 2) / vars->rayDirX;
+	else
+		vars->perpWallDist = (vars->mapX - vars->posY
+		+ (1 - vars->stepY) / 2) / vars->rayDirY;
+	vars->lineHeight = (int)(vars->screenheight / vars->perpWallDist);
+	vars->drawStart = -vars->lineHeight / 2 + vars->screenheight / 2;
+}
+
+void	render(t_vars *vars)
+{
 	vars->buffer = (int *)mlx_get_data_addr(vars->columna.img,
 	&vars->columna.bits_per_pixel,
 	&vars->columna.line_length, &vars->columna.endian);
@@ -326,7 +356,6 @@ int		render_frame(t_vars *vars)
 	move_camera(vars);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->imagen.img, 0, 0);
 	mlx_destroy_image(vars->mlx, vars->imagen.img);
-	return (0);
 }
 
 int		close_x(t_vars *vars)
@@ -398,12 +427,6 @@ int		main(int argc, char *argv[])
 	mlx_hook(vars.win, 2, 1L << 0, move_player_press, &vars);
 	mlx_hook(vars.win, 3, 1L << 1, move_player_release, &vars);
 	mlx_hook(vars.win, 17, 0L, close_x, &vars);
-	// int i = 0;
-	// while (i < data.mapy)
-	// {
-	// 	printf("%s\n", vars.worldmap[i]);
-	// 	i++;
-	// }
 	mlx_loop(vars.mlx);
 	mlx_destroy_window(vars.mlx, vars.win);
 	return (0);
