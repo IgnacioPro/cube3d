@@ -13,7 +13,9 @@ SRCS		= 	raycaster.c \
 				./map/colors/rgb_errors.c \
 				./map/parser/map_parser.c \
 				./map/read_map.c \
-				./movement/key_events.c
+				./movement/key_events.c \
+				./sprites/coordinates.c \
+				./sprites/size_distance.c
 
 OBJS		= ${SRCS:.c=.o}
 NAME		= cub3D

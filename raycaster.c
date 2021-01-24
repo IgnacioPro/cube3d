@@ -6,59 +6,14 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 11:58:33 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/24 18:03:19 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/24 18:13:43 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubelib.h"
 #include "./getnextline/get_next_line_bonus.h"
 
-void	my_mlx_pixel_put(t_img *imagen, int x, int y, int color)
-{
-	char	*dst;
-	int		offset;
 
-	offset = (y * imagen->line_length + x * (imagen->bits_per_pixel / 8));
-	dst = imagen->addr + (y * imagen->line_length + x *
-		(imagen->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
-}
-
-void	sprite_size(t_vars *vars)
-{
-	if (vars->drawStartY < 0)
-		vars->drawStartY = 0;
-	vars->drawEndY = vars->spriteHeight / 2 + vars->screenheight / 2;
-	if (vars->drawEndY >= vars->screenheight)
-		vars->drawEndY = vars->screenheight - 1;
-	vars->spriteWidth = abs((int)(vars->screenheight / (vars->t_y)));
-	vars->drawStartX = -vars->spriteWidth / 2 + vars->screenx;
-	if (vars->drawStartX < 0)
-		vars->drawStartX = 0;
-	vars->drawEndX = vars->spriteWidth / 2 + vars->screenx;
-	if (vars->drawEndX >= vars->screenwidth)
-		vars->drawEndX = vars->screenwidth - 1;
-}
-
-void	sprite_dimensions(t_vars *vars)
-{
-	while (vars->c-- > 0)
-	{
-		vars->sprite[vars->c].x = vars->sprite[vars->c].cx - vars->posX + 0.5;
-		vars->sprite[vars->c].y = vars->sprite[vars->c].cy - vars->posY + 0.5;
-		vars->invDet = 1 / (vars->px * vars->dirY - vars->dirX * vars->py);
-		vars->t_x = vars->invDet * (vars->dirY * vars->sprite[vars->c].x -
-			vars->dirX * vars->sprite[vars->c].y);
-		vars->t_y = vars->invDet * (-vars->py * vars->sprite[vars->c].x +
-			vars->px * vars->sprite[vars->c].y);
-		vars->screenx = (int)((vars->screenwidth / 2) *
-			(1 + vars->t_x / vars->t_y));
-		vars->spriteHeight = abs((int)(vars->screenheight / (vars->t_y)));
-		vars->drawStartY = -vars->spriteHeight / 2 + vars->screenheight / 2;
-		sprite_size(vars);
-		draw_sprite(0, vars);
-	}
-}
 
 void	load_textures(t_vars *vars, t_data *data)
 {
@@ -77,91 +32,6 @@ void	load_textures(t_vars *vars, t_data *data)
 	if (!(vars->columna.img = mlx_xpm_file_to_image(vars->mlx, data->sprite,
 		&vars->columna.height, &vars->columna.width)))
 		texture_error();
-}
-
-
-void	calculate_sprite_dist(t_vars *vars)
-{
-	int i;
-
-	i = vars->num_sprites;
-	while (i-- > 0)
-		vars->sprite[i].distance = ((vars->posX - vars->sprite[i].cx) *
-		(vars->posX - vars->sprite[i].cx) + (vars->posY - vars->sprite[i].cy) *
-		(vars->posY - vars->sprite[i].cy));
-}
-
-void	sort_sprites(t_vars *vars)
-{
-	t_sprite	tmp;
-	int			i;
-	int			j;
-
-	j = vars->num_sprites;
-	while (j > 0)
-	{
-		i = 0;
-		while (i < vars->num_sprites - 1)
-		{
-			if (vars->sprite[i].distance > vars->sprite[i + 1].distance)
-			{
-				tmp = vars->sprite[i];
-				vars->sprite[i] = vars->sprite[i + 1];
-				vars->sprite[i + 1] = tmp;
-			}
-			i++;
-		}
-		j--;
-	}
-}
-
-void	calculate_sprites(t_vars *vars)
-{
-	int x;
-	int y;
-	int i;
-
-	i = 0;
-	x = 0;
-	while (x < vars->mapwidth)
-	{
-		y = 0;
-		while (y < vars->mapheight)
-		{
-			if (vars->worldmap[x][y] == '2')
-				i++;
-			y++;
-		}
-		x++;
-	}
-	vars->num_sprites = i;
-	vars->sprite = (t_sprite *)malloc(i * sizeof(t_sprite));
-	sprites_coord(vars);
-}
-
-void	sprites_coord(t_vars *vars)
-{
-	int x;
-	int i;
-	int y;
-
-	x = 0;
-	i = 0;
-	while (x < vars->mapwidth)
-	{
-		y = 0;
-		while (y < vars->mapheight)
-		{
-			if (vars->worldmap[x][y] == '2')
-			{
-				vars->sprite[i].cx = x;
-				vars->sprite[i].cy = y;
-				i++;
-			}
-			y++;
-		}
-		x++;
-	}
 }
 
 void	textures_to_struc(t_vars *vars)

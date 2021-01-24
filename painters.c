@@ -6,11 +6,22 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/08 18:53:59 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/24 17:50:52 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/24 18:07:29 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cubelib.h"
+
+void	my_mlx_pixel_put(t_img *imagen, int x, int y, int color)
+{
+	char	*dst;
+	int		offset;
+
+	offset = (y * imagen->line_length + x * (imagen->bits_per_pixel / 8));
+	dst = imagen->addr + (y * imagen->line_length + x *
+		(imagen->bits_per_pixel / 8));
+	*(unsigned int*)dst = color;
+}
 
 void	draw_walls(int x, int drawStart, int drawEnd, int color, t_img *img, t_vars *vars)
 {
@@ -74,3 +85,4 @@ void	draw_sky_floor(int x, int drawStart, int drawEnd, t_img *img, t_vars *vars)
 		j++;
 	}
 }
+
