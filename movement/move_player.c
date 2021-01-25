@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:17:37 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/25 13:48:11 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/25 16:40:05 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 void	move_up(t_vars *vars)
 {
-	// if (vars->worldmap[(int)vars->posX][(int)vars->posY] != '1')
-	// {
 	if (vars->w == 1)
 	{
 		if (vars->posX + vars->dirX * vars->moveSpeed > 1 &&

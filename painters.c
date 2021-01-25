@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/08 18:53:59 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/24 18:07:29 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/25 16:51:08 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,13 @@ void	draw_sky_floor(int x, int drawStart, int drawEnd, t_img *img, t_vars *vars)
 	j = 0;
 	while (j < (drawStart))
 	{
-		my_mlx_pixel_put(img, x, j, 0x19D9F0);
+		my_mlx_pixel_put(img, x, j, vars->sky);
 		j++;
 	}
 	j = drawEnd;
 	while (j < vars->screenheight && j > 0)
 	{
-		my_mlx_pixel_put(img, x, j, 0xED1010);
+		my_mlx_pixel_put(img, x, j, vars->floor);
 		j++;
 	}
 }
-

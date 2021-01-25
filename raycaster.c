@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 11:58:33 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/25 13:37:05 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/25 16:49:59 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ void	vars_init(t_data *data, t_vars *vars)
 	vars->mlx = mlx_init();
 	vars->win = mlx_new_window(vars->mlx, vars->screenwidth,
 		vars->screenheight, "cub3D");
+	vars->sky = 65536 * data->ceiling[0] + 256 * data->ceiling[1] + data->ceiling[2];
+	vars->floor = 65536 * data->floor[0] + 256 * data->floor[1] + data->floor[2];
 }
 
 int		main(int argc, char *argv[])

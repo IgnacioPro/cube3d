@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:20:27 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/24 17:52:08 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/25 16:48:35 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,9 @@ typedef struct s_vars
 	char **worldmap;
 	int mapheight;
 	int mapwidth;
+
+	int sky;
+	int floor;
 } t_vars;
 
 
