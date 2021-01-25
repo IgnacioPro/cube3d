@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 11:58:33 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/25 23:01:13 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/25 23:06:22 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	data_init(t_data *data, t_vars *vars)
 	data->rl = 0;
 	data->rgb_error = 0;
 	vars->dirx = -1;
-	vars->dirY = 0;
+	vars->diry = 0;
 	vars->px = 0;
 	vars->py = 0.66;
 }

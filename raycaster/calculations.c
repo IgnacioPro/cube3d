@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 10:57:29 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/25 22:59:23 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/25 23:30:03 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@ void	calculate_tex_walls(t_vars *vars)
 		vars->drawEnd = vars->screenheight - 1;
 	textures_to_struc(vars);
 	if (vars->side == 0)
-		vars->wallX = vars->posy + vars->perpWallDist * vars->rayDirY;
+		vars->wallX = vars->posy + vars->perpWallDist * vars->rayy;
 	else
-		vars->wallX = vars->posx + vars->perpWallDist * vars->rayDirX;
+		vars->wallX = vars->posx + vars->perpWallDist * vars->rayx;
 	vars->wallX -= floor(vars->wallX);
-	vars->texX = (int)(vars->wallX * ((double)texWidth));
-	if (vars->side == 0 && vars->rayDirX > 0)
-		vars->texX = texWidth - vars->texX - 1;
-	if (vars->side == 1 && vars->rayDirY < 0)
-		vars->texX = texWidth - vars->texX - 1;
+	vars->texx = (int)(vars->wallX * ((double)texWidth));
+	if (vars->side == 0 && vars->rayx > 0)
+		vars->texx = texWidth - vars->texx - 1;
+	if (vars->side == 1 && vars->rayy < 0)
+		vars->texx = texWidth - vars->texx - 1;
 	draw_walls(vars->i, vars->drawStart,
 	vars->drawEnd, 0, &vars->imagen, vars);
 	draw_sky_floor(vars->i, vars->drawStart,
@@ -41,26 +41,26 @@ void	calculate_tex_walls(t_vars *vars)
 void	calculate_side_dist(t_vars *vars)
 {
 	vars->hit = 0;
-	if (vars->rayDirX < 0)
+	if (vars->rayx < 0)
 	{
 		vars->stepX = -1;
-		vars->sideDistX = (vars->posx - vars->mapY) * vars->deltaDistX;
+		vars->sidedx = (vars->posx - vars->mapY) * vars->ddistx;
 	}
 	else
 	{
 		vars->stepX = 1;
-		vars->sideDistX = (vars->mapY + 1.0 - vars->posx)
-		* vars->deltaDistX;
+		vars->sidedx = (vars->mapY + 1.0 - vars->posx)
+		* vars->ddistx;
 	}
-	if (vars->rayDirY < 0)
+	if (vars->rayy < 0)
 	{
 		vars->stepY = -1;
-		vars->sideDistY = (vars->posy - vars->mapX) * vars->deltaDistY;
+		vars->sidedy = (vars->posy - vars->mapX) * vars->deltaDistY;
 	}
 	else
 	{
 		vars->stepY = 1;
-		vars->sideDistY = (vars->mapX + 1.0 - vars->posy)
+		vars->sidedy = (vars->mapX + 1.0 - vars->posy)
 		* vars->deltaDistY;
 	}
 }
@@ -69,15 +69,15 @@ void	calculate_ray(t_vars *vars)
 {
 	while (vars->hit == 0)
 	{
-		if (vars->sideDistX < vars->sideDistY)
+		if (vars->sidedx < vars->sidedy)
 		{
-			vars->sideDistX += vars->deltaDistX;
+			vars->sidedx += vars->ddistx;
 			vars->mapY += vars->stepX;
 			vars->side = 0;
 		}
 		else
 		{
-			vars->sideDistY += vars->deltaDistY;
+			vars->sidedy += vars->deltaDistY;
 			vars->mapX += vars->stepY;
 			vars->side = 1;
 		}
@@ -86,10 +86,10 @@ void	calculate_ray(t_vars *vars)
 	}
 	if (vars->side == 0)
 		vars->perpWallDist = (vars->mapY - vars->posx
-		+ (1 - vars->stepX) / 2) / vars->rayDirX;
+		+ (1 - vars->stepX) / 2) / vars->rayx;
 	else
 		vars->perpWallDist = (vars->mapX - vars->posy
-		+ (1 - vars->stepY) / 2) / vars->rayDirY;
+		+ (1 - vars->stepY) / 2) / vars->rayy;
 	vars->lineHeight = (int)(vars->screenheight / vars->perpWallDist);
 	vars->drawStart = -vars->lineHeight / 2 + vars->screenheight / 2;
 }

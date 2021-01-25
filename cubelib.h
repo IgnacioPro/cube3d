@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:20:27 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/25 23:00:38 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/25 23:29:39 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,12 @@ typedef struct	s_vars
 	double		posx;
 	double		posy;
 	double		dirx;
-	double		dirY;
+	double		diry;
 	double		px;
 	double		py;
-	int			texY;
-	double		texPos;
-	int			texX;
+	int			texy;
+	double		texpos;
+	int			texx;
 	int			side;
 	int			*addr;
 	int			text_width;
@@ -118,19 +118,19 @@ typedef struct	s_vars
 	double		t_x;
 	double		t_y;
 	int			screenx;
-	int			spriteHeight;
-	int			drawStartY;
-	int			drawEndY;
-	int			spriteScreenY;
-	int			spriteWidth;
-	int			drawStartX;
+	int			spriteheight;
+	int			starty;
+	int			drawendy;
+	// int			spriteScreenY;
+	int			s_width;
+	int			startx;
 	int			drawEndX;
-	double		cameraX;
-	double		rayDirX;
-	double		rayDirY;
-	double		sideDistX;
-	double		sideDistY;
-	double		deltaDistX;
+	double		camx;
+	double		rayx;
+	double		rayy;
+	double		sidedx;
+	double		sidedy;
+	double		ddistx;
 	double		deltaDistY;
 	int			mapX;
 	int			mapY;

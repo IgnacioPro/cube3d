@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/08 18:53:59 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/25 20:18:15 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/25 23:21:57 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ void	my_mlx_pixel_put(t_img *imagen, int x, int y, int color)
 void	draw_walls(int x, int drawStart, int drawEnd, int color, t_img *img, t_vars *vars)
 {
 	vars->step = 1.0 * texHeight / vars->lineHeight;
-	vars->texPos = (drawStart - vars->screenheight / 2 + 
+	vars->texpos = (drawStart - vars->screenheight / 2 + 
 	vars->lineHeight / 2) * vars->step;
 	while (drawStart <= drawEnd) //cambiado de <=
 	{
-		vars->texY = (int)vars->texPos;
-		vars->texPos += vars->step;
-		color = (unsigned int)vars->buffer[texHeight * vars->texY + vars->texX];
+		vars->texy = (int)vars->texpos;
+		vars->texpos += vars->step;
+		color = (unsigned int)vars->buffer[texHeight * vars->texy + vars->texx];
 		my_mlx_pixel_put(img, x, drawStart, color);
 		drawStart++;
 	}
@@ -44,21 +44,21 @@ void	draw_sprite(int color, t_vars *vars)
 	int i;
 	int d;
 
-	sprite = vars->drawStartX;
+	sprite = vars->startx;
 	while (sprite < vars->drawEndX)
 	{
-		vars->texX = (int)(256 * (sprite - (-vars->spriteWidth / 2 +
+		vars->texx = (int)(256 * (sprite - (-vars->s_width / 2 +
 		vars->screenx))
-		* texWidth / vars->spriteWidth) / 256;
+		* texWidth / vars->s_width) / 256;
 		if (vars->t_y > 0.01 && sprite > 0.01 && sprite < vars->screenwidth &&
 		vars->t_y < vars->ZBuffer[sprite])
 		{
-			i = vars->drawStartY;
-			while (i < vars->drawEndY)
+			i = vars->starty;
+			while (i < vars->drawendy)
 			{
-				d = (i)*256 - vars->screenheight * 128 + vars->spriteHeight * 128;
-				vars->texY = ((d * 64) / vars->spriteHeight) / 256;
-				color = (unsigned int)vars->buffer[64 * vars->texY + vars->texX];
+				d = (i)*256 - vars->screenheight * 128 + vars->spriteheight * 128;
+				vars->texy = ((d * 64) / vars->spriteheight) / 256;
+				color = (unsigned int)vars->buffer[64 * vars->texy + vars->texx];
 				if ((color & 0x00FFFFFF) != 0)
 					my_mlx_pixel_put(&vars->imagen, sprite, i, color);
 				i++;

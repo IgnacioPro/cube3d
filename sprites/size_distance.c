@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 18:10:18 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/25 23:01:36 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/25 23:22:14 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 void	sprite_size(t_vars *vars)
 {
-	if (vars->drawStartY < 0)
-		vars->drawStartY = 0;
-	vars->drawEndY = vars->spriteHeight / 2 + vars->screenheight / 2;
-	if (vars->drawEndY >= vars->screenheight)
-		vars->drawEndY = vars->screenheight - 1;
-	vars->spriteWidth = abs((int)(vars->screenheight / (vars->t_y)));
-	vars->drawStartX = -vars->spriteWidth / 2 + vars->screenx;
-	if (vars->drawStartX < 0)
-		vars->drawStartX = 0;
-	vars->drawEndX = vars->spriteWidth / 2 + vars->screenx;
+	if (vars->starty < 0)
+		vars->starty = 0;
+	vars->drawendy = vars->spriteheight / 2 + vars->screenheight / 2;
+	if (vars->drawendy >= vars->screenheight)
+		vars->drawendy = vars->screenheight - 1;
+	vars->s_width = abs((int)(vars->screenheight / (vars->t_y)));
+	vars->startx = -vars->s_width / 2 + vars->screenx;
+	if (vars->startx < 0)
+		vars->startx = 0;
+	vars->drawEndX = vars->s_width / 2 + vars->screenx;
 	if (vars->drawEndX >= vars->screenwidth)
 		vars->drawEndX = vars->screenwidth - 1;
 }
@@ -34,15 +34,15 @@ void	sprite_dimensions(t_vars *vars)
 	{
 		vars->sprite[vars->c].x = vars->sprite[vars->c].cx - vars->posx + 0.5;
 		vars->sprite[vars->c].y = vars->sprite[vars->c].cy - vars->posy + 0.5;
-		vars->invDet = 1 / (vars->px * vars->dirY - vars->dirx * vars->py);
-		vars->t_x = vars->invDet * (vars->dirY * vars->sprite[vars->c].x -
+		vars->invDet = 1 / (vars->px * vars->diry - vars->dirx * vars->py);
+		vars->t_x = vars->invDet * (vars->diry * vars->sprite[vars->c].x -
 			vars->dirx * vars->sprite[vars->c].y);
 		vars->t_y = vars->invDet * (-vars->py * vars->sprite[vars->c].x +
 			vars->px * vars->sprite[vars->c].y);
 		vars->screenx = (int)((vars->screenwidth / 2) *
 			(1 + vars->t_x / vars->t_y));
-		vars->spriteHeight = abs((int)(vars->screenheight / (vars->t_y)));
-		vars->drawStartY = -vars->spriteHeight / 2 + vars->screenheight / 2;
+		vars->spriteheight = abs((int)(vars->screenheight / (vars->t_y)));
+		vars->starty = -vars->spriteheight / 2 + vars->screenheight / 2;
 		sprite_size(vars);
 		draw_sprite(0, vars);
 	}
