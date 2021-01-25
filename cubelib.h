@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:20:27 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/25 23:29:39 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/25 23:52:26 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,12 +109,12 @@ typedef struct	s_vars
 	void		*img;
 	void		*addr_img;
 	int			bits_per_pixel;
-    int			line_length;
-    int			endian;
-	int			*textureBuffer;
-	int			lineHeight;
-	double		*ZBuffer;
-	double		invDet;
+	int			line_length;
+	int			endian;
+	// int			*tbuffer;
+	int			line_y;
+	double		*zbuffer;
+	double		invdet;
 	double		t_x;
 	double		t_y;
 	int			screenx;
@@ -124,27 +124,27 @@ typedef struct	s_vars
 	// int			spriteScreenY;
 	int			s_width;
 	int			startx;
-	int			drawEndX;
+	int			drawendx;
 	double		camx;
 	double		rayx;
 	double		rayy;
 	double		sidedx;
 	double		sidedy;
 	double		ddistx;
-	double		deltaDistY;
-	int			mapX;
-	int			mapY;
-	int			stepX;
-	int			stepY;
-	double		wallX;
+	double		ddisty;
+	int			mapx;
+	int			mapy;
+	int			stepx;
+	int			stepy;
+	double		wallx;
 	int			num_sprites;
 	int			keycode;
-	double		perpWallDist;
-	double		oldDirX;
-	double		oldPlaneX;
+	double		pwalldist;
+	double		oldirx;
+	double		oldplanex;
 	int			hit;
-	int			drawStart;
-	int			drawEnd;
+	int			drawstart;
+	int			drawend;
 	int			c;
 	int			i;
 	int			a;
@@ -165,9 +165,9 @@ typedef struct	s_vars
 }				t_vars;
 
 void			my_mlx_pixel_put(t_img *imagen, int x, int y, int color);
-void			draw_walls(int x, int drawStart, int drawEnd, int color, t_img *img, t_vars *vars);
+void			draw_walls(int x, int drawstart, int drawend, int color, t_img *img, t_vars *vars);
 void			load_textures(t_vars *vars, t_data *data);
-void			draw_sky_floor(int x, int drawStart, int drawEnd, t_img *img, t_vars *vars);
+void			draw_sky_floor(int x, int drawstart, int drawend, t_img *img, t_vars *vars);
 void			draw_sprite(int color, t_vars *vars);
 double			ft_abs(double n);
 void			calculate_sprites(t_vars *vars);

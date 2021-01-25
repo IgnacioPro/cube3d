@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 19:20:40 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/25 23:06:49 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/25 23:41:18 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,20 @@ void	move_camera(t_vars *vars)
 {
 	if (vars->right == 1)
 	{
-		vars->oldDirX = vars->dirx;
+		vars->oldirx = vars->dirx;
 		vars->dirx = vars->dirx * cos(-vars->rotSpeed) - vars->diry * sin(-vars->rotSpeed);
-		vars->diry = vars->oldDirX * sin(-vars->rotSpeed) + vars->diry * cos(-vars->rotSpeed);
-		vars->oldPlaneX = vars->px;
+		vars->diry = vars->oldirx * sin(-vars->rotSpeed) + vars->diry * cos(-vars->rotSpeed);
+		vars->oldplanex = vars->px;
 		vars->px = vars->px * cos(-vars->rotSpeed) - vars->py * sin(-vars->rotSpeed);
-		vars->py = vars->oldPlaneX * sin(-vars->rotSpeed) + vars->py * cos(-vars->rotSpeed);
+		vars->py = vars->oldplanex * sin(-vars->rotSpeed) + vars->py * cos(-vars->rotSpeed);
 	}
 	if (vars->left == 1)
 	{
-		vars->oldDirX = vars->dirx;
+		vars->oldirx = vars->dirx;
 		vars->dirx = vars->dirx * cos(vars->rotSpeed) - vars->diry * sin(vars->rotSpeed);
-		vars->diry = vars->oldDirX * sin(vars->rotSpeed) + vars->diry * cos(vars->rotSpeed);
-		vars->oldPlaneX = vars->px;
+		vars->diry = vars->oldirx * sin(vars->rotSpeed) + vars->diry * cos(vars->rotSpeed);
+		vars->oldplanex = vars->px;
 		vars->px = vars->px * cos(vars->rotSpeed) - vars->py * sin(vars->rotSpeed);
-		vars->py = vars->oldPlaneX * sin(vars->rotSpeed) + vars->py * cos(vars->rotSpeed);
+		vars->py = vars->oldplanex * sin(vars->rotSpeed) + vars->py * cos(vars->rotSpeed);
 	}
 }

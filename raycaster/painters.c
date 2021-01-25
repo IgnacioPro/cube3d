@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/08 18:53:59 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/25 23:21:57 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/25 23:49:56 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ void	my_mlx_pixel_put(t_img *imagen, int x, int y, int color)
 
 void	draw_walls(int x, int drawStart, int drawEnd, int color, t_img *img, t_vars *vars)
 {
-	vars->step = 1.0 * texHeight / vars->lineHeight;
+	vars->step = 1.0 * texHeight / vars->line_y;
 	vars->texpos = (drawStart - vars->screenheight / 2 + 
-	vars->lineHeight / 2) * vars->step;
+	vars->line_y / 2) * vars->step;
 	while (drawStart <= drawEnd) //cambiado de <=
 	{
 		vars->texy = (int)vars->texpos;
@@ -45,13 +45,13 @@ void	draw_sprite(int color, t_vars *vars)
 	int d;
 
 	sprite = vars->startx;
-	while (sprite < vars->drawEndX)
+	while (sprite < vars->drawendx)
 	{
 		vars->texx = (int)(256 * (sprite - (-vars->s_width / 2 +
 		vars->screenx))
 		* texWidth / vars->s_width) / 256;
 		if (vars->t_y > 0.01 && sprite > 0.01 && sprite < vars->screenwidth &&
-		vars->t_y < vars->ZBuffer[sprite])
+		vars->t_y < vars->zbuffer[sprite])
 		{
 			i = vars->starty;
 			while (i < vars->drawendy)

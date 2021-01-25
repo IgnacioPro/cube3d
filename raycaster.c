@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 11:58:33 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/25 23:06:22 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/25 23:47:57 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	vars_init(t_data *data, t_vars *vars)
 	vars->mapwidth = data->mapy;
 	vars->posx = data->playerx + 0.5;
 	vars->posy = data->playery + 0.5;
-	vars->ZBuffer = (double*)malloc(data->x * sizeof(double));
+	vars->zbuffer = (double*)malloc(data->x * sizeof(double));
 	vars->mlx = mlx_init();
 	vars->win = mlx_new_window(vars->mlx, vars->screenwidth,
 		vars->screenheight, "cub3D");

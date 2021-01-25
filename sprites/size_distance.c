@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 18:10:18 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/25 23:22:14 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/25 23:50:24 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ void	sprite_size(t_vars *vars)
 	vars->startx = -vars->s_width / 2 + vars->screenx;
 	if (vars->startx < 0)
 		vars->startx = 0;
-	vars->drawEndX = vars->s_width / 2 + vars->screenx;
-	if (vars->drawEndX >= vars->screenwidth)
-		vars->drawEndX = vars->screenwidth - 1;
+	vars->drawendx = vars->s_width / 2 + vars->screenx;
+	if (vars->drawendx >= vars->screenwidth)
+		vars->drawendx = vars->screenwidth - 1;
 }
 
 void	sprite_dimensions(t_vars *vars)
@@ -34,10 +34,10 @@ void	sprite_dimensions(t_vars *vars)
 	{
 		vars->sprite[vars->c].x = vars->sprite[vars->c].cx - vars->posx + 0.5;
 		vars->sprite[vars->c].y = vars->sprite[vars->c].cy - vars->posy + 0.5;
-		vars->invDet = 1 / (vars->px * vars->diry - vars->dirx * vars->py);
-		vars->t_x = vars->invDet * (vars->diry * vars->sprite[vars->c].x -
+		vars->invdet = 1 / (vars->px * vars->diry - vars->dirx * vars->py);
+		vars->t_x = vars->invdet * (vars->diry * vars->sprite[vars->c].x -
 			vars->dirx * vars->sprite[vars->c].y);
-		vars->t_y = vars->invDet * (-vars->py * vars->sprite[vars->c].x +
+		vars->t_y = vars->invdet * (-vars->py * vars->sprite[vars->c].x +
 			vars->px * vars->sprite[vars->c].y);
 		vars->screenx = (int)((vars->screenwidth / 2) *
 			(1 + vars->t_x / vars->t_y));
