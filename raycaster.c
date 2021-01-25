@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 11:58:33 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/25 16:49:59 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/25 20:09:39 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int		main(int argc, char *argv[])
 	opening2(&data, &vars);
 	opening3(&data, &vars);
 	print_all(&data);
+	compare_resolution(&data, &vars);
 	vars_init(&data, &vars);
 	load_textures(&vars, &data);
 	calculate_sprites(&vars);

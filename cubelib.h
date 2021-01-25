@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:20:27 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/25 16:48:35 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/25 17:30:09 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,8 @@ typedef struct s_vars
 
 	int sky;
 	int floor;
+	int localx;
+	int localy;
 } t_vars;
 
 
@@ -248,5 +250,6 @@ void	render(t_vars *vars);
 void	calculate_ray(t_vars *vars);
 void	calculate_side_dist(t_vars *vars);
 void	calculate_tex_walls(t_vars *vars);
+void	compare_resolution(t_data *data, t_vars *vars);
 
 #endif

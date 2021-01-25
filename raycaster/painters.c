@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/08 18:53:59 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/25 17:14:40 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/25 20:18:15 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,19 @@ void	draw_sky_floor(int x, int drawStart, int drawEnd, t_img *img, t_vars *vars)
 	{
 		my_mlx_pixel_put(img, x, j, vars->floor);
 		j++;
+	}
+}
+
+void	compare_resolution(t_data *data, t_vars *vars)
+{
+	int screen_size;
+	
+	screen_size = mlx_get_screen_size(vars->mlx, &vars->localx, &vars->localy);
+	if (data->x < 0 || data->y < 0)
+		resolution_error();
+	if (data->x > vars->localx || data->y > vars->localy)
+	{
+		data->x = vars->localx;
+		data->y= vars->localy;
 	}
 }
