@@ -6,21 +6,20 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:20:27 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/25 22:26:35 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/25 23:00:38 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# ifndef		CUBELIB_H_   
-#define			CUBELIB_H_
-
-#include		"mlx.h"
-#include		"libft/libft.h"
-#include		"getnextline/get_next_line.h"
-#define			texWidth 64
-#define			texHeight 64
-#include		<math.h>
-#include		<stdio.h>
-#include		<stdlib.h>
+#ifndef CUBELIB_H
+# define CUBELIB_H
+# include "mlx.h"
+# include "libft/libft.h"
+# include "getnextline/get_next_line.h"
+# include <math.h>
+# include <stdio.h>
+# include <stdlib.h>
+# define texWidth 64
+# define texHeight 64
 
 typedef struct	s_data
 {
@@ -55,7 +54,7 @@ typedef struct	s_data
 	int			fd;
 }				t_data;
 
-typedef struct 	s_sprite
+typedef struct	s_sprite
 {
 	double	x;
 	double	y;
@@ -64,54 +63,55 @@ typedef struct 	s_sprite
 	double	distance;
 	int		tmp;
 }				t_sprite;
-typedef struct 	s_img
+
+typedef struct	s_img
 {
-	void 	*img;
-	void 	*addr;
-	int 	bits_per_pixel;
-	int 	line_length;
-	int 	endian;
+	void	*img;
+	void	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
 	int		height;
 	int		width;
 }				t_img;
 
-typedef struct 	s_vars
+typedef struct	s_vars
 {
 
 	t_img		norte;
-	t_img 		sur;
-	t_img 		este;
-	t_img 		oeste;
-	t_img 		suelo;
-	t_img 		columna;
+	t_img		sur;
+	t_img		este;
+	t_img		oeste;
+	t_img		suelo;
+	t_img		columna;
 	t_sprite	*sprite;
-	t_img 		imagen;
+	t_img		imagen;
 	void		*mlx;
-	void 		*win;
-	double 		moveSpeed;
-	int 		key;
-	double 		rotSpeed;
-	double 		posX;
-	double 		posY;
-	double 		dirX;
-	double 		dirY;
-	double 		px;
-	double 		py;
-	int 		texY;
+	void		*win;
+	double		moveSpeed;
+	int			key;
+	double		rotSpeed;
+	double		posx;
+	double		posy;
+	double		dirx;
+	double		dirY;
+	double		px;
+	double		py;
+	int			texY;
 	double		texPos;
 	int			texX;
 	int			side;
-	int 		*addr;
+	int			*addr;
 	int			text_width;
 	int			text_height;
 	double		step;
 	int			*buffer;
-	void 		*img;
+	void		*img;
 	void		*addr_img;
-	int         bits_per_pixel;
-    int         line_length;
-    int         endian;
-	int 		*textureBuffer;
+	int			bits_per_pixel;
+    int			line_length;
+    int			endian;
+	int			*textureBuffer;
 	int			lineHeight;
 	double		*ZBuffer;
 	double		invDet;
@@ -137,8 +137,8 @@ typedef struct 	s_vars
 	int			stepX;
 	int			stepY;
 	double		wallX;
-  	int			num_sprites;
-    int			keycode;
+	int			num_sprites;
+	int			keycode;
 	double		perpWallDist;
 	double		oldDirX;
 	double		oldPlaneX;
@@ -162,8 +162,7 @@ typedef struct 	s_vars
 	int			floor;
 	int			localx;
 	int			localy;
-} 				t_vars;
-
+}				t_vars;
 
 void			my_mlx_pixel_put(t_img *imagen, int x, int y, int color);
 void			draw_walls(int x, int drawStart, int drawEnd, int color, t_img *img, t_vars *vars);

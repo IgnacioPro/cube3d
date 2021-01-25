@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 11:58:33 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/25 20:09:39 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/25 23:01:13 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	data_init(t_data *data, t_vars *vars)
 	data->n_lines = 0;
 	data->rl = 0;
 	data->rgb_error = 0;
-	vars->dirX = -1;
+	vars->dirx = -1;
 	vars->dirY = 0;
 	vars->px = 0;
 	vars->py = 0.66;
@@ -44,8 +44,8 @@ void	vars_init(t_data *data, t_vars *vars)
 {
 	vars->moveSpeed = 0.15;
 	vars->rotSpeed = 0.1;
-	vars->posX = 0;
-	vars->posY = 0;
+	vars->posx = 0;
+	vars->posy = 0;
 	vars->a = 0;
 	vars->d = 0;
 	vars->w = 0;
@@ -57,14 +57,16 @@ void	vars_init(t_data *data, t_vars *vars)
 	vars->screenwidth = data->x;
 	vars->mapheight = data->mapx;
 	vars->mapwidth = data->mapy;
-	vars->posX = data->playerx + 0.5;
-	vars->posY = data->playery + 0.5;
+	vars->posx = data->playerx + 0.5;
+	vars->posy = data->playery + 0.5;
 	vars->ZBuffer = (double*)malloc(data->x * sizeof(double));
 	vars->mlx = mlx_init();
 	vars->win = mlx_new_window(vars->mlx, vars->screenwidth,
 		vars->screenheight, "cub3D");
-	vars->sky = 65536 * data->ceiling[0] + 256 * data->ceiling[1] + data->ceiling[2];
-	vars->floor = 65536 * data->floor[0] + 256 * data->floor[1] + data->floor[2];
+	vars->sky = 65536 * data->ceiling[0] +
+	256 * data->ceiling[1] + data->ceiling[2];
+	vars->floor = 65536 * data->floor[0] +
+	256 * data->floor[1] + data->floor[2];
 }
 
 int		main(int argc, char *argv[])
