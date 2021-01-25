@@ -6,11 +6,11 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/08 18:53:59 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/25 16:51:08 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/25 17:14:40 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cubelib.h"
+#include "../cubelib.h"
 
 void	my_mlx_pixel_put(t_img *imagen, int x, int y, int color)
 {

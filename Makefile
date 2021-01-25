@@ -1,7 +1,7 @@
 SRCS		= 	raycaster.c \
 				./movement/move_camera.c \
 				./movement/move_player.c \
-				painters.c \
+				./raycaster/painters.c \
 				./getnextline/get_next_line_bonus.c \
 				./getnextline/get_next_line_utils_bonus.c \
 				./map/reader/open_file.c \
@@ -34,7 +34,7 @@ ${NAME}:	${OBJS}
 			${MAKE} -C ./minilibx
 			${MAKE} -C ./libft
 
-			mv ./minilibx/libmlx.a .
+			mv ./minilibx/libmlx.dylib .
 			mv ./libft/libft.a .
 			# ${CC} -o ${NAME} ${OBJS} ${FRAMEWORK}
 			$(CC) $(OBJS) -o $(NAME) -L ../libft -lft ${FRAMEWORK}
@@ -47,7 +47,7 @@ clean:
 			${MAKE} clean -C ./minilibx
 
 fclean : 	clean
-			${RM} ${NAME} libmlx.a libft.a
+			${RM} ${NAME} libmlx.dylib libft.a
 
 re:			fclean all
 
