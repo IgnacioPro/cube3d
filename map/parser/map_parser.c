@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 12:16:05 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/24 16:48:01 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/25 16:38:49 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,26 +46,20 @@ void	map_store(t_data *data, t_vars *vars)
 
 	i = 0;
 	data->map[data->c] = (char*)malloc((data->mapx + 1) * sizeof(char));
-	// data->map_eval[data->c] = (char*)malloc((data->mapx + 1) * sizeof(char));
 	vars->worldmap[data->c] = (char*)malloc((data->mapx + 1) * sizeof(char));
-	
 	data->map[data->c] = ft_memset(data->map[data->c], ' ', data->mapx);
-	// data->map_eval[data->c] = ft_memset(data->map_eval[data->c], ' ', data->mapx);
 	vars->worldmap[data->c] = ft_memset(vars->worldmap[data->c], '1', data->mapx);
 	data->map[data->c][data->mapx] = '\0';
-	// data->map_eval[data->c][data->mapx] = '\0';
 	vars->worldmap[data->c][data->mapx] = '\0';
 
 	while (data->linea[i] != '\0')
 	{
 		data->map[data->c][i] = (data->linea[i]);
-		// data->map_eval[data->c][i] = (data->linea[i]);
 		vars->worldmap[data->c][i] = (data->linea[i]);
 		
 		if (data->linea[i] == ' ')
 		{
 			data->map[data->c][i] = ' ';
-			// data->map_eval[data->c][i] = ' ';
 			vars->worldmap[data->c][i] = '1';
 		}
 
@@ -96,7 +90,6 @@ void	map_store(t_data *data, t_vars *vars)
 			}
 			
 			data->map[data->playerx][data->playery] = '0';
-			// data->map_eval[data->playerx][data->playery] = '0';
 			vars->worldmap[data->playerx][data->playery] = '0';
 			if (data->map[data->c][i] == '\0')
 				vars->worldmap[data->c][i] = '1';

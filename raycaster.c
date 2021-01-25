@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 11:58:33 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/25 11:03:01 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/25 13:37:05 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	data_init(t_data *data, t_vars *vars)
 
 void	vars_init(t_data *data, t_vars *vars)
 {
-	vars->moveSpeed = 0.1;
+	vars->moveSpeed = 0.15;
 	vars->rotSpeed = 0.1;
 	vars->posX = 0;
 	vars->posY = 0;
@@ -57,8 +57,8 @@ void	vars_init(t_data *data, t_vars *vars)
 	vars->screenwidth = data->x;
 	vars->mapheight = data->mapx;
 	vars->mapwidth = data->mapy;
-	vars->posX = data->playerx;
-	vars->posY = data->playery;
+	vars->posX = data->playerx + 0.5;
+	vars->posY = data->playery + 0.5;
 	vars->ZBuffer = (double*)malloc(data->x * sizeof(double));
 	vars->mlx = mlx_init();
 	vars->win = mlx_new_window(vars->mlx, vars->screenwidth,
