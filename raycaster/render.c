@@ -1,0 +1,56 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   render.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/25 11:02:13 by IgnacioHB         #+#    #+#             */
+/*   Updated: 2021/01/25 11:03:03 by IgnacioHB        ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../cubelib.h"
+
+int		render_frame(t_vars *vars)
+{
+	vars->imagen.img = mlx_new_image(vars->mlx, vars->screenwidth,
+	vars->screenheight);
+	vars->imagen.addr = mlx_get_data_addr(vars->imagen.img,
+	&vars->imagen.bits_per_pixel, &vars->imagen.line_length,
+	&vars->imagen.endian);
+	vars->i = 0;
+	while (vars->i < vars->screenwidth)
+	{
+		vars->cameraX = 2 * vars->i / (double)vars->screenwidth - 1;
+		vars->rayDirX = vars->dirX + vars->px * vars->cameraX;
+		vars->rayDirY = vars->dirY + vars->py * vars->cameraX;
+		vars->mapY = (int)vars->posX;
+		vars->mapX = (int)vars->posY;
+		vars->deltaDistX = fabs(1 / vars->rayDirX);
+		vars->deltaDistY = fabs(1 / vars->rayDirY);
+		calculate_side_dist(vars);
+		calculate_ray(vars);
+		calculate_tex_walls(vars);
+	}
+	render(vars);
+	return (0);
+}
+
+void	render(t_vars *vars)
+{
+	vars->buffer = (int *)mlx_get_data_addr(vars->columna.img,
+	&vars->columna.bits_per_pixel,
+	&vars->columna.line_length, &vars->columna.endian);
+	calculate_sprite_dist(vars);
+	sort_sprites(vars);
+	vars->c = vars->num_sprites;
+	sprite_dimensions(vars);
+	move_up(vars);
+	move_down(vars);
+	move_left(vars);
+	move_right(vars);
+	move_camera(vars);
+	mlx_put_image_to_window(vars->mlx, vars->win, vars->imagen.img, 0, 0);
+	mlx_destroy_image(vars->mlx, vars->imagen.img);
+}
