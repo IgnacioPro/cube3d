@@ -16,7 +16,8 @@ SRCS		= 	raycaster.c \
 				./movement/key_events.c \
 				./sprites/coordinates.c \
 				./sprites/size_distance.c \
-				./textures/load_textures.c
+				./textures/load_textures.c \
+				./raycaster/calculations.c
 
 OBJS		= ${SRCS:.c=.o}
 NAME		= cub3D
