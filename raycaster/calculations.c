@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 10:57:29 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/26 12:18:56 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/26 19:45:16 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ void	calculate_tex_walls(t_vars *vars)
 	else
 		vars->wallx = vars->posx + vars->pwalldist * vars->rayx;
 	vars->wallx -= floor(vars->wallx);
-	vars->texx = (int)(vars->wallx * ((double)TEXWIDTH));
+	vars->texx = (int)(vars->wallx * ((double)vars->tex_x));
 	if (vars->side == 0 && vars->rayx > 0)
-		vars->texx = TEXWIDTH - vars->texx - 1;
+		vars->texx = vars->tex_x - vars->texx - 1;
 	if (vars->side == 1 && vars->rayy < 0)
-		vars->texx = TEXWIDTH - vars->texx - 1;
+		vars->texx = vars->tex_x - vars->texx - 1;
 	draw_walls(vars->i, vars->drawstart,
 	vars->drawend, 0, &vars->imagen, vars);
 	draw_sky_floor(vars->i, vars->drawstart,

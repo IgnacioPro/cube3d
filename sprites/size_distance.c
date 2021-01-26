@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 18:10:18 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/26 13:20:55 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/26 13:38:32 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	sprite_size(t_vars *vars)
 {
 	if (vars->starty < 0)
 		vars->starty = 0;
-	vars->drawendy = vars->spriteheight / 2 + vars->screenheight / 2;
+	vars->drawendy = vars->sprite_y / 2 + vars->screenheight / 2;
 	if (vars->drawendy >= vars->screenheight)
 		vars->drawendy = vars->screenheight - 1;
 	vars->s_width = abs((int)(vars->screenheight / (vars->t_y)));
@@ -41,8 +41,8 @@ void	sprite_dimensions(t_vars *vars)
 			vars->px * vars->sprite[vars->c].y);
 		vars->screenx = (int)((vars->screenwidth / 2) *
 			(1 + vars->t_x / vars->t_y));
-		vars->spriteheight = abs((int)(vars->screenheight / (vars->t_y)));
-		vars->starty = -vars->spriteheight / 2 + vars->screenheight / 2;
+		vars->sprite_y = abs((int)(vars->screenheight / (vars->t_y)));
+		vars->starty = -vars->sprite_y / 2 + vars->screenheight / 2;
 		sprite_size(vars);
 		draw_sprite(0, vars);
 	}

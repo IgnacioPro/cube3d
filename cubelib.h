@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:20:27 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/26 13:03:07 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/26 19:51:46 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 # include <stdio.h>
 # include <stdlib.h>
 
-# define TEXWIDTH 64
-# define TEXHEIGHT 64
 # define SPEED 0.1
 # define ROTATION 0.1
 
@@ -118,7 +116,7 @@ typedef struct	s_vars
 	double		t_x;
 	double		t_y;
 	int			screenx;
-	int			spriteheight;
+	int			sprite_y;
 	int			starty;
 	int			drawendy;
 	int			s_width;
@@ -161,6 +159,8 @@ typedef struct	s_vars
 	int			floor;
 	int			localx;
 	int			localy;
+	int			tex_x;
+	int			tex_y;
 }				t_vars;
 
 void			my_mlx_pixel_put(t_img *imagen, int x, int y, int color);
@@ -225,5 +225,6 @@ void			calculate_tex_walls(t_vars *vars);
 void			compare_resolution(t_data *data, t_vars *vars);
 void			player_position(t_data *data, t_vars *vars);
 void			alloc_map(t_data *data, t_vars *vars);
+void			texture_dimensions(t_vars *vars);
 
 #endif
