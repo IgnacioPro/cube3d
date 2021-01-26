@@ -4,9 +4,8 @@ EA ./srcs/textures/greystone.xpm
 SO ./srcs/textures/mossy.xpm
 WE ./srcs/textures/purplestone.xpm
 S ./srcs/textures/pillar.xpm
-C 255,0,0
+C 255, 0   ,        0    
 F 0,0,255
-
 11111111111111
 12000000222111
 12000000000001

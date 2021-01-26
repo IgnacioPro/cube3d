@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:20:27 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/26 19:51:46 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/26 20:39:41 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,5 +226,5 @@ void			compare_resolution(t_data *data, t_vars *vars);
 void			player_position(t_data *data, t_vars *vars);
 void			alloc_map(t_data *data, t_vars *vars);
 void			texture_dimensions(t_vars *vars);
-
+void			space_comma(t_data *data);
 #endif
