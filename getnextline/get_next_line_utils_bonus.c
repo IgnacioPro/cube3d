@@ -6,7 +6,7 @@
 /*   By: ihorcada <ihorcada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 14:24:52 by ihorcada          #+#    #+#             */
-/*   Updated: 2020/02/17 16:39:13 by ihorcada         ###   ########.fr       */
+/*   Updated: 2020/02/18 19:31:59 by ihorcada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,7 @@ char	*ft_strdup(const char *src)
 		i++;
 	}
 	string[src_size] = '\0';
-	//free(string);//modifica kevin
 	return (string);
-	//free(string)
 }
 
 size_t	ft_strlen(const char *str)
@@ -66,9 +64,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	size_t			i;
 	char			*str;
 
-	if (!s)
-		return (NULL);
-	if (!(str = malloc(sizeof(char) * (len + 1))))
+	if (!s || !(str = malloc(sizeof(char) * (len + 1))))
 		return (NULL);
 	if (start > ft_strlen(s))
 		return (ft_strdup(""));
@@ -77,7 +73,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	{
 		while (s[start] && i < len)
 		{
-			if(s[i] == '\n')
+			if (s[i] == '\n')
 			{
 				str[i] = '\0';
 				return (str);
@@ -107,6 +103,5 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	while (*s2)
 		j[i++] = *s2++;
 	j[i] = '\0';
-	//free((void *)s1);
 	return (j);
 }

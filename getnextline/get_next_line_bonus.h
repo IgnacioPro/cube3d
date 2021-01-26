@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ihorcada <ihorcada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 14:25:26 by ihorcada          #+#    #+#             */
-/*   Updated: 2020/02/16 17:11:47 by ihorcada         ###   ########.fr       */
+/*   Updated: 2020/02/18 19:18:29 by ihorcada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
 # include <string.h>
 # include <stdio.h>
 # include <stddef.h>
@@ -19,9 +19,9 @@
 # include <unistd.h>
 # include <fcntl.h>
 
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 1
-#endif
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1
+# endif
 
 int		get_next_line(int fd, char **line);
 char	*ft_strdup(const char *src);

@@ -6,7 +6,7 @@
 /*   By: ihorcada <ihorcada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 14:25:26 by ihorcada          #+#    #+#             */
-/*   Updated: 2020/02/16 17:11:47 by ihorcada         ###   ########.fr       */
+/*   Updated: 2020/02/18 19:02:24 by ihorcada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@
 # include <unistd.h>
 # include <fcntl.h>
 
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 1
-#endif
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1
+# endif
 
 int		get_next_line(int fd, char **line);
 char	*ft_strdup(const char *src);
