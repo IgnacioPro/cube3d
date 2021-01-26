@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:20:27 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/26 20:39:41 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/26 22:13:37 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,9 +164,11 @@ typedef struct	s_vars
 }				t_vars;
 
 void			my_mlx_pixel_put(t_img *imagen, int x, int y, int color);
-void			draw_walls(int x, int drawstart, int drawend, int color, t_img *img, t_vars *vars);
+void			draw_walls(int x, int drawstart, int drawend, int color,
+	t_img *img, t_vars *vars);
 void			load_textures(t_vars *vars, t_data *data);
-void			draw_sky_floor(int x, int drawstart, int drawend, t_img *img, t_vars *vars);
+void			draw_sky_floor(int x, int drawstart, int drawend,
+	t_img *img, t_vars *vars);
 void			draw_sprite(int color, t_vars *vars);
 double			ft_abs(double n);
 void			calculate_sprites(t_vars *vars);
