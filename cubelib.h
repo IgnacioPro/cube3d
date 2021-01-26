@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:20:27 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/25 23:52:26 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/26 12:23:58 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,11 @@
 # include <math.h>
 # include <stdio.h>
 # include <stdlib.h>
-# define texWidth 64
-# define texHeight 64
+
+# define TEXWIDTH 64
+# define TEXHEIGHT 64
+# define SPEED 0.1
+# define ROTATION 0.1
 
 typedef struct	s_data
 {
@@ -88,9 +91,7 @@ typedef struct	s_vars
 	t_img		imagen;
 	void		*mlx;
 	void		*win;
-	double		moveSpeed;
 	int			key;
-	double		rotSpeed;
 	double		posx;
 	double		posy;
 	double		dirx;
@@ -111,7 +112,6 @@ typedef struct	s_vars
 	int			bits_per_pixel;
 	int			line_length;
 	int			endian;
-	// int			*tbuffer;
 	int			line_y;
 	double		*zbuffer;
 	double		invdet;
@@ -121,7 +121,6 @@ typedef struct	s_vars
 	int			spriteheight;
 	int			starty;
 	int			drawendy;
-	// int			spriteScreenY;
 	int			s_width;
 	int			startx;
 	int			drawendx;

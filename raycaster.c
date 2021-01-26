@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 11:58:33 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/25 23:47:57 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/26 12:22:05 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ void	data_init(t_data *data, t_vars *vars)
 
 void	vars_init(t_data *data, t_vars *vars)
 {
-	vars->moveSpeed = 0.15;
-	vars->rotSpeed = 0.1;
 	vars->posx = 0;
 	vars->posy = 0;
 	vars->a = 0;
