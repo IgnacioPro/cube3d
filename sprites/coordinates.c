@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/24 18:12:49 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/24 18:13:30 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/26 13:20:34 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	sprites_coord(t_vars *vars)
 		x++;
 	}
 }
-
 
 void	calculate_sprites(t_vars *vars)
 {

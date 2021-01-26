@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 11:58:07 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/18 19:56:20 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/26 12:36:15 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	get_resolution(t_data *data)
 		data->i++;
 	if (ft_isdigit(data->linea[data->i]))
 		data->y = ft_atoi(&data->linea[data->i]);
-	while (ft_isdigit(data->linea[data->i]))
+	while (ft_isdigit(data->linea[data->i]))	
 		data->i++;
 	while (data->linea[data->i] != '\0')
 	{
@@ -63,5 +63,4 @@ void	get_resolution(t_data *data)
 	if (data->y <= 0 || data->x <= 0)
 		resolution_error();
 	data->n_lines++;
-	// free(data->linea);
 }

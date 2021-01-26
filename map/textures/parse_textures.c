@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 11:41:54 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/18 19:55:16 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/26 12:34:56 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	south_texture(t_data *data)
 		texture_error();
 	while (data->linea[data->i] == ' ')
 		data->i++;
-	
 	data->south = ft_strdup(&data->linea[data->i]);
 	while (ft_isalpha(data->linea[data->i]) && data->linea[data->i] != ' ')
 		data->i++;

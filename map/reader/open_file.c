@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 12:06:35 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/24 13:59:23 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/26 12:37:34 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	opening2(t_data *data, t_vars *vars)
 	int i;
 
 	z = 0;
-	// i = 0;
 	if ((fd = open(data->arg1, O_RDONLY)) == -1)
 		error_opening_map();
 	while ((i = get_next_line(fd, &data->linea)) > 0)
@@ -50,7 +49,6 @@ void	opening2(t_data *data, t_vars *vars)
 	}
 	data->map = (char**)malloc(data->mapy * (sizeof(char*)));
 	vars->worldmap = (char**)malloc(data->mapy * (sizeof(char*)));
-
 	close(fd);
 }
 

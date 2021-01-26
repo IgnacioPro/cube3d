@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 12:20:37 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/19 12:12:25 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/26 12:37:08 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	map_name_validator(t_data data)
 	char	*lastfour;
 	int		j;
 
-	// lastfour = (char*)malloc(4 * sizeof(char));
 	lastfour = ft_substr(data.arg1, (ft_strlen(data.arg1) - 4), 5);
 	j = ft_strncmp(lastfour, ".cub", 4);
 	free(lastfour);
