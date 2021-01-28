@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 19:20:40 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/26 12:22:56 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/28 20:18:30 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ void	move_camera(t_vars *vars)
 	{
 		vars->oldirx = vars->dirx;
 		vars->dirx = vars->dirx * cos(-ROTATION) - vars->diry * sin(-ROTATION);
-		vars->diry = vars->oldirx * sin(-ROTATION) + vars->diry * cos(-ROTATION);
+		vars->diry = vars->oldirx * sin(-ROTATION) +
+			vars->diry * cos(-ROTATION);
 		vars->oldplanex = vars->px;
 		vars->px = vars->px * cos(-ROTATION) - vars->py * sin(-ROTATION);
 		vars->py = vars->oldplanex * sin(-ROTATION) + vars->py * cos(-ROTATION);

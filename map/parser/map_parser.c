@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 12:16:05 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/26 20:07:01 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/28 20:16:00 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,6 @@ void	map_store(t_data *data, t_vars *vars)
 			data->playery = i;
 			player_position(data, vars);
 		}
-		// if (data->map[data->c][i] == '\0')
-		// 	vars->worldmap[data->c][i] = '1';
 		i++;
 	}
 	data->c++;

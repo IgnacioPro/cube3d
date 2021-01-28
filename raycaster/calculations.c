@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 10:57:29 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/26 19:45:16 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/28 20:46:49 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ void	calculate_tex_walls(t_vars *vars)
 		vars->texx = vars->tex_x - vars->texx - 1;
 	if (vars->side == 1 && vars->rayy < 0)
 		vars->texx = vars->tex_x - vars->texx - 1;
-	draw_walls(vars->i, vars->drawstart,
-	vars->drawend, 0, &vars->imagen, vars);
-	draw_sky_floor(vars->i, vars->drawstart,
-	vars->drawend, &vars->imagen, vars);
+	draw_walls(vars->drawstart,
+		vars->drawend, &vars->imagen, vars);
+	draw_sky_floor(vars->drawstart, vars->drawend,
+		&vars->imagen, vars);
 	vars->zbuffer[vars->i] = vars->pwalldist;
 	vars->i++;
 }

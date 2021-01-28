@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/08 18:53:59 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/27 19:53:34 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/28 21:01:17 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,20 @@ void	my_mlx_pixel_put(t_img *imagen, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void	draw_walls(int x, int drawstart, int drawend, int color, t_img *img, t_vars *vars)
+void	draw_walls(int drawstart, int drawend, t_img *img, t_vars *vars)
 {
+	int color;
+
 	vars->step = 1.0 * vars->tex_y / vars->line_y;
 	vars->texpos = (drawstart - vars->screenheight / 2 +
-	vars->line_y / 2) * vars->step;
+		vars->line_y / 2) * vars->step;
 	while (drawstart <= drawend)
 	{
 		vars->texy = (int)vars->texpos;
 		vars->texpos += vars->step;
 		color = (unsigned int)vars->buffer[vars->tex_y *
 			vars->texy + vars->texx];
-		my_mlx_pixel_put(img, x, drawstart, color);
+		my_mlx_pixel_put(img, vars->i, drawstart, color);
 		drawstart++;
 	}
 }
@@ -42,8 +44,6 @@ void	draw_walls(int x, int drawstart, int drawend, int color, t_img *img, t_vars
 void	draw_sprite(int color, t_vars *vars)
 {
 	int sprite;
-	int i;
-	int d;
 
 	sprite = vars->startx;
 	while (sprite < vars->drawendx)
@@ -53,35 +53,38 @@ void	draw_sprite(int color, t_vars *vars)
 		if (vars->t_y > 0 && sprite > 0 && sprite < vars->screenwidth &&
 			vars->t_y < vars->zbuffer[sprite])
 		{
-			i = vars->starty;
-			while (i < vars->drawendy)
+			vars->si = vars->starty;
+			while (vars->si < vars->drawendy)
 			{
-				d = (i) * 256 - vars->screenheight * 128 + vars->sprite_y * 128;
-				vars->texy = ((d * vars->columna.height) / vars->sprite_y) / 256;
-				color = (unsigned int)vars->buffer[vars->columna.width * vars->texy + vars->texx];
+				vars->sd = (vars->si) * 256 - vars->screenheight *
+					128 + vars->sprite_y * 128;
+				vars->texy = ((vars->sd * vars->columna.height)
+					/ vars->sprite_y) / 256;
+				color = (unsigned int)vars->buffer[vars->columna.width
+					* vars->texy + vars->texx];
 				if ((color & 0x00FFFFFF) != 0)
-					my_mlx_pixel_put(&vars->imagen, sprite, i, color);
-				i++;
+					my_mlx_pixel_put(&vars->imagen, sprite, vars->si, color);
+				vars->si++;
 			}
 		}
 		sprite++;
 	}
 }
 
-void	draw_sky_floor(int x, int drawstart, int drawend, t_img *img, t_vars *vars)
+void	draw_sky_floor(int drawstart, int drawend, t_img *img, t_vars *vars)
 {
 	int j;
 
 	j = 0;
 	while (j < (drawstart))
 	{
-		my_mlx_pixel_put(img, x, j, vars->sky);
+		my_mlx_pixel_put(img, vars->i, j, vars->sky);
 		j++;
 	}
 	j = drawend;
 	while (j < vars->screenheight && j > 0)
 	{
-		my_mlx_pixel_put(img, x, j, vars->floor);
+		my_mlx_pixel_put(img, vars->i, j, vars->floor);
 		j++;
 	}
 }

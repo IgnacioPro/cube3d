@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 12:20:37 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/28 13:44:03 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/28 20:08:04 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,10 @@ void	element_validator(t_data *data)
 		data->sp_tex != 1 ||
 		data->f_color != 1 ||
 		data->c_color != 1)
-		{
-			ft_putstr_fd("Error\nPremaping error. Check number of elements", 2);
-			exit(0);
-		}
+	{
+		ft_putstr_fd("Error\nPremaping error. Check number of elements", 2);
+		exit(0);
+	}
 }
 
 void	element_innit(t_data *data)
@@ -68,9 +68,3 @@ void	element_innit(t_data *data)
 	data->f_color = 0;
 	data->c_color = 0;
 }
-
-// void	invalid_element(int c)
-// {
-// 	if (c != 'N' || c != 'S' || c != 'E' || c != 'W' || c != ' ' ||
-// 		c != '0')
-// }
