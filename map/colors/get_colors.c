@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 20:50:10 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/26 20:42:50 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/27 20:46:13 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 void	floor_color(t_data *data)
 {
+	data->f_color++;
 	data->i++;
 	error_check(data);
 	while (data->linea[data->i] == ' ')
@@ -43,6 +44,7 @@ void	floor_color(t_data *data)
 
 void	ceiling_color(t_data *data)
 {
+	data->c_color++;
 	data->i++;
 	error_check(data);
 	while (data->linea[data->i] == ' ')

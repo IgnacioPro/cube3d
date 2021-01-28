@@ -18,8 +18,8 @@ SRCS		= 	raycaster.c \
 				./sprites/size_distance.c \
 				./textures/load_textures.c \
 				./raycaster/calculations.c \
-				./raycaster/render.c
-
+				./raycaster/render.c 
+				
 OBJS		= ${SRCS:.c=.o}
 NAME		= cub3D
 CC = gcc -Wall -Werror -Wextra

@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 12:20:37 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/26 12:37:08 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/28 13:44:03 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,3 +40,37 @@ void	save_image_validator(t_data data)
 		exit(0);
 	}
 }
+
+void	element_validator(t_data *data)
+{
+	if (data->res != 1 ||
+		data->n_tex != 1 ||
+		data->s_tex != 1 ||
+		data->w_tex != 1 ||
+		data->e_tex != 1 ||
+		data->sp_tex != 1 ||
+		data->f_color != 1 ||
+		data->c_color != 1)
+		{
+			ft_putstr_fd("Error\nPremaping error. Check number of elements", 2);
+			exit(0);
+		}
+}
+
+void	element_innit(t_data *data)
+{
+	data->res = 0;
+	data->n_tex = 0;
+	data->s_tex = 0;
+	data->w_tex = 0;
+	data->e_tex = 0;
+	data->sp_tex = 0;
+	data->f_color = 0;
+	data->c_color = 0;
+}
+
+// void	invalid_element(int c)
+// {
+// 	if (c != 'N' || c != 'S' || c != 'E' || c != 'W' || c != ' ' ||
+// 		c != '0')
+// }

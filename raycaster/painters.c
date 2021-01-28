@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/08 18:53:59 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/26 20:02:10 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/27 19:53:34 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ void	draw_walls(int x, int drawstart, int drawend, int color, t_img *img, t_vars
 	{
 		vars->texy = (int)vars->texpos;
 		vars->texpos += vars->step;
-		color = (unsigned int)vars->buffer[vars->tex_y * vars->texy + vars->texx];
+		color = (unsigned int)vars->buffer[vars->tex_y *
+			vars->texy + vars->texx];
 		my_mlx_pixel_put(img, x, drawstart, color);
 		drawstart++;
 	}
@@ -67,7 +68,7 @@ void	draw_sprite(int color, t_vars *vars)
 	}
 }
 
-void	draw_sky_floor(int x, int drawstart, int drawEnd, t_img *img, t_vars *vars)
+void	draw_sky_floor(int x, int drawstart, int drawend, t_img *img, t_vars *vars)
 {
 	int j;
 
@@ -77,7 +78,7 @@ void	draw_sky_floor(int x, int drawstart, int drawEnd, t_img *img, t_vars *vars)
 		my_mlx_pixel_put(img, x, j, vars->sky);
 		j++;
 	}
-	j = drawEnd;
+	j = drawend;
 	while (j < vars->screenheight && j > 0)
 	{
 		my_mlx_pixel_put(img, x, j, vars->floor);
@@ -92,9 +93,8 @@ void	compare_resolution(t_data *data, t_vars *vars)
 	screen_size = mlx_get_screen_size(vars->mlx, &vars->localx, &vars->localy);
 	if (data->x < 0 || data->y < 0)
 		resolution_error();
-	if (data->x > vars->localx || data->y > vars->localy)
-	{
+	if (data->y > vars->localy)
+		data->y = vars->localy;
+	if (data->x > vars->localx)
 		data->x = vars->localx;
-		data->y= vars->localy;
-	}
 }

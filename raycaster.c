@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 11:58:33 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/26 13:06:53 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/27 20:28:43 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	data_init(t_data *data, t_vars *vars)
 	vars->diry = 0;
 	vars->px = 0;
 	vars->py = 0.66;
+	element_innit(data);
 }
 
 void	vars_init(t_data *data, t_vars *vars)
@@ -84,6 +85,7 @@ int		main(int argc, char *argv[])
 	opening3(&data, &vars);
 	// print_all(&data);
 	compare_resolution(&data, &vars);
+	printf("east: %s\n south: %s\n", data.east, data.south);
 	vars_init(&data, &vars);
 	load_textures(&vars, &data);
 	calculate_sprites(&vars);

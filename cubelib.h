@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:20:27 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/26 22:13:37 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/27 20:27:23 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,14 @@ typedef struct	s_data
 	int			playery;
 	int			argc;
 	int			fd;
+	int			res;
+	int			n_tex;
+	int			s_tex;
+	int			w_tex;
+	int			e_tex;
+	int			sp_tex;
+	int			f_color;
+	int			c_color;
 }				t_data;
 
 typedef struct	s_sprite
@@ -229,4 +237,7 @@ void			player_position(t_data *data, t_vars *vars);
 void			alloc_map(t_data *data, t_vars *vars);
 void			texture_dimensions(t_vars *vars);
 void			space_comma(t_data *data);
+void			compare_textures(char *s1, char *s2);
+void			element_validator(t_data *data);
+void			element_innit(t_data *data);
 #endif

@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 12:06:35 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/26 12:37:34 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/28 17:31:32 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 
 void	opening1(t_data *data)
 {
+
+
 	if ((data->fd = open(data->arg1, O_RDONLY)) == -1)
 		error_opening_map();
 	if (!data->arg1)
@@ -79,23 +81,23 @@ void	opening3(t_data *data, t_vars *vars)
 
 void	formatter(t_data *data)
 {
-	data->i = 0;
-	while (data->linea[data->i] == ' ')
-		data->i++;
+	// data->i = 0;
+	// while (data->linea[data->i] == ' ')
+	// 	data->i++;
 	if (data->linea[data->i] == 'R')
 		get_resolution(data);
-	else if (data->linea[data->i] == 'N' && data->linea[data->i + 1] == 'O')
+	else if (data->linea[data->i] == 'N')
 		north_texture(data);
 	else if (data->linea[data->i] == 'S' && data->linea[data->i + 1] == ' ')
 		sprite_texture(data);
-	else if (data->linea[data->i] == 'S' && data->linea[data->i + 1] != ' ' &&
-		data->linea[data->i + 1] != 'O')
-		texture_error();
-	else if (data->linea[data->i] == 'S' && data->linea[data->i + 1] == 'O')
+	// else if (data->linea[data->i] == 'S' && data->linea[data->i + 1] != ' ' &&
+	// 	data->linea[data->i + 1] != 'O')
+	// 	texture_error();
+	else if (data->linea[data->i] == 'S')
 		south_texture(data);
-	else if (data->linea[data->i] == 'E' && data->linea[data->i + 1] == 'A')
+	else if (data->linea[data->i] == 'E')
 		east_texture(data);
-	else if (data->linea[data->i] == 'W' && data->linea[data->i + 1] == 'E')
+	else if (data->linea[data->i] == 'W')
 		west_texture(data);
 	else if (data->linea[data->i] == 'F')
 		floor_color(data);
@@ -105,12 +107,14 @@ void	formatter(t_data *data)
 
 void	file_reader(t_data *data)
 {
-	int i;
-
-	while ((i = get_next_line(data->fd, &data->linea)) > 0)
+	while ((get_next_line(data->fd, &data->linea)) > 0)
 	{
-		formatter(data);
-		if (data->linea[data->i] == '1' ||
+		data->i = 0;
+		while (data->linea[data->i] == ' ')
+			data->i++;
+		if (ft_strchr("NSEWFCR", data->linea[data->i]))
+			formatter(data);
+		else if (data->linea[data->i] == '1' ||
 			data->linea[data->i] == '2' ||
 			data->linea[data->i] == '0' ||
 			data->linea[data->i] == 'N' ||
@@ -122,7 +126,19 @@ void	file_reader(t_data *data)
 			free(data->linea);
 			break ;
 		}
+		else
+			map_error();
+		
 		data->rl++;
 		free(data->linea);
 	}
+	printf("Norte: %d\n", data->n_tex);
+	printf("Sur: %d\n", data->s_tex);
+	printf("Este: %d\n", data->e_tex);
+	printf("Oeste: %d\n", data->w_tex);
+	printf("Sprite: %d\n", data->sp_tex);
+	printf("Resolution: %d\n", data->res);
+	printf("Cielien: %d\n", data->c_color);
+	printf("Floor: %d\n", data->f_color);
+	element_validator(data);
 }
