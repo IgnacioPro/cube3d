@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/08 18:53:59 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/28 21:01:17 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/28 22:14:08 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,14 @@ void	draw_walls(int drawstart, int drawend, t_img *img, t_vars *vars)
 
 void	draw_sprite(int color, t_vars *vars)
 {
-	int sprite;
-
-	sprite = vars->startx;
-	while (sprite < vars->drawendx)
+	vars->sp = vars->startx;
+	while (vars->sp < vars->drawendx)
 	{
-		vars->texx = (int)(256 * (sprite - (-vars->s_width / 2 + vars->screenx))
+		vars->texx = (int)(256 * (vars->sp -
+		(-vars->s_width / 2 + vars->screenx))
 		* vars->tex_x / vars->s_width) / 256;
-		if (vars->t_y > 0 && sprite > 0 && sprite < vars->screenwidth &&
-			vars->t_y < vars->zbuffer[sprite])
+		if (vars->t_y > 0 && vars->sp > 0 && vars->sp < vars->screenwidth &&
+			vars->t_y < vars->zbuffer[vars->sp])
 		{
 			vars->si = vars->starty;
 			while (vars->si < vars->drawendy)
@@ -63,11 +62,11 @@ void	draw_sprite(int color, t_vars *vars)
 				color = (unsigned int)vars->buffer[vars->columna.width
 					* vars->texy + vars->texx];
 				if ((color & 0x00FFFFFF) != 0)
-					my_mlx_pixel_put(&vars->imagen, sprite, vars->si, color);
+					my_mlx_pixel_put(&vars->imagen, vars->sp, vars->si, color);
 				vars->si++;
 			}
 		}
-		sprite++;
+		vars->sp++;
 	}
 }
 
