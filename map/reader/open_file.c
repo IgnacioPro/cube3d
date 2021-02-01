@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 12:06:35 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/28 19:41:42 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/30 12:12:39 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../../libft/libft.h"
 #include "../../getnextline/get_next_line.h"
 
-void	opening1(t_data *data)
+void	opening1(t_data *data, t_vars *vars)
 {
 	if ((data->fd = open(data->arg1, O_RDONLY)) == -1)
 		error_opening_map();
@@ -27,7 +27,7 @@ void	opening1(t_data *data)
 	}
 	map_name_validator(*data);
 	if (data->argc == 3)
-		save_image_validator(*data);
+		save_image_validator(*data, vars);
 }
 
 void	opening2(t_data *data, t_vars *vars)

@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 11:58:33 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/28 19:35:21 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/02/01 20:22:46 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	data_init(t_data *data, t_vars *vars)
 	vars->diry = 0;
 	vars->px = 0;
 	vars->py = 0.66;
+	vars->screenshot = 0;
 	element_innit(data);
 }
 
@@ -60,6 +61,7 @@ void	vars_init(t_data *data, t_vars *vars)
 	vars->posy = data->playery + 0.5;
 	vars->zbuffer = (double*)malloc(data->x * sizeof(double));
 	vars->mlx = mlx_init();
+	load_textures(vars, data);
 	vars->win = mlx_new_window(vars->mlx, vars->screenwidth,
 		vars->screenheight, "cub3D");
 	vars->sky = 65536 * data->ceiling[0] +
@@ -77,7 +79,7 @@ int		main(int argc, char *argv[])
 	data.arg2 = argv[2];
 	data.argc = argc;
 	data_init(&data, &vars);
-	opening1(&data);
+	opening1(&data, &vars);
 	file_reader(&data);
 	errors(&data);
 	close(data.fd);
@@ -85,9 +87,10 @@ int		main(int argc, char *argv[])
 	opening3(&data, &vars);
 	compare_resolution(&data, &vars);
 	vars_init(&data, &vars);
-	load_textures(&vars, &data);
 	calculate_sprites(&vars);
 	mlx_loop_hook(vars.mlx, render_frame, &vars);
+	if (vars.screenshot == 1)
+		take_screenshot(&vars);
 	mlx_hook(vars.win, 2, 1L << 0, move_player_press, &vars);
 	mlx_hook(vars.win, 3, 1L << 1, move_player_release, &vars);
 	mlx_hook(vars.win, 17, 0L, close_x, &vars);

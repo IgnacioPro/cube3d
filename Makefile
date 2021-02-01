@@ -19,7 +19,7 @@ SRCS		= 	raycaster.c \
 				./textures/load_textures.c \
 				./raycaster/calculations.c \
 				./raycaster/render.c \
-				save.c
+				./screenshot/save.c
 				
 OBJS		= ${SRCS:.c=.o}
 NAME		= cub3D

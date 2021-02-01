@@ -1,8 +1,8 @@
-R 500 350
+R 800 500
 NO ./srcs/textures/redbrick.xpm
 EA                                   ./srcs/textures/mossy.xpm
 SO        ./srcs/textures/greystone.xpm
-WE                    ./srcs/textures/purplestone.xpm
+WE                    ./srcs/textures/wood.xpm
 S   ./srcs/textures/pillar.xpm
 C             255, 0   ,   0    
 F        0 ,  0,  255

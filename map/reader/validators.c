@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 12:20:37 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/28 20:08:04 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/02/01 19:21:06 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	map_name_validator(t_data data)
 	}
 }
 
-void	save_image_validator(t_data data)
+void	save_image_validator(t_data data, t_vars *vars)
 {
 	int j;
 
@@ -39,6 +39,8 @@ void	save_image_validator(t_data data)
 		ft_putstr_fd("Error\nSecond argument is invalid. Try '--save'.\n", 2);
 		exit(0);
 	}
+	else
+		vars->screenshot = 1;
 }
 
 void	element_validator(t_data *data)
