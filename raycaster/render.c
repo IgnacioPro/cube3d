@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 11:02:13 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/25 23:34:49 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/01/31 22:19:44 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int		render_frame(t_vars *vars)
 {
 	vars->imagen.img = mlx_new_image(vars->mlx, vars->screenwidth,
 	vars->screenheight);
-	vars->imagen.addr = mlx_get_data_addr(vars->imagen.img,
+	vars->imagen.addr = (unsigned int*)mlx_get_data_addr(vars->imagen.img,
 	&vars->imagen.bits_per_pixel, &vars->imagen.line_length,
 	&vars->imagen.endian);
 	vars->i = 0;
@@ -42,6 +42,7 @@ void	render(t_vars *vars)
 	vars->buffer = (int *)mlx_get_data_addr(vars->columna.img,
 	&vars->columna.bits_per_pixel,
 	&vars->columna.line_length, &vars->columna.endian);
+	
 	calculate_sprite_dist(vars);
 	sort_sprites(vars);
 	vars->c = vars->num_sprites;
