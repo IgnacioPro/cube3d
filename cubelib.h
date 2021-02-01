@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/06 16:20:27 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/28 22:16:11 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/02/01 19:28:14 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,23 +65,23 @@ typedef struct	s_data
 
 typedef struct	s_sprite
 {
-	double	x;
-	double	y;
-	int		cx;
-	int		cy;
-	double	distance;
-	int		tmp;
+	double		x;
+	double		y;
+	int			cx;
+	int			cy;
+	double		distance;
+	int			tmp;
 }				t_sprite;
 
 typedef struct	s_img
 {
-	void	*img;
-	void	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-	int		height;
-	int		width;
+	void		*img;
+	void		*addr;
+	int			bits_per_pixel;
+	int			line_length;
+	int			endian;
+	int			height;
+	int			width;
 }				t_img;
 
 typedef struct	s_vars
@@ -172,6 +172,7 @@ typedef struct	s_vars
 	int			si;
 	int			sd;
 	int			sp;
+	int			screenshot;
 }				t_vars;
 
 void			my_mlx_pixel_put(t_img *imagen, int x, int y, int color);
@@ -213,13 +214,13 @@ void			sprite_texture(t_data *data);
 int				valid_resolution(int c);
 void			resolution_format(t_data *data);
 void			get_resolution(t_data *data);
-void			opening1(t_data *data);
+void			opening1(t_data *data, t_vars *vars);
 void			opening2(t_data *data, t_vars *vars);
 void			opening3(t_data *data, t_vars *vars);
 void			formatter(t_data *data);
 void			file_reader(t_data *data);
 void			map_name_validator(t_data data);
-void			save_image_validator(t_data data);
+void			save_image_validator(t_data data, t_vars *vars);
 int				invalid_map_chars(int c);
 void			map_parser(t_data *data);
 void			map_store(t_data *data, t_vars *vars);
@@ -243,4 +244,6 @@ void			space_comma(t_data *data);
 void			compare_textures(char *s1, char *s2);
 void			element_validator(t_data *data);
 void			element_innit(t_data *data);
+int				ft_screenshot(t_vars *vars);
+void			take_screenshot(t_vars *vars);
 #endif
