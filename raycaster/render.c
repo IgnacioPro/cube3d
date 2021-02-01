@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 11:02:13 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/01/31 22:19:44 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/02/01 20:35:21 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	render(t_vars *vars)
 	vars->buffer = (int *)mlx_get_data_addr(vars->columna.img,
 	&vars->columna.bits_per_pixel,
 	&vars->columna.line_length, &vars->columna.endian);
-	
 	calculate_sprite_dist(vars);
 	sort_sprites(vars);
 	vars->c = vars->num_sprites;
