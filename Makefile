@@ -18,7 +18,8 @@ SRCS		= 	raycaster.c \
 				./sprites/size_distance.c \
 				./textures/load_textures.c \
 				./raycaster/calculations.c \
-				./raycaster/render.c 
+				./raycaster/render.c \
+				save.c
 				
 OBJS		= ${SRCS:.c=.o}
 NAME		= cub3D
@@ -32,23 +33,26 @@ FRAMEWORK	= -lz -L . -lmlx  -framework OpenGL -framework AppKit
 
 ${NAME}:	${OBJS}
 			${MAKE} -C ./minilibx
+			echo "\x1b[32m[Minilib compiled]\n\x1b[0m"
 			${MAKE} -C ./libft
-
+			echo "\x1b[32m[Libft compiled]\n\x1b[0m"
 			mv ./minilibx/libmlx.dylib .
 			mv ./libft/libft.a .
-			# ${CC} -o ${NAME} ${OBJS} ${FRAMEWORK}
 			$(CC) $(OBJS) -o $(NAME) -L ../libft -lft ${FRAMEWORK}
-
-
+			
 all:		${NAME}
 
 clean:
 			${RM} ${OBJS}
 			${MAKE} clean -C ./minilibx
 
+
 fclean : 	clean
 			${RM} ${NAME} libmlx.dylib libft.a
 
+
 re:			fclean all
+			@echo "Mae re DONE"
 
 .PHONY:		re all clean fclean
+			
