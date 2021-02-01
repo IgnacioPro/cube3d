@@ -45,6 +45,7 @@ all:		${NAME}
 clean:
 			${RM} ${OBJS}
 			${MAKE} clean -C ./minilibx
+			${MAKE} clean -C ./libft
 
 
 fclean : 	clean
