@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 17:38:47 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/02/01 20:37:30 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/02/04 17:06:36 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void			take_screenshot(t_vars *vars)
 	int				fd;
 	int				size;
 
-	render_frame(vars);
 	if ((fd = open("screenshot.bmp", O_WRONLY | O_CREAT, 0777)) < 0)
 		map_error();
 	ft_putstr_fd("\n\x1b[32m[BMP creado]\x1b[0m", 1);

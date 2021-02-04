@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 11:02:13 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/02/01 20:35:21 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/02/03 23:10:40 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	render(t_vars *vars)
 	sort_sprites(vars);
 	vars->c = vars->num_sprites;
 	sprite_dimensions(vars);
+	if (vars->screenshot == 1)
+		take_screenshot(vars);
 	move_up(vars);
 	move_down(vars);
 	move_left(vars);

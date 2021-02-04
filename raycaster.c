@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 11:58:33 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/02/01 20:22:46 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/02/03 23:09:39 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,6 @@ int		main(int argc, char *argv[])
 	vars_init(&data, &vars);
 	calculate_sprites(&vars);
 	mlx_loop_hook(vars.mlx, render_frame, &vars);
-	if (vars.screenshot == 1)
-		take_screenshot(&vars);
 	mlx_hook(vars.win, 2, 1L << 0, move_player_press, &vars);
 	mlx_hook(vars.win, 3, 1L << 1, move_player_release, &vars);
 	mlx_hook(vars.win, 17, 0L, close_x, &vars);

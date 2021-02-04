@@ -1,4 +1,4 @@
-R 800 500
+R 500 350
 NO ./srcs/textures/redbrick.xpm
 EA                                   ./srcs/textures/mossy.xpm
 SO        ./srcs/textures/greystone.xpm
