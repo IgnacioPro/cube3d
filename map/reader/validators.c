@@ -6,7 +6,7 @@
 /*   By: IgnacioHB <IgnacioHB@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 12:20:37 by IgnacioHB         #+#    #+#             */
-/*   Updated: 2021/02/01 19:21:06 by IgnacioHB        ###   ########.fr       */
+/*   Updated: 2021/02/04 17:32:43 by IgnacioHB        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	map_name_validator(t_data data)
 	free(lastfour);
 	if (j != 0)
 	{
-		printf("Error. Map name is invalid.\n");
+		ft_putstr_fd("Error. Map name is invalid.\n", 2);
 		exit(0);
 	}
 }
