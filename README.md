@@ -8,7 +8,11 @@ For macOS:
 ```bash
 cd cub3d && make && ./cub3D map.cub
 ```
+For Linux:
 
+```bash
+cd cub3d && cd cub3D-linux && make && ./cub3D map.cub
+```
 ## Usage
 
 
