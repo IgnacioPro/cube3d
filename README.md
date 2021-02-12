@@ -30,8 +30,7 @@ Player Movement:
 
 ## Program
 
-The program accepts two arguments, the first one is for the file with 
-.cub extension thats hosts the following:
+The program accepts two arguments, the first one is for the file with .cub extension that hosts the following:
 - Screen Resolution
 - Paths for textures and sprites
 - RGB data for ceiling and floor
@@ -39,3 +38,4 @@ The program accepts two arguments, the first one is for the file with
    - 0 for empty space
    - 1 for Walls
    - 2 for Sprites
+The second argument, if "--save", will save the first rendered frame as a BMP file at the root of the project.
